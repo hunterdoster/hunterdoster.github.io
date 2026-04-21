@@ -43,7 +43,7 @@
       <div class="hidden md:flex items-center gap-8 text-sm font-medium text-slate-600">
         <a href="#about" class="hover:text-indigo-600 transition-colors">About</a>
         <a href="#experience" class="hover:text-indigo-600 transition-colors">Experience</a>
-        <a href="#projects" class="hover:text-indigo-600 transition-colors">Projects</a>
+        <a href="#projects" class="hover:text-indigo-600 transition-colors">Products</a>
         <a href="#skills" class="hover:text-indigo-600 transition-colors">Skills</a>
         <a href="#contact"
           class="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-lg transition-colors">
@@ -57,10 +57,6 @@
   <section class="bg-navy-900 pt-32 pb-24 px-6">
     <div class="max-w-6xl mx-auto flex flex-col md:flex-row items-center gap-12">
       <div class="flex-1 text-center md:text-left">
-        <div class="inline-flex items-center gap-2 bg-indigo-500/20 text-indigo-300 text-sm font-medium px-4 py-1.5 rounded-full mb-6">
-          <span class="w-2 h-2 bg-emerald-400 rounded-full animate-pulse"></span>
-          Available August 2026 · Greenville, SC (Remote)
-        </div>
         <h1 class="text-5xl md:text-6xl font-extrabold text-white leading-tight mb-4">
           Hunter Doster
         </h1>
@@ -71,7 +67,7 @@
         <div class="flex flex-wrap gap-4 justify-center md:justify-start">
           <a href="#projects"
             class="bg-indigo-600 hover:bg-indigo-500 text-white font-semibold px-6 py-3 rounded-lg transition-colors">
-            View Projects
+            View Products
           </a>
           <a href="https://www.linkedin.com/in/hunter-doster-77b1a7166/" target="_blank"
             class="border border-slate-500 hover:border-white text-slate-300 hover:text-white font-semibold px-6 py-3 rounded-lg transition-colors">
@@ -84,18 +80,38 @@
           <span class="text-xs bg-white/10 text-slate-300 px-3 py-1.5 rounded-full">9 Years Military Service</span>
         </div>
       </div>
-      <div class="flex-shrink-0">
-        <div class="w-52 h-52 rounded-full overflow-hidden border-4 border-indigo-500/40 shadow-2xl">
+      <div class="flex-shrink-0 w-full md:w-auto">
+        <div class="w-full md:w-96 h-64 rounded-2xl overflow-hidden border-2 border-indigo-500/40 shadow-2xl">
           <img src="profile.jpg" alt="Hunter Doster"
-            class="w-full h-full object-cover"
+            class="w-full h-full object-cover object-center"
             onerror="this.parentElement.innerHTML='<div class=\'w-full h-full bg-indigo-700 flex items-center justify-center\'><span class=\'text-white text-5xl font-bold\'>HD</span></div>'" />
         </div>
       </div>
     </div>
   </section>
 
+  <!-- ── Education ── -->
+  <section id="education" class="py-16 px-6 bg-slate-50">
+    <div class="max-w-4xl mx-auto">
+      <h2 class="text-3xl font-bold text-slate-900 mb-2">Education</h2>
+      <div class="w-12 h-1 bg-indigo-600 rounded mb-8"></div>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div class="border border-slate-200 bg-white rounded-xl p-5">
+          <p class="font-bold text-slate-900">U.S. Air Force Institute of Technology</p>
+          <p class="text-indigo-600 font-medium text-sm mt-0.5">M.S. Computer Engineering</p>
+          <p class="text-slate-400 text-sm mt-1">2020 – 2022</p>
+        </div>
+        <div class="border border-slate-200 bg-white rounded-xl p-5">
+          <p class="font-bold text-slate-900">United States Air Force Academy</p>
+          <p class="text-indigo-600 font-medium text-sm mt-0.5">B.S. Computer Engineering</p>
+          <p class="text-slate-400 text-sm mt-1">2016 – 2020</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <!-- ── About ── -->
-  <section id="about" class="py-20 px-6 bg-slate-50">
+  <section id="about" class="py-20 px-6 bg-white">
     <div class="max-w-4xl mx-auto">
       <h2 class="text-3xl font-bold text-slate-900 mb-2">About</h2>
       <div class="w-12 h-1 bg-indigo-600 rounded mb-8"></div>
@@ -116,114 +132,13 @@
     </div>
   </section>
 
-  <!-- ── Experience ── -->
-  <section id="experience" class="py-20 px-6 bg-white">
-    <div class="max-w-4xl mx-auto">
-      <h2 class="text-3xl font-bold text-slate-900 mb-2">Experience</h2>
-      <div class="w-12 h-1 bg-indigo-600 rounded mb-12"></div>
-
-      <div class="border-l-2 border-slate-200 pl-8 space-y-12">
-
-        <!-- Jeff Cook Real Estate -->
-        <div class="relative timeline-item">
-          <div class="flex flex-wrap items-start justify-between gap-2 mb-1">
-            <div>
-              <h3 class="text-lg font-bold text-slate-900">SkillBridge Fellow</h3>
-              <p class="text-indigo-600 font-semibold">Jeff Cook Real Estate</p>
-            </div>
-            <span class="text-sm text-slate-400 whitespace-nowrap">2025 – 2026 · Greenville, SC</span>
-          </div>
-          <ul class="mt-3 space-y-2 text-slate-600 text-sm leading-relaxed">
-            <li class="flex gap-2"><span class="text-indigo-400 mt-1">▸</span> Completed intensive real estate PM program, gaining firsthand experience in the homeowner-to-seller journey</li>
-            <li class="flex gap-2"><span class="text-indigo-400 mt-1">▸</span> Conducted customer discovery with prospective sellers, mapping friction points across the full transaction lifecycle</li>
-            <li class="flex gap-2"><span class="text-indigo-400 mt-1">▸</span> Managed end-to-end pipelines in Follow Up Boss (a Zillow-owned CRM), building deep domain knowledge in real estate tech</li>
-          </ul>
-        </div>
-
-        <!-- AFRL Product Manager -->
-        <div class="relative timeline-item">
-          <div class="flex flex-wrap items-start justify-between gap-2 mb-1">
-            <div>
-              <h3 class="text-lg font-bold text-slate-900">Product Manager — Radar Sensor Portfolio</h3>
-              <p class="text-indigo-600 font-semibold">Air Force Research Laboratory (AFRL)</p>
-            </div>
-            <span class="text-sm text-slate-400 whitespace-nowrap">2024 – Present · Dayton, OH</span>
-          </div>
-          <div class="mt-2 mb-3">
-            <span class="text-xs bg-amber-100 text-amber-700 font-semibold px-2.5 py-1 rounded-full">
-              🏆 AFRL Sensors Directorate Annual Award 2024
-            </span>
-          </div>
-          <ul class="mt-3 space-y-2 text-slate-600 text-sm leading-relaxed">
-            <li class="flex gap-2"><span class="text-indigo-400 mt-1">▸</span> Owned product strategy and roadmap for a <strong>$26M+ radar sensor enhancement portfolio</strong> spanning three concurrent priority programs (WIDEBAND, Athena-R, Freakazoid)</li>
-            <li class="flex gap-2"><span class="text-indigo-400 mt-1">▸</span> Built and led a <strong>75-member cross-functional team</strong> across six agencies on a $71.5M research portfolio</li>
-            <li class="flex gap-2"><span class="text-indigo-400 mt-1">▸</span> Defined product vision, requirements, and roadmap for new RF sensing capabilities; led evaluation criteria across a <strong>$170M vendor selection cycle</strong></li>
-            <li class="flex gap-2"><span class="text-indigo-400 mt-1">▸</span> <strong>Accelerated delivery timelines by 50%</strong> through backlog reprioritization, process improvements, and proactive risk mitigation</li>
-            <li class="flex gap-2"><span class="text-indigo-400 mt-1">▸</span> Secured <strong>$7.4M in new product funding</strong>, including $1M for digital receiver technology and $2M from NSA in FY25</li>
-          </ul>
-        </div>
-
-        <!-- Electronic Intelligence -->
-        <div class="relative timeline-item">
-          <div class="flex flex-wrap items-start justify-between gap-2 mb-1">
-            <div>
-              <h3 class="text-lg font-bold text-slate-900">Product Manager & Program Manager — Electronic Intelligence</h3>
-              <p class="text-indigo-600 font-semibold">Air Force Research Laboratory (AFRL)</p>
-            </div>
-            <span class="text-sm text-slate-400 whitespace-nowrap">Apr 2022 – Apr 2024 · Dayton, OH</span>
-          </div>
-          <ul class="mt-3 space-y-2 text-slate-600 text-sm leading-relaxed">
-            <li class="flex gap-2"><span class="text-indigo-400 mt-1">▸</span> Led a <strong>0-to-1 product initiative</strong> for a major airborne sensor modernization program from concept to deployment on a compressed timeline</li>
-            <li class="flex gap-2"><span class="text-indigo-400 mt-1">▸</span> Drove a <strong>30-person cross-functional team</strong> to deliver a platform upgrade achieving a <strong>6,000x size reduction</strong> and <strong>567% improvement in tracking performance</strong></li>
-            <li class="flex gap-2"><span class="text-indigo-400 mt-1">▸</span> Secured <strong>$5M in incremental product funding</strong> through compelling roadmap presentations and live demos to 1,400+ attendees at GOMACTech</li>
-            <li class="flex gap-2"><span class="text-indigo-400 mt-1">▸</span> Saved <strong>$500K and prevented a six-month delay</strong> by identifying two critical product risks early and executing mitigation strategies</li>
-            <li class="flex gap-2"><span class="text-indigo-400 mt-1">▸</span> Coordinated software and hardware teams across the full product lifecycle: requirements, iterative development, integration, and testing</li>
-          </ul>
-        </div>
-
-        <!-- AFIT Graduate Researcher -->
-        <div class="relative timeline-item">
-          <div class="flex flex-wrap items-start justify-between gap-2 mb-1">
-            <div>
-              <h3 class="text-lg font-bold text-slate-900">Product Developer & Graduate Researcher</h3>
-              <p class="text-indigo-600 font-semibold">U.S. Air Force Institute of Technology (AFIT)</p>
-            </div>
-            <span class="text-sm text-slate-400 whitespace-nowrap">Jun 2020 – Mar 2022 · Dayton, OH</span>
-          </div>
-          <ul class="mt-3 space-y-2 text-slate-600 text-sm leading-relaxed">
-            <li class="flex gap-2"><span class="text-indigo-400 mt-1">▸</span> Developed a prototype UAV payload detection system using Python, ML models, digital signal processing, and real-time system design</li>
-            <li class="flex gap-2"><span class="text-indigo-400 mt-1">▸</span> Led end-to-end research product: concept, modeling, development, testing, and publication</li>
-            <li class="flex gap-2"><span class="text-indigo-400 mt-1">▸</span> Published thesis and presented at the <strong>18th International Conference on Cyber Warfare and Security</strong></li>
-          </ul>
-        </div>
-
-      </div>
-
-      <!-- Education -->
-      <div class="mt-16">
-        <h3 class="text-xl font-bold text-slate-900 mb-6">Education</h3>
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div class="border border-slate-200 rounded-xl p-5">
-            <p class="font-bold text-slate-900">U.S. Air Force Institute of Technology</p>
-            <p class="text-indigo-600 font-medium text-sm mt-0.5">M.S. Computer Engineering</p>
-            <p class="text-slate-400 text-sm mt-1">2020 – 2022</p>
-          </div>
-          <div class="border border-slate-200 rounded-xl p-5">
-            <p class="font-bold text-slate-900">United States Air Force Academy</p>
-            <p class="text-indigo-600 font-medium text-sm mt-0.5">B.S. Computer Engineering</p>
-            <p class="text-slate-400 text-sm mt-1">2016 – 2020</p>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ── Projects ── -->
+  <!-- ── Products ── -->
   <section id="projects" class="py-20 px-6 bg-slate-50">
     <div class="max-w-4xl mx-auto">
-      <h2 class="text-3xl font-bold text-slate-900 mb-2">Projects</h2>
-      <div class="w-12 h-1 bg-indigo-600 rounded mb-4"></div>
-      <p class="text-slate-500 mb-10">Built with AI-assisted development — from idea to deployed product.</p>
+      <h2 class="text-3xl font-bold text-slate-900 mb-2">Products</h2>
+      <div class="w-12 h-1 bg-indigo-600 rounded mb-2"></div>
+      <p class="text-sm font-semibold text-indigo-500 uppercase tracking-widest mb-2">Created with AI Vibe Coding</p>
+      <p class="text-slate-500 mb-10">From idea to deployed product — built end-to-end with AI-assisted development.</p>
 
       <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
 
@@ -270,11 +185,97 @@
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
             </svg>
           </div>
-          <p class="font-semibold text-slate-500">More projects coming soon</p>
-          <p class="text-slate-400 text-sm mt-1">Building in public with AI-assisted development</p>
+          <p class="font-semibold text-slate-500">More products coming soon</p>
+          <p class="text-slate-400 text-sm mt-1">Building in public with AI Vibe Coding</p>
         </div>
 
       </div>
+    </div>
+  </section>
+
+  <!-- ── Experience ── -->
+  <section id="experience" class="py-20 px-6 bg-white">
+    <div class="max-w-4xl mx-auto">
+      <h2 class="text-3xl font-bold text-slate-900 mb-2">Experience</h2>
+      <div class="w-12 h-1 bg-indigo-600 rounded mb-12"></div>
+
+      <div class="border-l-2 border-slate-200 pl-12 space-y-12">
+
+        <!-- Jeff Cook Real Estate -->
+        <div class="relative timeline-item">
+          <div class="flex flex-wrap items-start justify-between gap-2 mb-1">
+            <div>
+              <h3 class="text-lg font-bold text-slate-900">SkillBridge Fellow</h3>
+              <p class="text-indigo-600 font-semibold">Jeff Cook Real Estate</p>
+            </div>
+            <span class="text-sm text-slate-400 whitespace-nowrap">2025 – 2026 · Greenville, SC</span>
+          </div>
+          <ul class="mt-3 space-y-2 text-slate-600 text-sm leading-relaxed">
+            <li class="flex gap-3"><span class="text-indigo-400 mt-0.5 flex-shrink-0">▸</span> Completed intensive real estate PM program, gaining firsthand experience in the homeowner-to-seller journey</li>
+            <li class="flex gap-3"><span class="text-indigo-400 mt-0.5 flex-shrink-0">▸</span> Conducted customer discovery with prospective sellers, mapping friction points across the full transaction lifecycle</li>
+            <li class="flex gap-3"><span class="text-indigo-400 mt-0.5 flex-shrink-0">▸</span> Managed end-to-end pipelines in Follow Up Boss (a Zillow-owned CRM), building deep domain knowledge in real estate tech</li>
+          </ul>
+        </div>
+
+        <!-- AFRL Product Manager -->
+        <div class="relative timeline-item">
+          <div class="flex flex-wrap items-start justify-between gap-2 mb-1">
+            <div>
+              <h3 class="text-lg font-bold text-slate-900">Product Manager — Radar Sensor Portfolio</h3>
+              <p class="text-indigo-600 font-semibold">Air Force Research Laboratory (AFRL)</p>
+            </div>
+            <span class="text-sm text-slate-400 whitespace-nowrap">2024 – Present · Dayton, OH</span>
+          </div>
+          <div class="mt-2 mb-3">
+            <span class="text-xs bg-amber-100 text-amber-700 font-semibold px-2.5 py-1 rounded-full">
+              🏆 AFRL Sensors Directorate Annual Award 2024
+            </span>
+          </div>
+          <ul class="mt-3 space-y-2 text-slate-600 text-sm leading-relaxed">
+            <li class="flex gap-3"><span class="text-indigo-400 mt-0.5 flex-shrink-0">▸</span> Owned product strategy and roadmap for a <strong>$26M+ radar sensor enhancement portfolio</strong> spanning three concurrent priority programs (WIDEBAND, Athena-R, Freakazoid)</li>
+            <li class="flex gap-3"><span class="text-indigo-400 mt-0.5 flex-shrink-0">▸</span> Built and led a <strong>75-member cross-functional team</strong> across six agencies on a $71.5M research portfolio</li>
+            <li class="flex gap-3"><span class="text-indigo-400 mt-0.5 flex-shrink-0">▸</span> Defined product vision, requirements, and roadmap for new RF sensing capabilities; led evaluation criteria across a <strong>$170M vendor selection cycle</strong></li>
+            <li class="flex gap-3"><span class="text-indigo-400 mt-0.5 flex-shrink-0">▸</span> <strong>Accelerated delivery timelines by 50%</strong> through backlog reprioritization, process improvements, and proactive risk mitigation</li>
+            <li class="flex gap-3"><span class="text-indigo-400 mt-0.5 flex-shrink-0">▸</span> Secured <strong>$7.4M in new product funding</strong>, including $1M for digital receiver technology and $2M from NSA in FY25</li>
+          </ul>
+        </div>
+
+        <!-- Electronic Intelligence -->
+        <div class="relative timeline-item">
+          <div class="flex flex-wrap items-start justify-between gap-2 mb-1">
+            <div>
+              <h3 class="text-lg font-bold text-slate-900">Product Manager & Program Manager — Electronic Intelligence</h3>
+              <p class="text-indigo-600 font-semibold">Air Force Research Laboratory (AFRL)</p>
+            </div>
+            <span class="text-sm text-slate-400 whitespace-nowrap">Apr 2022 – Apr 2024 · Dayton, OH</span>
+          </div>
+          <ul class="mt-3 space-y-2 text-slate-600 text-sm leading-relaxed">
+            <li class="flex gap-3"><span class="text-indigo-400 mt-0.5 flex-shrink-0">▸</span> Led a <strong>0-to-1 product initiative</strong> for a major airborne sensor modernization program from concept to deployment on a compressed timeline</li>
+            <li class="flex gap-3"><span class="text-indigo-400 mt-0.5 flex-shrink-0">▸</span> Drove a <strong>30-person cross-functional team</strong> to deliver a platform upgrade achieving a <strong>6,000x size reduction</strong> and <strong>567% improvement in tracking performance</strong></li>
+            <li class="flex gap-3"><span class="text-indigo-400 mt-0.5 flex-shrink-0">▸</span> Secured <strong>$5M in incremental product funding</strong> through compelling roadmap presentations and live demos to 1,400+ attendees at GOMACTech</li>
+            <li class="flex gap-3"><span class="text-indigo-400 mt-0.5 flex-shrink-0">▸</span> Saved <strong>$500K and prevented a six-month delay</strong> by identifying two critical product risks early and executing mitigation strategies</li>
+            <li class="flex gap-3"><span class="text-indigo-400 mt-0.5 flex-shrink-0">▸</span> Coordinated software and hardware teams across the full product lifecycle: requirements, iterative development, integration, and testing</li>
+          </ul>
+        </div>
+
+        <!-- AFIT Graduate Researcher -->
+        <div class="relative timeline-item">
+          <div class="flex flex-wrap items-start justify-between gap-2 mb-1">
+            <div>
+              <h3 class="text-lg font-bold text-slate-900">Product Developer & Graduate Researcher</h3>
+              <p class="text-indigo-600 font-semibold">U.S. Air Force Institute of Technology (AFIT)</p>
+            </div>
+            <span class="text-sm text-slate-400 whitespace-nowrap">Jun 2020 – Mar 2022 · Dayton, OH</span>
+          </div>
+          <ul class="mt-3 space-y-2 text-slate-600 text-sm leading-relaxed">
+            <li class="flex gap-3"><span class="text-indigo-400 mt-0.5 flex-shrink-0">▸</span> Developed a prototype UAV payload detection system using Python, ML models, digital signal processing, and real-time system design</li>
+            <li class="flex gap-3"><span class="text-indigo-400 mt-0.5 flex-shrink-0">▸</span> Led end-to-end research product: concept, modeling, development, testing, and publication</li>
+            <li class="flex gap-3"><span class="text-indigo-400 mt-0.5 flex-shrink-0">▸</span> Published thesis and presented at the <strong>18th International Conference on Cyber Warfare and Security</strong></li>
+          </ul>
+        </div>
+
+      </div>
+
     </div>
   </section>
 
