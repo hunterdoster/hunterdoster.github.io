@@ -54,39 +54,52 @@
   </nav>
 
   <!-- ── Hero ── -->
-  <section class="bg-navy-900 pt-32 pb-24 px-6">
-    <div class="max-w-6xl mx-auto flex flex-col md:flex-row items-center gap-12">
-      <div class="flex-1 text-center md:text-left">
-        <h1 class="text-5xl md:text-6xl font-extrabold text-white leading-tight mb-4">
-          Hunter Doster
-        </h1>
-        <p class="text-xl md:text-2xl font-semibold text-indigo-300 mb-4">Product Manager</p>
-        <p class="text-lg text-slate-300 font-light max-w-xl mb-8 leading-relaxed">
-          Driving Complex Tech from Vision to Reality
-        </p>
-        <div class="flex flex-wrap gap-4 justify-center md:justify-start">
-          <a href="#projects"
-            class="bg-indigo-600 hover:bg-indigo-500 text-white font-semibold px-6 py-3 rounded-lg transition-colors">
-            View Products
-          </a>
-          <a href="https://www.linkedin.com/in/hunter-doster-77b1a7166/" target="_blank"
-            class="border border-slate-500 hover:border-white text-slate-300 hover:text-white font-semibold px-6 py-3 rounded-lg transition-colors">
-            LinkedIn →
-          </a>
+  <section class="bg-navy-900 pt-20">
+
+    <!-- Banner image -->
+    <div class="w-full h-72 overflow-hidden relative">
+      <img src="profile.jpg" alt="Team at work"
+        class="w-full h-full object-cover object-center"
+        onerror="this.style.display='none'" />
+      <div class="absolute inset-0 bg-navy-900/60"></div>
+    </div>
+
+    <!-- Content below banner -->
+    <div class="max-w-6xl mx-auto px-6 pb-16">
+
+      <!-- Headshot + name row -->
+      <div class="flex flex-col md:flex-row md:items-end gap-6 -mt-14 mb-8">
+        <div class="w-28 h-28 rounded-full overflow-hidden border-4 border-navy-900 shadow-xl flex-shrink-0 bg-indigo-700 flex items-center justify-center">
+          <img src="headshot.jpg" alt="Hunter Doster"
+            class="w-full h-full object-cover object-top"
+            onerror="this.parentElement.innerHTML='<span class=\'text-white text-3xl font-bold\'>HD</span>'" />
         </div>
-        <div class="flex flex-wrap gap-3 mt-8 justify-center md:justify-start">
-          <span class="text-xs bg-white/10 text-slate-300 px-3 py-1.5 rounded-full">TS/SCI Clearance</span>
-          <span class="text-xs bg-white/10 text-slate-300 px-3 py-1.5 rounded-full">Computer Engineering, USAFA + AFIT</span>
-          <span class="text-xs bg-white/10 text-slate-300 px-3 py-1.5 rounded-full">9 Years Military Service</span>
-        </div>
-      </div>
-      <div class="flex-shrink-0 w-full md:w-auto">
-        <div class="w-full md:w-96 h-64 rounded-2xl overflow-hidden border-2 border-indigo-500/40 shadow-2xl">
-          <img src="profile.jpg" alt="Hunter Doster"
-            class="w-full h-full object-cover object-center"
-            onerror="this.parentElement.innerHTML='<div class=\'w-full h-full bg-indigo-700 flex items-center justify-center\'><span class=\'text-white text-5xl font-bold\'>HD</span></div>'" />
+        <div class="pb-1">
+          <h1 class="text-4xl md:text-5xl font-extrabold text-white leading-tight">Hunter Doster</h1>
+          <p class="text-lg font-semibold text-indigo-300 mt-1">Product Manager</p>
         </div>
       </div>
+
+      <!-- Tagline + CTAs -->
+      <p class="text-lg text-slate-300 font-light max-w-2xl mb-8 leading-relaxed">
+        Driving Complex Tech from Vision to Reality
+      </p>
+      <div class="flex flex-wrap gap-4 mb-8">
+        <a href="#projects"
+          class="bg-indigo-600 hover:bg-indigo-500 text-white font-semibold px-6 py-3 rounded-lg transition-colors">
+          View Products
+        </a>
+        <a href="https://www.linkedin.com/in/hunter-doster-77b1a7166/" target="_blank"
+          class="border border-slate-500 hover:border-white text-slate-300 hover:text-white font-semibold px-6 py-3 rounded-lg transition-colors">
+          LinkedIn →
+        </a>
+      </div>
+      <div class="flex flex-wrap gap-3">
+        <span class="text-xs bg-white/10 text-slate-300 px-3 py-1.5 rounded-full">TS/SCI Clearance</span>
+        <span class="text-xs bg-white/10 text-slate-300 px-3 py-1.5 rounded-full">Computer Engineering, USAFA + AFIT</span>
+        <span class="text-xs bg-white/10 text-slate-300 px-3 py-1.5 rounded-full">9 Years Military Service</span>
+      </div>
+
     </div>
   </section>
 
@@ -99,6 +112,7 @@
         <div class="border border-slate-200 bg-white rounded-xl p-5">
           <p class="font-bold text-slate-900">U.S. Air Force Institute of Technology</p>
           <p class="text-indigo-600 font-medium text-sm mt-0.5">M.S. Computer Engineering</p>
+          <p class="text-slate-500 text-sm mt-0.5">Focus: Computer Networks & Artificial Intelligence</p>
           <p class="text-slate-400 text-sm mt-1">2020 – 2022</p>
         </div>
         <div class="border border-slate-200 bg-white rounded-xl p-5">
