@@ -94,6 +94,20 @@ Always edit `index.html` directly — it's the entire site.
 
 ---
 
+## Session — 2026-04-22
+
+### Zestimate+ product added
+- Source file: `C:\Users\16786\Downloads\zestimate-plus-v2.html` (self-contained interactive product vision page)
+- Copied to `zestimate-plus/index.html` (subfolder for clean URL + room for future assets)
+- Live at: `hunterdoster.com/zestimate-plus/`
+- Replaced the "More products coming soon" placeholder card in the Products section with a Zestimate+ card
+- Card header uses Zestimate+ brand colors (dark navy `#0B1829` → `#14385E` gradient, teal accent)
+- Tags: Product Vision, NLP / AI, Real Estate, Interactive Prototype
+- "View Product" button links to `zestimate-plus/` (opens in new tab)
+- No GitHub link — this is a product concept, not an open-source repo
+
+---
+
 ## Known Limitations / Future Ideas
 
 - GitHub link intentionally omitted from contact section (Hunter doesn't use GitHub for networking)
