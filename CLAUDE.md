@@ -48,7 +48,7 @@ Always edit `index.html` directly — it's the entire site.
 1. **Nav** — About · Experience · Products · Skills · Contact (button)
 2. **Hero** — dark navy, headshot (rounded), name, "Product Manager · 7+ years experience", tagline, CTAs, badge pills
 3. **Education** — AFIT M.S. Computer Engineering (Focus: Computer Networks & AI), USAFA B.S. Computer Engineering (no years shown)
-4. **Products** — "Created with AI Vibe Coding" subtitle, AI Vibe Coding callout banner, JobAlert card (live demo + GitHub), Zestimate+ card (links to zestimate-plus.html)
+4. **Products** — "Created with AI Vibe Coding" subtitle, AI Vibe Coding callout banner, JobAlert card (live demo + GitHub), Zestimate+ card (links to zestimate-plus/), Stock Analyzer card (links to stock-analyzer/)
 5. **Skills** — 3 columns: Product Management, Technical, AI & Tools (includes Claude, ChatGPT/Codex, Grok)
 6. **About** — 4-paragraph summary from LinkedIn
 7. **Experience** — newest to oldest timeline (left border, indigo ▸ bullets):
@@ -119,9 +119,38 @@ Always edit `index.html` directly — it's the entire site.
 
 ---
 
+---
+
+## Session — 2026-04-22 (continued)
+
+### Stock Analyzer product added
+- Backend source: `C:\Users\16786\Desktop\stocksFullCombined.py` (Rule #1 investing analysis script)
+- Backend deployed to Railway at: `https://web-production-af43a.up.railway.app`
+- Backend repo: `https://github.com/hunterdoster/stock-analyzer` (private)
+- Backend local folder: `C:\Users\16786\Documents\stock-analyzer\`
+- Frontend: `stock-analyzer/index.html` (self-contained, Chart.js CDN, custom CSS)
+- Live at: `hunterdoster.com/stock-analyzer/`
+- Product card added to Products section (3rd card, dark navy gradient, indigo icon)
+- Tags: Python, Flask, SimFin API, Chart.js, Railway
+- "Launch Analyzer →" button links to `stock-analyzer/`
+- Product renamed from "Rule #1 Stock Analyzer" to "Stock Analyzer" everywhere
+
+### Stock Analyzer features
+- Tabs: Fundamentals | Growth Rates | Valuation | Analyst Notes | Custom Analysis
+- Fundamentals tab: toggle chart (Revenue / EPS / Equity / FCF / PE) + full data table
+- Growth Rates tab: CAGR grouped bar chart + table (long / 7yr / 5yr / 3yr / 1yr)
+- Valuation tab: 3-column comparison (Equity Only / Eq+Analyst / Analyst Only) + full table
+- Analyst Notes tab: auto-generated color-coded flags (green/amber/red)
+- Custom Analysis tab: enter any growth rate + optional PE → live valuation
+- Backend has 1-hour TTL cache per ticker, rate limit 5/min 20/hr per IP
+- Email alerts via Gmail SMTP when traffic hits thresholds (30/hr warn, 100/hr critical, 300/day)
+
+---
+
 ## Known Limitations / Future Ideas
 
 - GitHub link intentionally omitted from contact section (Hunter doesn't use GitHub for networking)
 - JobAlert product card links to live Railway demo + GitHub repo
 - Zestimate+ product card links to `zestimate-plus/` → `zestimate-plus/index.html` (self-contained interactive prototype, opens in new tab)
+- Stock Analyzer card links to `stock-analyzer/` — backend at Railway, frontend on GitHub Pages
 - Skills section manually curated — update when skill set changes
