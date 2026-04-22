@@ -1,0 +1,619 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Zestimate+ | A Product Vision by Hunter</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,700&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --ink:#0B1829;--ink2:#1E3A52;--blue:#005EFF;--blue-lt:#EEF4FF;
+  --teal:#00B89C;--teal-lt:#E5F9F6;--gold:#E8961A;--gold-lt:#FEF4E3;
+  --rose:#E8485F;--rose-lt:#FEE9EC;--slate:#607A95;
+  --border:#DDE6F0;--bg:#F4F7FB;--white:#FFF;--r:16px;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{font-family:'Outfit',sans-serif;background:var(--bg);color:var(--ink);line-height:1.6;}
+
+.hero{background:var(--ink);color:#fff;padding:70px 40px 60px;position:relative;overflow:hidden;}
+.hero-mesh{position:absolute;inset:0;pointer-events:none;background:
+  radial-gradient(ellipse 55% 70% at 95% 5%,rgba(0,94,255,.28) 0%,transparent 60%),
+  radial-gradient(ellipse 45% 55% at 5% 95%,rgba(0,184,156,.22) 0%,transparent 60%),
+  radial-gradient(ellipse 35% 45% at 55% 55%,rgba(232,150,26,.10) 0%,transparent 60%);}
+.hero-inner{max-width:960px;margin:0 auto;position:relative;z-index:1;}
+.hero-eyebrow{display:inline-flex;align-items:center;gap:9px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.18);color:rgba(255,255,255,.7);font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:6px 18px;border-radius:100px;margin-bottom:28px;}
+.hero-dot{width:7px;height:7px;background:var(--teal);border-radius:50%;animation:pulse 2s infinite;}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1);}50%{opacity:.4;transform:scale(.7);}}
+.hero h1{font-family:'Cormorant Garamond',serif;font-size:clamp(44px,6.5vw,80px);font-weight:700;line-height:1.04;margin-bottom:22px;}
+.hero h1 em{font-style:italic;background:linear-gradient(130deg,#5AF5E0,#60AAFF);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.hero-sub{font-size:17px;color:rgba(255,255,255,.58);max-width:600px;line-height:1.75;margin-bottom:44px;}
+.hero-kpis{display:flex;gap:52px;flex-wrap:wrap;}
+.kpi-num{font-family:'Cormorant Garamond',serif;font-size:40px;font-weight:700;line-height:1;margin-bottom:4px;}
+.kpi-lbl{font-size:12px;color:rgba(255,255,255,.38);text-transform:uppercase;letter-spacing:.9px;}
+
+.snav{background:#fff;border-bottom:1px solid var(--border);position:sticky;top:0;z-index:200;}
+.snav-inner{max-width:960px;margin:0 auto;display:flex;overflow-x:auto;padding:0 40px;}
+.snav-btn{padding:17px 22px;font-size:13px;font-weight:600;font-family:'Outfit',sans-serif;color:var(--slate);background:none;border:none;border-bottom:3px solid transparent;cursor:pointer;white-space:nowrap;transition:all .2s;flex-shrink:0;}
+.snav-btn:hover{color:var(--blue);}
+.snav-btn.on{color:var(--blue);border-bottom-color:var(--blue);}
+
+.tab{display:none;}
+.tab.on{display:block;animation:fadeUp .4s ease;}
+@keyframes fadeUp{from{opacity:0;transform:translateY(14px);}to{opacity:1;transform:translateY(0);}}
+.wrap{max-width:960px;margin:0 auto;padding:56px 40px;}
+
+.eyebrow{font-size:11px;font-weight:700;letter-spacing:2.2px;text-transform:uppercase;color:var(--blue);margin-bottom:10px;}
+.sec-h{font-family:'Cormorant Garamond',serif;font-size:clamp(28px,4vw,46px);font-weight:700;line-height:1.12;margin-bottom:14px;}
+.sec-p{font-size:15px;color:var(--slate);max-width:660px;line-height:1.78;}
+
+.card{background:#fff;border:1px solid var(--border);border-radius:var(--r);padding:24px;}
+.card-teal{border-color:var(--teal);background:var(--teal-lt);}
+.card-blue{border-color:rgba(0,94,255,.25);background:var(--blue-lt);}
+.card-rose{border-color:rgba(232,72,95,.25);background:var(--rose-lt);}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:28px;}
+.g3{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:28px;}
+
+.prob-icon{font-size:30px;margin-bottom:12px;}
+.prob-h{font-size:15px;font-weight:600;margin-bottom:7px;}
+.prob-p{font-size:13px;color:var(--slate);line-height:1.65;}
+
+.stepper{display:flex;align-items:center;margin:32px 0;overflow-x:auto;padding-bottom:4px;}
+.snode{display:flex;flex-direction:column;align-items:center;gap:8px;cursor:pointer;flex-shrink:0;}
+.scircle{width:46px;height:46px;border-radius:50%;border:2px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700;color:var(--slate);background:#fff;transition:all .3s;}
+.snode.son .scircle{background:var(--blue);color:#fff;border-color:var(--blue);transform:scale(1.08);box-shadow:0 0 0 6px rgba(0,94,255,.12);}
+.snode.sdone .scircle{background:var(--teal);color:#fff;border-color:var(--teal);}
+.slbl{font-size:11px;font-weight:600;color:var(--slate);text-align:center;max-width:78px;line-height:1.3;}
+.snode.son .slbl{color:var(--blue);}
+.snode.sdone .slbl{color:var(--teal);}
+.sline{flex:1;height:2px;background:var(--border);min-width:20px;max-width:60px;margin-bottom:28px;flex-shrink:0;transition:background .4s;}
+.sline.sdone{background:var(--teal);}
+.spanel{display:none;}
+.spanel.son{display:block;animation:fadeUp .35s ease;}
+
+.zhero{background:var(--ink);color:#fff;border-radius:20px;padding:34px;position:relative;overflow:hidden;margin-bottom:20px;}
+.zhero::before{content:'';position:absolute;top:-80px;right:-80px;width:270px;height:270px;background:radial-gradient(circle,rgba(0,94,255,.35) 0%,transparent 70%);}
+.zh-addr{font-size:13px;color:rgba(255,255,255,.42);margin-bottom:5px;}
+.zh-val{font-family:'Cormorant Garamond',serif;font-size:64px;font-weight:700;line-height:1;margin-bottom:7px;}
+.zh-range{font-size:13px;color:rgba(255,255,255,.38);margin-bottom:22px;}
+.warn-chip{display:inline-flex;align-items:center;gap:7px;background:rgba(232,150,26,.2);border:1px solid rgba(232,150,26,.4);color:#F5B540;font-size:12px;font-weight:700;padding:7px 16px;border-radius:100px;}
+.info-bar{background:var(--blue-lt);border:1px solid rgba(0,94,255,.2);border-radius:12px;padding:16px 20px;display:flex;gap:12px;align-items:flex-start;font-size:14px;color:var(--ink);margin-top:20px;}
+.info-bar strong{color:var(--blue);}
+
+.cg{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:20px;}
+.ccard{border:2px solid var(--border);border-radius:14px;overflow:hidden;cursor:pointer;transition:all .25s;position:relative;}
+.ccard:hover{border-color:var(--blue);transform:translateY(-3px);box-shadow:0 10px 28px rgba(0,94,255,.1);}
+.ccard.acc{border-color:var(--teal);}
+.ccard.rej{opacity:.4;border-color:var(--rose);}
+.cthumb{height:100px;display:flex;align-items:center;justify-content:center;font-size:38px;background:linear-gradient(135deg,#cddff5,#b6ccec);}
+.cbody{padding:13px;}
+.caddr{font-size:12px;font-weight:600;margin-bottom:3px;}
+.cprice{font-size:16px;font-weight:700;color:var(--blue);margin-bottom:3px;}
+.cmeta{font-size:11px;color:var(--slate);}
+.cbtns{display:flex;gap:6px;padding:9px 12px;background:var(--bg);border-top:1px solid var(--border);}
+.cbtn{flex:1;padding:7px 4px;border-radius:8px;border:none;font-size:12px;font-weight:600;font-family:'Outfit',sans-serif;cursor:pointer;transition:all .2s;}
+.cbtn.ca{background:rgba(0,184,156,.12);color:var(--teal);}
+.cbtn.ca:hover{background:var(--teal);color:#fff;}
+.cbtn.cr{background:rgba(232,72,95,.1);color:var(--rose);}
+.cbtn.cr:hover{background:var(--rose);color:#fff;}
+.ccheck{position:absolute;top:9px;right:9px;width:24px;height:24px;border-radius:50%;background:var(--teal);color:#fff;display:none;align-items:center;justify-content:center;font-size:12px;font-weight:700;}
+.ccard.acc .ccheck{display:flex;}
+.alt-note{display:none;margin-top:14px;padding:14px 18px;background:var(--gold-lt);border:1px solid rgba(232,150,26,.3);border-radius:12px;font-size:13px;}
+.alt-note a{color:var(--blue);font-weight:600;cursor:pointer;}
+
+.rg{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:20px;}
+.rcat{border:2px solid var(--border);border-radius:14px;padding:20px;cursor:pointer;transition:all .25s;background:#fff;}
+.rcat:hover{border-color:var(--blue);}
+.rcat.open{border-color:var(--blue);background:var(--blue-lt);}
+.ricon{font-size:26px;margin-bottom:10px;}
+.rcat h4{font-size:14px;font-weight:600;margin-bottom:4px;}
+.rcat p{font-size:12px;color:var(--slate);}
+.ropts{display:none;margin-top:16px;}
+.rcat.open .ropts{display:block;}
+.rrow{display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--border);font-size:13px;}
+.rrow:last-child{border-bottom:none;}
+.rsel{padding:7px 10px;border:1px solid var(--border);border-radius:8px;font-size:12px;font-family:'Outfit',sans-serif;background:#fff;cursor:pointer;}
+
+.esplit{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:24px 0;}
+.ebox{border-radius:16px;padding:26px;text-align:center;}
+.ebox.bef{background:var(--rose-lt);border:2px solid rgba(232,72,95,.3);}
+.ebox.aft{background:linear-gradient(135deg,var(--teal-lt),var(--blue-lt));border:2px solid var(--teal);}
+.elbl{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1.2px;color:var(--slate);margin-bottom:8px;}
+.eval{font-family:'Cormorant Garamond',serif;font-size:46px;font-weight:700;color:var(--ink);margin-bottom:6px;}
+.ebox.aft .eval{color:var(--blue);}
+.edelta{font-size:13px;font-weight:700;color:var(--teal);}
+.confbar-wrap{margin:20px 0;}
+.confbar-top{display:flex;justify-content:space-between;font-size:13px;font-weight:600;margin-bottom:8px;}
+.confbar{height:10px;background:var(--border);border-radius:100px;overflow:hidden;}
+.confill{height:100%;border-radius:100px;background:linear-gradient(90deg,var(--blue),var(--teal));transition:width 1.3s cubic-bezier(.4,0,.2,1);}
+.bkdn{background:var(--bg);border-radius:14px;padding:22px;margin-top:20px;}
+.bkdn-h{font-size:13px;font-weight:700;margin-bottom:14px;}
+.brow{display:flex;justify-content:space-between;font-size:13px;padding:10px 0;border-bottom:1px solid var(--border);}
+.brow:last-child{border-bottom:none;}
+.brow span:last-child{font-weight:700;}
+.pos{color:var(--teal);}.neg{color:var(--rose);}
+
+/* ROADMAP */
+.roadmap-hero{background:linear-gradient(135deg,var(--ink) 0%,#14385E 100%);border-radius:22px;padding:36px;color:#fff;margin-top:28px;margin-bottom:28px;position:relative;overflow:hidden;}
+.roadmap-hero::before{content:'';position:absolute;top:-60px;right:-60px;width:240px;height:240px;background:radial-gradient(circle,rgba(0,184,156,.28) 0%,transparent 70%);}
+.roadmap-hero::after{content:'';position:absolute;bottom:-40px;left:30%;width:300px;height:200px;background:radial-gradient(ellipse,rgba(0,94,255,.15) 0%,transparent 70%);}
+.rh-inner{position:relative;z-index:1;}
+.rh-badge{display:inline-flex;align-items:center;gap:8px;background:rgba(0,184,156,.2);border:1px solid rgba(0,184,156,.4);color:var(--teal);font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;padding:6px 14px;border-radius:100px;margin-bottom:18px;}
+.roadmap-hero h3{font-family:'Cormorant Garamond',serif;font-size:30px;font-weight:700;margin-bottom:10px;}
+.roadmap-hero p{font-size:14px;color:rgba(255,255,255,.58);max-width:580px;line-height:1.75;}
+.data-pill{margin-top:18px;display:inline-flex;align-items:center;gap:9px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.15);padding:8px 16px;border-radius:100px;font-size:12px;color:rgba(255,255,255,.55);}
+
+.upcard{background:#fff;border:2px solid var(--border);border-radius:16px;overflow:hidden;cursor:pointer;transition:all .25s;margin-bottom:14px;}
+.upcard:hover{border-color:var(--blue);box-shadow:0 10px 28px rgba(0,94,255,.08);transform:translateY(-2px);}
+.upcard.sel{border-color:var(--teal);background:var(--teal-lt);}
+.upcard-top{padding:20px 22px;display:flex;align-items:flex-start;gap:14px;}
+.up-icon{font-size:32px;flex-shrink:0;margin-top:2px;}
+.up-mid{flex:1;}
+.up-title{font-size:15px;font-weight:600;margin-bottom:4px;}
+.up-roi{font-size:13px;font-weight:700;color:var(--teal);}
+.up-cost{text-align:right;flex-shrink:0;}
+.up-cost-lbl{font-size:11px;color:var(--slate);}
+.up-cost-val{font-size:16px;font-weight:700;color:var(--ink);}
+.upcard-body{padding:0 22px 16px;font-size:13px;color:var(--slate);line-height:1.7;}
+.evidence{margin:0 22px 16px;background:var(--bg);border-radius:10px;border-left:3px solid var(--teal);padding:13px 15px;}
+.ev-lbl{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1.2px;color:var(--teal);margin-bottom:7px;}
+.ev-quote{font-size:12px;color:var(--slate);font-style:italic;line-height:1.6;margin-bottom:5px;}
+.ev-src{font-size:11px;color:rgba(100,120,150,.6);}
+.up-toggle{margin:0 22px 18px;display:flex;align-items:center;gap:10px;}
+.toggle-box{width:22px;height:22px;border:2px solid var(--border);border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:12px;color:#fff;transition:all .2s;}
+.upcard.sel .toggle-box{background:var(--teal);border-color:var(--teal);}
+.toggle-lbl{font-size:12px;font-weight:600;color:var(--ink2);}
+
+.rm-total{background:linear-gradient(135deg,var(--teal-lt),var(--blue-lt));border:2px solid var(--teal);border-radius:18px;padding:26px 30px;display:flex;align-items:center;justify-content:space-between;gap:20px;flex-wrap:wrap;margin-top:6px;}
+.rmt-left h4{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--slate);margin-bottom:6px;}
+.rmt-val{font-family:'Cormorant Garamond',serif;font-size:38px;font-weight:700;color:var(--teal);}
+.rmt-right{text-align:right;}
+.rmt-right p{font-size:13px;color:var(--slate);}
+.rmt-right strong{font-size:18px;font-weight:700;color:var(--ink);display:block;margin-top:4px;}
+
+/* RELATIONSHIP */
+.pillars{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:28px;}
+.pillar{background:#fff;border:1px solid var(--border);border-radius:16px;padding:24px;transition:all .25s;}
+.pillar:hover{border-color:var(--blue);transform:translateY(-3px);box-shadow:0 12px 32px rgba(0,94,255,.07);}
+.pillar-num{font-family:'Cormorant Garamond',serif;font-size:44px;font-weight:700;color:var(--blue);line-height:1;margin-bottom:8px;}
+.pillar-h{font-size:14px;font-weight:600;margin-bottom:7px;}
+.pillar-p{font-size:13px;color:var(--slate);line-height:1.65;}
+
+.journey{margin-top:36px;position:relative;}
+.journey::before{content:'';position:absolute;left:29px;top:0;bottom:0;width:2px;background:linear-gradient(to bottom,var(--blue),var(--teal),#8B5CF6);}
+.jitem{display:flex;gap:26px;padding-bottom:40px;}
+.jitem:last-child{padding-bottom:0;}
+.jdot{width:60px;height:60px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:24px;flex-shrink:0;z-index:1;border:3px solid #fff;box-shadow:0 0 0 3px var(--border);}
+.j1 .jdot{background:var(--blue-lt);}
+.j2 .jdot{background:var(--teal-lt);}
+.j3 .jdot{background:var(--gold-lt);}
+.j4 .jdot{background:#F3F0FF;}
+.jcontent{padding-top:12px;}
+.jphase{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1.8px;color:var(--blue);margin-bottom:5px;}
+.jtitle{font-size:18px;font-weight:600;margin-bottom:7px;}
+.jbody{font-size:14px;color:var(--slate);line-height:1.72;max-width:640px;}
+.jfeats{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px;}
+.jfeat{background:#fff;border:1px solid var(--border);font-size:11px;font-weight:600;color:var(--ink2);padding:5px 13px;border-radius:100px;}
+
+.trust-banner{background:var(--ink);color:#fff;border-radius:22px;padding:38px;margin-top:32px;position:relative;overflow:hidden;}
+.trust-banner::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 65% 80% at 100% 0%,rgba(0,184,156,.22) 0%,transparent 60%);}
+.trust-banner h3{font-family:'Cormorant Garamond',serif;font-size:28px;font-weight:700;font-style:italic;margin-bottom:14px;position:relative;line-height:1.3;}
+.trust-banner p{font-size:14px;color:rgba(255,255,255,.56);line-height:1.8;max-width:700px;position:relative;}
+.tq{font-family:'Cormorant Garamond',serif;font-size:80px;color:rgba(0,184,156,.25);line-height:1;display:block;margin-bottom:-20px;}
+
+/* PM */
+.kpi-table{width:100%;border-collapse:collapse;background:#fff;border-radius:16px;overflow:hidden;border:1px solid var(--border);}
+.kpi-table th{background:var(--bg);padding:12px 16px;text-align:left;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1.1px;color:var(--slate);border-bottom:1px solid var(--border);}
+.kpi-table td{padding:13px 16px;font-size:13px;border-bottom:1px solid var(--border);}
+.kpi-table tr:last-child td{border-bottom:none;}
+.kpi-table tr:hover td{background:var(--bg);}
+.tag{display:inline-block;padding:3px 10px;border-radius:100px;font-size:11px;font-weight:700;}
+.tag-up{background:var(--teal-lt);color:var(--teal);}
+.tag-dn{background:var(--rose-lt);color:var(--rose);}
+.tag-ns{background:var(--blue-lt);color:var(--blue);}
+.tech-card{background:var(--blue-lt);border:1px solid rgba(0,94,255,.2);border-radius:16px;padding:28px;margin-top:22px;}
+.tech-card h4{font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:1.2px;color:var(--blue);margin-bottom:16px;}
+.tech-step{display:flex;gap:14px;margin-bottom:14px;align-items:flex-start;}
+.tech-n{width:28px;height:28px;border-radius:50%;background:var(--blue);color:#fff;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;flex-shrink:0;margin-top:2px;}
+.tech-body{font-size:14px;color:var(--slate);line-height:1.7;}
+.tech-body strong{color:var(--ink);}
+
+.author{background:var(--ink);color:#fff;padding:56px 40px;text-align:center;}
+.author-inner{max-width:620px;margin:0 auto;}
+.author h3{font-family:'Cormorant Garamond',serif;font-size:34px;font-weight:700;margin-bottom:10px;}
+.author p{font-size:15px;color:rgba(255,255,255,.5);line-height:1.8;margin-bottom:28px;}
+.achips{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;}
+.achip{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.15);color:rgba(255,255,255,.68);padding:7px 18px;border-radius:100px;font-size:12px;font-weight:500;}
+
+.navrow{display:flex;gap:12px;justify-content:flex-end;margin-top:32px;padding-top:20px;border-top:1px solid var(--border);}
+.btn{padding:13px 30px;border-radius:100px;font-size:14px;font-weight:600;font-family:'Outfit',sans-serif;cursor:pointer;border:none;transition:all .2s;}
+.btn-blue{background:var(--blue);color:#fff;}
+.btn-blue:hover{background:#004ADD;transform:translateY(-1px);}
+.btn-teal{background:var(--teal);color:#fff;}
+.btn-teal:hover{background:#009982;transform:translateY(-1px);}
+.btn-ghost{background:transparent;color:var(--slate);border:1px solid var(--border);}
+.btn-ghost:hover{border-color:var(--blue);color:var(--blue);}
+.divider{height:1px;background:var(--border);}
+
+@media(max-width:640px){
+  .g2,.cg,.g3,.rg,.esplit,.pillars{grid-template-columns:1fr;}
+  .hero,.wrap,.author{padding:36px 20px;}
+  .snav-inner{padding:0 16px;}
+  .hero-kpis{gap:28px;}
+  .story-inner-grid{grid-template-columns:1fr !important;}
+}
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="hero-mesh"></div>
+  <div class="hero-inner">
+    <div class="hero-eyebrow"><span class="hero-dot"></span>Product Vision — Zillow Seller Experience</div>
+    <h1>Zestimate<em>+</em><br>Your Home. Your Future.</h1>
+    <p class="hero-sub">A product concept that transforms the Zestimate from a one-time opaque number into a long-term homeowner relationship — built on trust, transparency, and AI-powered upgrade intelligence drawn from real comparable listing data.</p>
+    <div class="hero-kpis">
+      <div><div class="kpi-num">4.8%</div><div class="kpi-lbl">Avg Zestimate Error</div></div>
+      <div><div class="kpi-num">135M+</div><div class="kpi-lbl">Homes on Zillow</div></div>
+      <div><div class="kpi-num">7 yrs</div><div class="kpi-lbl">Avg Ownership Cycle</div></div>
+      <div><div class="kpi-num">60%</div><div class="kpi-lbl">Sellers Start on Zillow</div></div>
+    </div>
+  </div>
+</div>
+
+<div class="snav">
+  <div class="snav-inner">
+    <button class="snav-btn on" onclick="showTab('problem')">The Problem</button>
+    <button class="snav-btn" onclick="showTab('proto')">Interactive Prototype</button>
+    <button class="snav-btn" onclick="showTab('roadmap')">✨ Value Roadmap</button>
+    <button class="snav-btn" onclick="showTab('relationship')">Long-Term Vision</button>
+    <button class="snav-btn" onclick="showTab('pm')">PM Thinking</button>
+  </div>
+</div>
+
+<!-- ── TAB: PROBLEM ── -->
+<div class="tab on" id="tab-problem">
+<div class="wrap">
+  <div class="eyebrow">The Problem</div>
+  <h2 class="sec-h">The Zestimate breaks trust at the most important moment</h2>
+  <p class="sec-p">A homeowner's first move when considering selling is checking the Zestimate. When it feels wrong — and it often does — Zillow loses the relationship before it begins. The Zestimate relies on baseline comparables: square footage, bedroom count, bathroom count, and yard size. Real estate appraisers start there too — but then adjust property-by-property for renovations, finishes, location, and condition. The Zestimate stops where the real work begins. That gap is the opportunity.</p>
+
+  <!-- HUNTER'S STORY -->
+  <div style="background:var(--ink);border-radius:20px;padding:32px;margin-top:32px;margin-bottom:8px;position:relative;overflow:hidden;">
+    <div style="position:absolute;top:-60px;right:-60px;width:220px;height:220px;background:radial-gradient(circle,rgba(232,72,95,.25) 0%,transparent 70%);pointer-events:none;"></div>
+    <div style="position:absolute;bottom:-40px;left:20%;width:260px;height:160px;background:radial-gradient(ellipse,rgba(0,94,255,.15) 0%,transparent 70%);pointer-events:none;"></div>
+    <div style="position:relative;z-index:1;">
+      <div style="display:inline-flex;align-items:center;gap:8px;background:rgba(232,72,95,.18);border:1px solid rgba(232,72,95,.35);color:#F08090;font-size:11px;font-weight:700;letter-spacing:1.8px;text-transform:uppercase;padding:5px 14px;border-radius:100px;margin-bottom:20px;">🏠 Real Seller. Real Story.</div>
+      <div class="story-inner-grid" style="display:grid;grid-template-columns:1fr auto;gap:32px;align-items:start;">
+        <div>
+          <p style="font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:600;color:#fff;line-height:1.4;margin-bottom:14px;font-style:italic;">"Before I even had a showing, realtors and buyers told me my price was too high. Their reference point was the Zestimate."</p>
+          <p style="font-size:14px;color:rgba(255,255,255,.55);line-height:1.75;">I listed my home with confidence — I knew what it was worth from my real estate experience and licensure. But the Zestimate was showing <strong style="color:rgba(255,255,255,.8)">$300K–$325K</strong>. The pushback I received from potential buyers and realtors created mistrust and made me doubt my own valuation of my own home.</p>
+          <p style="font-size:14px;color:rgba(255,255,255,.55);line-height:1.75;margin-top:10px;">My home sold in <strong style="color:rgba(255,255,255,.8)">2 days</strong> for <strong style="color:rgba(255,255,255,.8)">$362,000</strong> — up to <strong style="color:#F08090">$62,000 above the Zestimate</strong>. The Zestimate only uses baseline comparables — square footage, beds, baths, yard size. It doesn't do what appraisers do: adjust for renovations, finishes, location premiums, and condition. Zestimate+ models that process.</p>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:12px;min-width:160px;">
+          <div style="background:rgba(232,72,95,.15);border:1px solid rgba(232,72,95,.3);border-radius:14px;padding:16px 20px;text-align:center;">
+            <div style="font-family:'Cormorant Garamond',serif;font-size:32px;font-weight:700;color:#F08090;line-height:1;">$300–325K</div>
+            <div style="font-size:11px;color:rgba(255,255,255,.4);text-transform:uppercase;letter-spacing:1px;margin-top:4px;">Zestimate Range</div>
+          </div>
+          <div style="text-align:center;font-size:22px;color:rgba(255,255,255,.3);">↓</div>
+          <div style="background:rgba(0,184,156,.15);border:1px solid rgba(0,184,156,.35);border-radius:14px;padding:16px 20px;text-align:center;">
+            <div style="font-family:'Cormorant Garamond',serif;font-size:32px;font-weight:700;color:var(--teal);line-height:1;">$362,000</div>
+            <div style="font-size:11px;color:rgba(255,255,255,.4);text-transform:uppercase;letter-spacing:1px;margin-top:4px;">Actual Sale · 2 Days</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="g2">
+    <div class="card card-rose"><div class="prob-icon">🏠</div><div class="prob-h">Baseline Comps Only — The Gap Appraisers Fill</div><div class="prob-p">The Zestimate relies on baseline comparables: square footage, bedroom count, bathroom count, and yard size. But no two homes are alike. Appraisers go further — adjusting line-by-line for renovations, finishes, location premiums, and condition. The Zestimate stops where the real work begins.</div></div>
+    <div class="card card-rose"><div class="prob-icon">🔒</div><div class="prob-h">Black-Box = Zero Trust</div><div class="prob-p">Sellers can't see which comps are used, can't challenge them, and can't surface their improvements. A 4.8% error on a $500K home is a $24K swing — with no explanation. That breeds doubt, not confidence to list.</div></div>
+    <div class="card card-teal"><div class="prob-icon">✅</div><div class="prob-h">Transparent, Interactive Comps</div><div class="prob-p">Show sellers every home used in the estimate. Let them accept good comparables and replace bad ones — exactly how a Realtor builds a CMA. Sellers who understand their valuation trust it. Trust converts to listings.</div></div>
+    <div class="card card-teal"><div class="prob-icon">🚀</div><div class="prob-h">Upgrade Intelligence from Listing Data</div><div class="prob-p">Mine listing description language from recently sold comparable homes — "newly renovated kitchen," "fresh exterior paint," "smart home throughout" — to show sellers exactly what their neighbors did to sell for more, with real ROI data behind it.</div></div>
+  </div>
+</div>
+</div>
+
+<!-- ── TAB: PROTOTYPE ── -->
+<div class="tab" id="tab-proto">
+<div class="wrap">
+  <div class="eyebrow">Interactive Prototype</div>
+  <h2 class="sec-h">The Zestimate+ Experience</h2>
+  <p class="sec-p">Click through each step to experience the seller flow — from opaque algorithm to confident, seller-verified valuation.</p>
+  <div class="stepper">
+    <div class="snode son" id="sn1" onclick="goStep(1)"><div class="scircle">1</div><div class="slbl">Your Estimate</div></div>
+    <div class="sline" id="sl1"></div>
+    <div class="snode" id="sn2" onclick="goStep(2)"><div class="scircle">2</div><div class="slbl">Review Comps</div></div>
+    <div class="sline" id="sl2"></div>
+    <div class="snode" id="sn3" onclick="goStep(3)"><div class="scircle">3</div><div class="slbl">Home Details</div></div>
+    <div class="sline" id="sl3"></div>
+    <div class="snode" id="sn4" onclick="goStep(4)"><div class="scircle">4</div><div class="slbl">Zestimate+</div></div>
+  </div>
+
+  <div class="spanel son" id="sp1">
+    <div class="zhero">
+      <div class="zh-addr">📍 4821 Maple Grove Dr, Scottsdale, AZ 85254</div>
+      <div class="zh-val">$487,000</div>
+      <div class="zh-range">Estimated range: $452K – $522K · Based on 3 comparable sales</div>
+      <div class="warn-chip">⚠️ Median error rate: 4.8% on listed homes</div>
+    </div>
+    <div class="info-bar"><span style="font-size:22px;flex-shrink:0">💡</span><div><strong>You know your home better than any algorithm.</strong> Zestimate+ walks you through the same process a licensed appraiser uses — transparent comps, property-specific adjustments, and insights from what comparable neighbors upgraded to sell for more.</div></div>
+    <div class="g3" style="margin-top:20px;">
+      <div class="card" style="text-align:center"><div style="font-family:'Cormorant Garamond',serif;font-size:36px;font-weight:700;color:var(--blue)">3</div><div style="font-size:12px;color:var(--slate);margin-top:4px">Comps chosen by algorithm only</div></div>
+      <div class="card" style="text-align:center"><div style="font-family:'Cormorant Garamond',serif;font-size:36px;font-weight:700;color:var(--blue)">0</div><div style="font-size:12px;color:var(--slate);margin-top:4px">Seller inputs currently used</div></div>
+      <div class="card" style="text-align:center"><div style="font-family:'Cormorant Garamond',serif;font-size:36px;font-weight:700;color:var(--rose)">$35K</div><div style="font-size:12px;color:var(--slate);margin-top:4px">Potential variance from missing context</div></div>
+    </div>
+    <div class="navrow"><button class="btn btn-blue" onclick="goStep(2)">Review My Comps →</button></div>
+  </div>
+
+  <div class="spanel" id="sp2">
+    <p style="font-size:14px;color:var(--slate);margin-bottom:18px;">These 3 homes are currently driving your Zestimate. Are they truly comparable to yours?</p>
+    <div class="cg">
+      <div class="ccard" id="cc1"><div class="cthumb">🏡</div><div class="cbody"><div class="caddr">4790 Maple Grove Dr</div><div class="cprice">$479,000</div><div class="cmeta">3bd · 2ba · 1,820 sqft · 42 days ago</div></div><div class="cbtns"><button class="cbtn ca" onclick="acceptComp('cc1',event)">✓ Good Comp</button><button class="cbtn cr" onclick="rejectComp('cc1',event)">✗ Not Similar</button></div><div class="ccheck">✓</div></div>
+      <div class="ccard" id="cc2"><div class="cthumb">🏘️</div><div class="cbody"><div class="caddr">1203 Sunridge Blvd</div><div class="cprice">$502,500</div><div class="cmeta">4bd · 2ba · 2,100 sqft · 67 days ago</div></div><div class="cbtns"><button class="cbtn ca" onclick="acceptComp('cc2',event)">✓ Good Comp</button><button class="cbtn cr" onclick="rejectComp('cc2',event)">✗ Not Similar</button></div><div class="ccheck">✓</div></div>
+      <div class="ccard" id="cc3"><div class="cthumb">🏠</div><div class="cbody"><div class="caddr">8841 Desert Rose Ln</div><div class="cprice">$461,000</div><div class="cmeta">3bd · 2ba · 1,750 sqft · 89 days ago</div></div><div class="cbtns"><button class="cbtn ca" onclick="acceptComp('cc3',event)">✓ Good Comp</button><button class="cbtn cr" onclick="rejectComp('cc3',event)">✗ Not Similar</button></div><div class="ccheck">✓</div></div>
+    </div>
+    <div class="alt-note" id="alt-note">🔄 One comp removed. We found <strong>2 replacement homes</strong> from the past 6 months that may be a better fit. <a>View alternatives →</a></div>
+    <div class="navrow"><button class="btn btn-ghost" onclick="goStep(1)">← Back</button><button class="btn btn-blue" onclick="goStep(3)">Add Home Details →</button></div>
+  </div>
+
+  <div class="spanel" id="sp3">
+    <p style="font-size:14px;color:var(--slate);margin-bottom:4px;">Tell us what makes your home unique. Every field improves accuracy — just like a real appraisal.</p>
+    <div class="rg">
+      <div class="rcat open" id="rc1" onclick="toggleR('rc1')"><div class="ricon">🍳</div><h4>Kitchen</h4><p>Countertops, cabinets, appliances</p><div class="ropts"><div class="rrow"><span>Countertops</span><select class="rsel" onchange="recalc()"><option>Original / Basic</option><option>Granite</option><option selected>Quartz (Premium)</option></select></div><div class="rrow"><span>Cabinets</span><select class="rsel" onchange="recalc()"><option>Original</option><option selected>Refaced</option><option>Full Replacement</option></select></div><div class="rrow"><span>Appliances</span><select class="rsel" onchange="recalc()"><option>Standard</option><option selected>Stainless Steel</option><option>High-End / Smart</option></select></div></div></div>
+      <div class="rcat" id="rc2" onclick="toggleR('rc2')"><div class="ricon">🛁</div><h4>Bathrooms</h4><p>Fixtures, tile, vanity</p><div class="ropts"><div class="rrow"><span>Master Bath</span><select class="rsel" onchange="recalc()"><option>Original</option><option>Updated Fixtures</option><option selected>Full Remodel</option></select></div><div class="rrow"><span>Secondary Baths</span><select class="rsel" onchange="recalc()"><option>Original</option><option selected>Partial Update</option><option>Full Remodel</option></select></div></div></div>
+      <div class="rcat" id="rc3" onclick="toggleR('rc3')"><div class="ricon">🌿</div><h4>Exterior & Lot</h4><p>Pool, landscaping, deck</p><div class="ropts"><div class="rrow"><span>Pool</span><select class="rsel" onchange="recalc()"><option>None</option><option selected>Basic Pool</option><option>Premium / Heated</option></select></div><div class="rrow"><span>Landscaping</span><select class="rsel" onchange="recalc()"><option>Basic</option><option selected>Well Maintained</option><option>Professional / Custom</option></select></div></div></div>
+      <div class="rcat" id="rc4" onclick="toggleR('rc4')"><div class="ricon">📍</div><h4>Location Factors</h4><p>View, noise, proximity</p><div class="ropts"><div class="rrow"><span>View</span><select class="rsel" onchange="recalc()"><option>Standard</option><option selected>Golf Course / Water</option><option>Mountain / Panoramic</option></select></div><div class="rrow"><span>Street Noise</span><select class="rsel" onchange="recalc()"><option selected>Quiet Street</option><option>Moderate</option><option>Busy Road</option></select></div></div></div>
+    </div>
+    <div class="navrow"><button class="btn btn-ghost" onclick="goStep(2)">← Back</button><button class="btn btn-blue" onclick="goStep(4)">See My Zestimate+ →</button></div>
+  </div>
+
+  <div class="spanel" id="sp4">
+    <div class="esplit">
+      <div class="ebox bef"><div class="elbl">Original Zestimate</div><div class="eval">$487K</div><div style="font-size:12px;color:var(--rose)">⚠️ Algorithm only — 0 seller inputs</div></div>
+      <div class="ebox aft"><div class="elbl">Your Zestimate+</div><div class="eval" id="fval">$520K</div><div class="edelta" id="fdelta">+$33,000 · Seller-verified</div></div>
+    </div>
+    <div class="confbar-wrap">
+      <div class="confbar-top"><span>Estimate Confidence</span><span style="color:var(--teal)" id="fpct">89%</span></div>
+      <div class="confbar"><div class="confill" id="cfill" style="width:89%"></div></div>
+    </div>
+    <div class="bkdn">
+      <div class="bkdn-h">📊 Adjustment Breakdown — Appraiser Logic Applied</div>
+      <div class="brow"><span style="color:var(--slate)">Base (seller-verified comps)</span><span>$487,000</span></div>
+      <div class="brow"><span style="color:var(--slate)">Kitchen — Quartz + stainless appliances</span><span class="pos">+$10,500</span></div>
+      <div class="brow"><span style="color:var(--slate)">Bathroom — Master full remodel</span><span class="pos">+$12,000</span></div>
+      <div class="brow"><span style="color:var(--slate)">Exterior — Pool + maintained landscaping</span><span class="pos">+$9,500</span></div>
+      <div class="brow"><span style="color:var(--slate)">Location — Golf course view premium</span><span class="pos">+$7,000</span></div>
+      <div class="brow"><span style="color:var(--slate)">Location — Quiet street bonus</span><span class="pos">+$4,000</span></div>
+      <div class="brow"><span style="font-weight:700">Your Zestimate+</span><span style="color:var(--blue);font-weight:700">$530,000</span></div>
+    </div>
+    <div class="info-bar" style="margin-top:20px;"><span style="font-size:22px;flex-shrink:0">🎯</span><div>You're ready to list with confidence. <strong>Next: see what your neighbors upgraded</strong> to sell for even more — your personalized Value Roadmap, powered by AI analysis of comparable listing descriptions.</div></div>
+    <div class="navrow"><button class="btn btn-ghost" onclick="goStep(3)">← Adjust Details</button><button class="btn btn-teal" onclick="showTab('roadmap')">See My Value Roadmap ✨ →</button></div>
+  </div>
+</div>
+</div>
+
+<!-- ── TAB: VALUE ROADMAP ── -->
+<div class="tab" id="tab-roadmap">
+<div class="wrap">
+  <div class="eyebrow">New Feature — Value Roadmap</div>
+  <h2 class="sec-h">What did your neighbors do to sell for more?</h2>
+  <p class="sec-p">We analyzed listing descriptions, MLS language, and final sale prices from 47 comparable homes sold within 1 mile in the past 12 months. Here's what sellers in your area actually upgraded — with real evidence from the listings themselves.</p>
+
+  <div class="roadmap-hero">
+    <div class="rh-inner">
+      <div class="rh-badge">🤖 AI-Powered Listing Intelligence</div>
+      <h3>Upgrade recommendations drawn directly from your comparable sold homes</h3>
+      <p>By mining listing description language from recently sold comparable properties and correlating specific phrases to sale price premiums above the baseline Zestimate, we surface the highest-ROI improvements specific to your neighborhood and price band. Not national averages. Your actual comps — with the listing quotes to prove it.</p>
+      <div class="data-pill">🔍 47 sold comps · 1-mile radius · Scottsdale 85254 · $440K–$560K band · Last 12 months</div>
+    </div>
+  </div>
+
+  <div style="font-size:13px;font-weight:700;color:var(--slate);text-transform:uppercase;letter-spacing:1.2px;margin-bottom:16px;">Select upgrades you're considering — projected sale price updates in real time</div>
+
+  <div class="upcard sel" id="uc1" onclick="toggleUp('uc1',24000)">
+    <div class="upcard-top"><div class="up-icon">🎨</div><div class="up-mid"><div class="up-title">Interior + Exterior Paint Refresh</div><div class="up-roi">+$24,000 avg sale price lift in your area</div></div><div class="up-cost"><div class="up-cost-lbl">Est. cost</div><div class="up-cost-val">$4–8K</div></div></div>
+    <div class="upcard-body">Fresh neutral interior paint and updated exterior color are consistently the highest-ROI prep investment in the Scottsdale market. Buyers notice it instantly in listing photos — the #1 driver of showing requests — and in person on arrival.</div>
+    <div class="evidence"><div class="ev-lbl">📋 From your comparable listing descriptions</div><div class="ev-quote">"Freshly painted throughout in today's designer neutral palette — stunning curb appeal from the moment you arrive" — 11 of 47 nearby sold listings used fresh paint language and sold an average of 8.1% above comparable unpainted homes</div><div class="ev-src">Source: Listing description analysis · 8841 Desert Rose Ln, 4790 Maple Grove Dr + 9 others within 0.8mi</div></div>
+    <div class="up-toggle"><div class="toggle-box">✓</div><div class="toggle-lbl">Added to my Value Roadmap</div></div>
+  </div>
+
+  <div class="upcard" id="uc2" onclick="toggleUp('uc2',18000)">
+    <div class="upcard-top"><div class="up-icon">🍳</div><div class="up-mid"><div class="up-title">Minor Kitchen Refresh</div><div class="up-roi">+$18,000 avg sale price lift in your area</div></div><div class="up-cost"><div class="up-cost-lbl">Est. cost</div><div class="up-cost-val">$8–14K</div></div></div>
+    <div class="upcard-body">New hardware, fresh cabinet paint, updated lighting, and a tile backsplash. You don't need a full gut renovation — targeted cosmetic updates signal "well cared for" and deliver strong ROI in this price band.</div>
+    <div class="evidence"><div class="ev-lbl">📋 From your comparable listing descriptions</div><div class="ev-quote">"Beautifully updated kitchen featuring new hardware, tile backsplash, and under-cabinet lighting" — 8 of 47 listings with kitchen refresh language sold 5.8% above the median for similar square footage</div><div class="ev-src">Source: Listing description analysis · 1203 Sunridge Blvd + 7 others in 85254</div></div>
+    <div class="up-toggle"><div class="toggle-box"></div><div class="toggle-lbl">Add to my Value Roadmap</div></div>
+  </div>
+
+  <div class="upcard" id="uc3" onclick="toggleUp('uc3',31000)">
+    <div class="upcard-top"><div class="up-icon">💡</div><div class="up-mid"><div class="up-title">Smart Home Package</div><div class="up-roi">+$31,000 avg sale price lift in your area</div></div><div class="up-cost"><div class="up-cost-lbl">Est. cost</div><div class="up-cost-val">$3–6K</div></div></div>
+    <div class="upcard-body">Smart thermostat, video doorbell, keyless entry, and app-controlled lighting. Buyers in the $450K–$550K Scottsdale range expect these — listings mentioning smart home features show a consistent premium and faster close times.</div>
+    <div class="evidence"><div class="ev-lbl">📋 From your comparable listing descriptions</div><div class="ev-quote">"Smart home throughout — Nest thermostat, Ring doorbell, Lutron lighting system, and whole-home wifi" — 9 listings with smart home language sold avg $31K above comparable non-smart homes in the same zip and price band</div><div class="ev-src">Source: Listing description analysis · 2024–2025 · Scottsdale 85254 · $440K–$560K</div></div>
+    <div class="up-toggle"><div class="toggle-box"></div><div class="toggle-lbl">Add to my Value Roadmap</div></div>
+  </div>
+
+  <div class="upcard" id="uc4" onclick="toggleUp('uc4',15000)">
+    <div class="upcard-top"><div class="up-icon">🌵</div><div class="up-mid"><div class="up-title">Desert Landscaping Refresh</div><div class="up-roi">+$15,000 avg sale price lift in your area</div></div><div class="up-cost"><div class="up-cost-lbl">Est. cost</div><div class="up-cost-val">$2–5K</div></div></div>
+    <div class="upcard-body">Desert-appropriate landscaping refresh: drought-tolerant plants, fresh decomposed granite, trimmed trees, and clean borders. In Scottsdale's climate, this signals low-maintenance living and photographs beautifully.</div>
+    <div class="evidence"><div class="ev-lbl">📋 From your comparable listing descriptions</div><div class="ev-quote">"Professionally designed desert landscape with low-maintenance succulents, river rock, and mature saguaros — incredible curb appeal" — listings with professional landscaping language spent 7 fewer days on market and closed at 3.2% higher list-to-sale ratio</div><div class="ev-src">Source: Listing description analysis · 12 comps in Maple Grove corridor · 2024–2025</div></div>
+    <div class="up-toggle"><div class="toggle-box"></div><div class="toggle-lbl">Add to my Value Roadmap</div></div>
+  </div>
+
+  <div class="upcard" id="uc5" onclick="toggleUp('uc5',22000)">
+    <div class="upcard-top"><div class="up-icon">🏠</div><div class="up-mid"><div class="up-title">Garage Door + Front Door Replacement</div><div class="up-roi">+$22,000 avg sale price lift in your area</div></div><div class="up-cost"><div class="up-cost-lbl">Est. cost</div><div class="up-cost-val">$4–9K</div></div></div>
+    <div class="upcard-body">A new garage door is the single highest-ROI exterior upgrade nationally — and a bold front door color creates a memorable first impression that transforms listing photos for under $10K combined.</div>
+    <div class="evidence"><div class="ev-lbl">📋 From your comparable listing descriptions</div><div class="ev-quote">"New insulated garage door and designer front entry door with smart lock — incredible first impression" — 6 listings featuring garage/entry door language sold avg $22K above the Zestimate baseline for equivalent homes</div><div class="ev-src">Source: Listing description analysis · 6 comps · Scottsdale 85254 · Last 8 months</div></div>
+    <div class="up-toggle"><div class="toggle-box"></div><div class="toggle-lbl">Add to my Value Roadmap</div></div>
+  </div>
+
+  <div class="rm-total">
+    <div><div class="rmt-left"><h4>Your Zestimate+</h4><div class="rmt-val">$530,000</div></div></div>
+    <div style="font-size:32px;color:var(--teal)">→</div>
+    <div class="rmt-right"><p>Projected sale price with selected upgrades</p><strong id="rm-proj">$554,000 &nbsp;(+$24K)</strong></div>
+  </div>
+
+  <div class="info-bar" style="margin-top:22px;"><span style="font-size:22px;flex-shrink:0">🏡</span><div>This is your personalized roadmap from <strong>homeowner to confident seller</strong>. As you complete upgrades over the coming months, log them in Zillow and your Zestimate+ updates in real time — keeping you engaged, informed, and anchored to Zillow long before you're ready to list.</div></div>
+</div>
+</div>
+
+<!-- ── TAB: RELATIONSHIP ── -->
+<div class="tab" id="tab-relationship">
+<div class="wrap">
+  <div class="eyebrow">Long-Term Vision</div>
+  <h2 class="sec-h">From transaction to lifelong homeowner relationship</h2>
+  <p class="sec-p">The Seller team's mission is to foster long-term relationships with homeowners — helping them understand their home's value, unlock new possibilities, and prepare for important moments. Zestimate+ is the foundation of that relationship, built on three pillars.</p>
+
+  <div class="pillars">
+    <div class="pillar"><div class="pillar-num">01</div><div class="pillar-h">Build Trust Through Transparency</div><div class="pillar-p">Show homeowners exactly how their value is calculated. When they can see, challenge, and contribute to the estimate, they trust it. Trust is the currency that converts homeowners into sellers — and sellers into Zillow advocates.</div></div>
+    <div class="pillar"><div class="pillar-num">02</div><div class="pillar-h">Help Them Understand Their Home's Value</div><div class="pillar-p">A live, personalized, seller-verified Zestimate+ becomes their authoritative source of truth. Zillow becomes the dashboard for their most valuable asset — a living valuation they understand and own, not a number they distrust.</div></div>
+    <div class="pillar"><div class="pillar-num">03</div><div class="pillar-h">Unlock New Possibilities</div><div class="pillar-p">The Value Roadmap shows homeowners what their home <em>could</em> be worth. Every upgrade is a possibility unlocked. Zillow becomes a partner in building equity, not just measuring it — present across the entire ownership cycle.</div></div>
+  </div>
+
+  <div style="margin-top:48px;"><div class="eyebrow">The Homeowner Journey</div><h2 class="sec-h" style="font-size:clamp(22px,3vw,34px)">Zillow with you across the entire 7-year ownership cycle</h2></div>
+
+  <div class="journey">
+    <div class="jitem j1">
+      <div class="jdot">🏠</div>
+      <div class="jcontent">
+        <div class="jphase">Year 1–2 · Settle In</div>
+        <div class="jtitle">Understanding What You Own</div>
+        <div class="jbody">After purchase, homeowners want to understand their asset. Zestimate+ gives them a live, transparent valuation they can trust — with their own inputs baked in. This is the first touchpoint of a long relationship. Zillow becomes the trusted financial dashboard for their most important investment.</div>
+        <div class="jfeats"><span class="jfeat">Live Zestimate+</span><span class="jfeat">Neighborhood market pulse</span><span class="jfeat">Equity tracker</span><span class="jfeat">School & permit data</span></div>
+      </div>
+    </div>
+    <div class="jitem j2">
+      <div class="jdot">🔨</div>
+      <div class="jcontent">
+        <div class="jphase">Year 2–5 · Invest & Improve</div>
+        <div class="jtitle">Value Roadmap: Every Upgrade, Tracked</div>
+        <div class="jbody">As homeowners renovate, they log improvements in Zillow. Each update re-runs the Zestimate+ model, showing real-time impact on value. The Value Roadmap surfaces what comparable neighbors upgraded — drawn from listing description AI — so every decision is informed by real data from real nearby sales. They're not just doing home improvement. They're building equity with Zillow as their partner.</div>
+        <div class="jfeats"><span class="jfeat">Upgrade logger</span><span class="jfeat">ROI calculator</span><span class="jfeat">Comp-based suggestions</span><span class="jfeat">Contractor connect</span><span class="jfeat">Permit tracking</span></div>
+      </div>
+    </div>
+    <div class="jitem j3">
+      <div class="jdot">📈</div>
+      <div class="jcontent">
+        <div class="jphase">Year 5–7 · Prepare to Sell</div>
+        <div class="jtitle">Seller Readiness Score</div>
+        <div class="jbody">When the homeowner starts thinking about selling, they don't start from zero — Zillow already knows their home intimately. A Seller Readiness Score synthesizes upgrade history, current market conditions, and Zestimate+ to deliver a clear signal: <em>"You're 82% ready to list. Two more upgrades could add $28K. Best window: Spring 2026."</em> Confidence to enter the market is the product.</div>
+        <div class="jfeats"><span class="jfeat">Readiness score</span><span class="jfeat">Optimal listing window</span><span class="jfeat">Pre-listing checklist</span><span class="jfeat">Agent matching</span><span class="jfeat">Staging tips</span></div>
+      </div>
+    </div>
+    <div class="jitem j4">
+      <div class="jdot">🎉</div>
+      <div class="jcontent">
+        <div class="jphase">At Listing · Close the Loop</div>
+        <div class="jtitle">List With Confidence. Start the Next Chapter.</div>
+        <div class="jbody">The seller who lists on Zillow has been a homeowner for years — and Zillow has been with them the whole time. They trust the platform. They understand their value. They're ready to move. This is what "unlocking life's next chapter" actually looks like when you've built the relationship years in advance — not just at the moment of transaction.</div>
+        <div class="jfeats"><span class="jfeat">Zestimate+ as listing anchor</span><span class="jfeat">ShowingTime+ integration</span><span class="jfeat">Agent connection</span><span class="jfeat">Buyer match alerts</span><span class="jfeat">Next home search begins</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="trust-banner">
+    <span class="tq">"</span>
+    <h3>Helping them understand their home's value, unlock new possibilities, and prepare for important moments — today and in the future.</h3>
+    <p>This is Zillow's stated mission for the Seller team. Zestimate+ makes that mission tangible and interactive across the entire arc of homeownership — not just at the listing moment. The homeowner who trusts Zillow every year is the seller who lists on Zillow without hesitation. Every transparency feature, every Value Roadmap suggestion, every month of engagement is an investment in that relationship — and in Zillow's long-term competitive moat.</p>
+  </div>
+</div>
+</div>
+
+<!-- ── TAB: PM ── -->
+<div class="tab" id="tab-pm">
+<div class="wrap">
+  <div class="eyebrow">PM Thinking</div>
+  <h2 class="sec-h">Why this moves Zillow's north star metrics</h2>
+  <p class="sec-p">Zestimate+ is not a feature. It's a trust engine and a long-term retention play. Here's how it maps to business outcomes.</p>
+  <div class="g3" style="margin-top:28px;">
+    <div class="card" style="text-align:center"><div style="font-family:'Cormorant Garamond',serif;font-size:34px;font-weight:700;color:var(--blue);margin-bottom:6px">↑ NPS</div><div style="font-size:13px;color:var(--slate);line-height:1.6">Seller trust and transparency directly lift platform NPS and reduce "Zestimate wrong" friction</div></div>
+    <div class="card" style="text-align:center"><div style="font-family:'Cormorant Garamond',serif;font-size:34px;font-weight:700;color:var(--blue);margin-bottom:6px">↑ Listings</div><div style="font-size:13px;color:var(--slate);line-height:1.6">Confident sellers list sooner — more inventory drives buyer engagement and agent revenue</div></div>
+    <div class="card" style="text-align:center"><div style="font-family:'Cormorant Garamond',serif;font-size:34px;font-weight:700;color:var(--blue);margin-bottom:6px">↑ LTV</div><div style="font-size:13px;color:var(--slate);line-height:1.6">7-year engaged homeowner relationship generates far higher lifetime value than a one-time transaction touchpoint</div></div>
+  </div>
+
+  <table class="kpi-table" style="margin-top:28px;">
+    <thead><tr><th>Metric</th><th>What It Measures</th><th>Direction</th><th>Why It Matters</th></tr></thead>
+    <tbody>
+      <tr><td>Zestimate+ completion rate</td><td>% of homeowners finishing the full flow</td><td><span class="tag tag-ns">↑ North Star</span></td><td>Core engagement indicator</td></tr>
+      <tr><td>Listing conversion</td><td>Zestimate+ users who list within 90 days vs. baseline</td><td><span class="tag tag-up">↑ Primary</span></td><td>Direct revenue signal</td></tr>
+      <tr><td>Upgrade tracker MAU</td><td>Monthly active homeowners logging improvements</td><td><span class="tag tag-up">↑ Retention</span></td><td>Long-term relationship depth</td></tr>
+      <tr><td>Value Roadmap CTR</td><td>% clicking into upgrade suggestions from comp data</td><td><span class="tag tag-up">↑ Engagement</span></td><td>Validates the AI feature</td></tr>
+      <tr><td>Seller satisfaction score</td><td>Post-estimate NPS / CSAT</td><td><span class="tag tag-up">↑ Trust</span></td><td>Tracks the trust thesis</td></tr>
+      <tr><td>Support ticket volume</td><td>"Zestimate inaccurate" contact rate</td><td><span class="tag tag-dn">↓ Cost</span></td><td>Friction reduction</td></tr>
+      <tr><td>Time-to-list</td><td>Days from Zestimate+ to listing creation</td><td><span class="tag tag-dn">↓ Velocity</span></td><td>Confidence accelerates decisions</td></tr>
+      <tr><td>Agent connection rate</td><td>Zestimate+ sessions → agent lead conversion</td><td><span class="tag tag-up">↑ Revenue</span></td><td>Downstream monetization</td></tr>
+    </tbody>
+  </table>
+
+  <div class="tech-card">
+    <h4>Technical Approach — Value Roadmap NLP Pipeline</h4>
+    <div class="tech-step"><div class="tech-n">1</div><div class="tech-body"><strong>Keyword extraction from listing descriptions</strong> — NLP model identifies renovation and feature language in MLS listing descriptions for recently sold homes: "renovated kitchen," "smart home," "fresh paint," "new roof," "quartz countertops," "designer finishes," etc.</div></div>
+    <div class="tech-step"><div class="tech-n">2</div><div class="tech-body"><strong>Price delta modeling per keyword cluster</strong> — For a given zip code and price band, calculate the average sale price premium for homes with vs. without each feature keyword cluster. Weight by recency and comp similarity score.</div></div>
+    <div class="tech-step"><div class="tech-n">3</div><div class="tech-body"><strong>Personalized ranking for this seller's comp set</strong> — Surface the highest-ROI upgrades specific to this homeowner's actual comparable homes — not national averages. Pull the exact listing description quotes that inform each recommendation for full transparency.</div></div>
+    <div class="tech-step"><div class="tech-n">4</div><div class="tech-body"><strong>Continuous refresh as new comps sell</strong> — As new comparable homes close in the area, the Value Roadmap updates automatically. The homeowner receives a nudge: "3 homes near you just sold. Your roadmap has been updated." This drives ongoing re-engagement across the full ownership cycle.</div></div>
+    <div style="margin-top:16px;padding:14px;background:rgba(0,94,255,.08);border-radius:10px;font-size:13px;color:var(--slate);">
+      <strong style="color:var(--blue)">Key advantage:</strong> Zillow already has all the data required — MLS listing descriptions, sale prices, comp relationships, and zip-level market data. This feature requires no new data acquisition. It's smarter surfacing of existing assets.
+    </div>
+  </div>
+</div>
+</div>
+
+<div class="divider"></div>
+<div class="author">
+  <div class="author-inner">
+    <h3>Built by Hunter</h3>
+    <p>7 years in product management. Licensed real estate professional. Military veteran transitioning to civilian tech. This concept was born from personal experience watching the Zestimate miss badly on a home I knew intimately — and knowing exactly why it was wrong, and how to fix it.</p>
+    <div class="achips">
+      <div class="achip">🎖️ Military Veteran</div>
+      <div class="achip">🏠 Licensed Realtor</div>
+      <div class="achip">📱 7 Yrs Product Management</div>
+      <div class="achip">🎯 Applying: Senior PM, Seller @ Zillow</div>
+    </div>
+  </div>
+</div>
+
+<script>
+const tabIds = ['problem','proto','roadmap','relationship','pm'];
+function showTab(id) {
+  tabIds.forEach((t,i) => {
+    document.getElementById('tab-'+t).classList.toggle('on', t===id);
+    document.querySelectorAll('.snav-btn')[i].classList.toggle('on', t===id);
+  });
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function goStep(n) {
+  [1,2,3,4].forEach(i => {
+    document.getElementById('sn'+i).className = 'snode'+(i===n?' son':i<n?' sdone':'');
+    document.getElementById('sp'+i).className = 'spanel'+(i===n?' son':'');
+  });
+  [1,2,3].forEach(i => { document.getElementById('sl'+i).className = 'sline'+(i<n?' sdone':''); });
+  document.querySelector('#tab-proto .wrap').scrollIntoView({behavior:'smooth',block:'start'});
+}
+
+function acceptComp(id,e){ e.stopPropagation(); document.getElementById(id).className='ccard acc'; }
+function rejectComp(id,e){ e.stopPropagation(); document.getElementById(id).className='ccard rej'; document.getElementById('alt-note').style.display='block'; }
+function toggleR(id){ document.getElementById(id).classList.toggle('open'); }
+
+function recalc(){
+  const sels=document.querySelectorAll('.rsel'); let bonus=0;
+  sels.forEach(s=>{ bonus+=s.selectedIndex*3800; });
+  const base=487000, nv=base+bonus+33000, diff=nv-base;
+  document.getElementById('fval').textContent='$'+Math.round(nv/1000)+'K';
+  document.getElementById('fdelta').textContent=(diff>=0?'+':'')+'$'+diff.toLocaleString()+' · Seller-verified';
+  const conf=Math.min(95,72+Math.floor(bonus/1000));
+  document.getElementById('fpct').textContent=conf+'%';
+  document.getElementById('cfill').style.width=conf+'%';
+}
+
+const upVals={uc1:24000,uc2:18000,uc3:31000,uc4:15000,uc5:22000};
+const upSel={uc1:true,uc2:false,uc3:false,uc4:false,uc5:false};
+function toggleUp(id){ upSel[id]=!upSel[id]; document.getElementById(id).classList.toggle('sel',upSel[id]); updateRM(); }
+function updateRM(){
+  let tot=0; Object.keys(upSel).forEach(k=>{ if(upSel[k]) tot+=upVals[k]; });
+  document.getElementById('rm-proj').textContent='$'+(530000+tot).toLocaleString()+' \u00a0(+$'+tot.toLocaleString()+')';
+}
+
+recalc(); updateRM();
+</script>
+</body>
+</html>
