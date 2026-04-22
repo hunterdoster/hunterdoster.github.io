@@ -106,6 +106,17 @@ Always edit `index.html` directly — it's the entire site.
 - "View Product" button links to `zestimate-plus/` (opens in new tab)
 - No GitHub link — this is a product concept, not an open-source repo
 
+### Copy updates
+- About section: "a decade of experience" → "7+ years of experience"
+- Hero badges: "9 Years Military Service" → "10 Years Military Service"
+- Hero badges: added "Dual Technical & Program Management" pill
+- Removed all hyphens from body text (compound adjectives and em dash separators); em dashes replaced with commas, compound-word hyphens replaced with spaces
+- Experience dates corrected:
+  - Jeff Cook Real Estate: "2025 – 2026" → "March 2026 – Sep 2026"
+  - Radar Sensor Portfolio: "2024 – Present" → "Apr 2024 – Present"
+  - Electronic Intelligence: "Apr 2022 – Apr 2024" → "Mar 2022 – Apr 2024"
+- AFIT Product Developer: added flight test bullet — "Led cross functional flight test demonstration across three agencies, planning and executing the first live MVP demonstration of an acoustic drone detection system; results drove next phase engagement to scale the product for multiple defense use cases"
+
 ---
 
 ## Known Limitations / Future Ideas
