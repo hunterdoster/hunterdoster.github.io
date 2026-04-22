@@ -441,7 +441,11 @@ async function analyze() {
     showResults();
     window.scrollTo({ top: document.getElementById('results').offsetTop - 60, behavior: 'smooth' });
   } catch (err) {
-    showError(err.message || 'Could not connect to the analysis server.');
+    if (err instanceof TypeError) {
+      showError('Could not reach the server. Check your connection and try again.');
+    } else {
+      showError(err.message || 'Analysis failed. Please try again.');
+    }
   } finally {
     setLoading(false);
   }
