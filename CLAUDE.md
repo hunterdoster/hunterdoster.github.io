@@ -147,6 +147,33 @@ Always edit `index.html` directly — it's the entire site.
 
 ---
 
+## Session — 2026-04-22 (continued)
+
+### JobAlert mobile responsiveness
+- Source files: `C:\Users\16786\Documents\JobAlert\jobalert-web\templates\` (Jinja2 templates)
+- Repo: `https://github.com/hunterdoster/jobalert` (private), deployed to Railway at `https://jobalert-production.up.railway.app`
+- Local folder: `C:\Users\16786\Documents\JobAlert\jobalert-web\`
+- **Problem:** fixed `w-64` sidebar left almost no room for content on mobile; grids and tables overflowed
+- **Fixes applied:**
+  - `base.html`: added hamburger button in mobile-only top header; sidebar is now `fixed` with `-translate-x-full` on mobile, slides in via JS toggle with semi-transparent backdrop; desktop layout unchanged (`md:static md:translate-x-0`)
+  - All templates: padding changed from `px-8 py-6` → `px-4 py-4 sm:px-8 sm:py-6`
+  - `dashboard.html`: `grid-cols-4` → `grid-cols-2 sm:grid-cols-4`; `grid-cols-3` → `grid-cols-1 sm:grid-cols-2 lg:grid-cols-3`
+  - `monitors.html`: `grid-cols-4` detail grid → `grid-cols-2 sm:grid-cols-4`; architecture `grid-cols-3` → `grid-cols-1 sm:grid-cols-3`; header uses `flex-wrap`
+  - `settings.html`: `grid-cols-2` → `grid-cols-1 md:grid-cols-2`
+  - `jobs.html` / `logs.html` / `dashboard.html`: all tables wrapped in `overflow-x-auto`; filter rows use `flex-wrap`
+
+---
+
+## Session — 2026-04-22 (continued)
+
+### Stock Analyzer CORS fix
+- **Problem:** "Load failed" immediately on wife's iPhone but worked on Hunter's iPhone
+- **Root cause:** Railway routes through Fastly CDN; specific `origins=[...]` CORS config causes `Vary: Origin` response header, meaning different CDN edge nodes cache different preflight responses — wife's phone hit an edge node with a stale/missing preflight
+- **Fix:** Changed `CORS(app, origins=[...])` → `CORS(app)` in `stock-analyzer/app.py` (backend); this returns `Access-Control-Allow-Origin: *` on all responses, eliminating CDN origin-vary caching issues. Safe since the API has no auth.
+- **Frontend:** Updated `catch` block in `stock-analyzer/index.html` to detect `TypeError` (network error) and show "Could not reach the server. Check your connection and try again." instead of the opaque Safari "Load failed" message
+
+---
+
 ## Known Limitations / Future Ideas
 
 - GitHub link intentionally omitted from contact section (Hunter doesn't use GitHub for networking)
