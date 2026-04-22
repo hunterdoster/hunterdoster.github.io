@@ -1,0 +1,914 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Rule #1 Stock Analyzer</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    /* ── Variables ── */
+    :root {
+      --ink:       #0B1829;
+      --ink2:      #1E3A52;
+      --blue:      #4F46E5;
+      --blue-lt:   #EEF2FF;
+      --green:     #059669;
+      --green-lt:  #D1FAE5;
+      --amber:     #D97706;
+      --amber-lt:  #FEF3C7;
+      --red:       #DC2626;
+      --red-lt:    #FEE2E2;
+      --sky:       #0EA5E9;
+      --sky-lt:    #E0F2FE;
+      --slate:     #64748B;
+      --border:    #E2E8F0;
+      --bg:        #F8FAFC;
+      --white:     #FFFFFF;
+      --r:         10px;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body { font-family: 'Inter', system-ui, sans-serif; background: var(--bg); color: var(--ink); -webkit-font-smoothing: antialiased; }
+
+    /* ── Nav ── */
+    .nav { background: var(--ink); padding: 0 24px; height: 56px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 100; }
+    .nav-back { color: #94A3B8; font-size: 13px; font-weight: 500; text-decoration: none; display: flex; align-items: center; gap: 6px; transition: color .15s; }
+    .nav-back:hover { color: #fff; }
+    .nav-title { color: #fff; font-size: 14px; font-weight: 600; letter-spacing: -.01em; }
+    .nav-badge { background: rgba(79,70,229,.25); color: #A5B4FC; font-size: 11px; font-weight: 600; padding: 3px 10px; border-radius: 20px; letter-spacing: .02em; }
+
+    /* ── Hero / Search ── */
+    .hero {
+      background: linear-gradient(160deg, var(--ink) 0%, #162D5E 60%, #1E3A52 100%);
+      padding: 56px 24px 60px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: radial-gradient(ellipse 60% 80% at 90% 10%, rgba(79,70,229,.2) 0%, transparent 60%),
+                  radial-gradient(ellipse 50% 60% at 10% 90%, rgba(5,150,105,.15) 0%, transparent 55%);
+    }
+    .hero-inner { position: relative; max-width: 680px; margin: 0 auto; }
+    .hero-eyebrow { display: inline-flex; align-items: center; gap: 8px; background: rgba(255,255,255,.07); border: 1px solid rgba(255,255,255,.12); color: #94A3B8; font-size: 12px; font-weight: 500; padding: 5px 14px; border-radius: 20px; margin-bottom: 20px; letter-spacing: .04em; text-transform: uppercase; }
+    .hero-dot { width: 7px; height: 7px; border-radius: 50%; background: #22D3EE; box-shadow: 0 0 8px #22D3EE; }
+    .hero h1 { color: #fff; font-size: clamp(32px, 5vw, 48px); font-weight: 800; letter-spacing: -.03em; line-height: 1.1; margin-bottom: 14px; }
+    .hero h1 em { color: #818CF8; font-style: normal; }
+    .hero-sub { color: #94A3B8; font-size: 16px; font-weight: 400; margin-bottom: 36px; line-height: 1.6; }
+
+    .search-row { display: flex; gap: 10px; max-width: 520px; margin: 0 auto 16px; }
+    .search-row input {
+      flex: 1; background: rgba(255,255,255,.08); border: 1.5px solid rgba(255,255,255,.15);
+      color: #fff; font-size: 15px; font-weight: 500; padding: 14px 18px; border-radius: var(--r);
+      outline: none; transition: border-color .15s, background .15s;
+      font-family: inherit; letter-spacing: .04em; text-transform: uppercase;
+    }
+    .search-row input::placeholder { color: #64748B; text-transform: none; letter-spacing: 0; font-weight: 400; }
+    .search-row input:focus { border-color: #818CF8; background: rgba(255,255,255,.12); }
+    .search-btn {
+      background: var(--blue); color: #fff; border: none; border-radius: var(--r);
+      font-size: 15px; font-weight: 700; padding: 14px 28px; cursor: pointer;
+      transition: background .15s, transform .1s; font-family: inherit; white-space: nowrap;
+    }
+    .search-btn:hover { background: #4338CA; }
+    .search-btn:active { transform: scale(.97); }
+    .search-btn:disabled { background: #475569; cursor: not-allowed; }
+
+    .quick-tickers { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; }
+    .quick-tickers span { color: #475569; font-size: 12px; font-weight: 500; align-self: center; }
+    .quick-btn {
+      background: rgba(255,255,255,.06); border: 1px solid rgba(255,255,255,.1); color: #94A3B8;
+      font-size: 12px; font-weight: 600; padding: 5px 14px; border-radius: 20px; cursor: pointer;
+      transition: all .15s; font-family: inherit; letter-spacing: .04em;
+    }
+    .quick-btn:hover { background: rgba(255,255,255,.12); color: #fff; border-color: rgba(255,255,255,.2); }
+
+    /* ── Loading ── */
+    .loading-wrap { padding: 80px 24px; text-align: center; }
+    .spinner { width: 44px; height: 44px; border: 3px solid var(--border); border-top-color: var(--blue); border-radius: 50%; animation: spin .8s linear infinite; margin: 0 auto 20px; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .loading-wrap p { color: var(--ink); font-size: 15px; font-weight: 500; }
+    .loading-wrap .loading-sub { color: var(--slate); font-size: 13px; margin-top: 6px; }
+
+    /* ── Error ── */
+    .error-box { max-width: 520px; margin: 40px auto; background: var(--red-lt); border: 1px solid #FECACA; border-radius: var(--r); padding: 18px 20px; color: var(--red); font-size: 14px; font-weight: 500; }
+
+    /* ── Company Header ── */
+    .company-header {
+      background: var(--ink); color: #fff;
+      padding: 24px 32px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 16px;
+    }
+    .company-left { display: flex; align-items: center; gap: 16px; }
+    .ticker-badge { background: var(--blue); color: #fff; font-size: 18px; font-weight: 800; padding: 8px 18px; border-radius: 8px; letter-spacing: .04em; }
+    .company-name { font-size: 20px; font-weight: 700; }
+    .company-meta { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 5px; }
+    .company-meta span { font-size: 12px; color: #94A3B8; background: rgba(255,255,255,.07); padding: 3px 10px; border-radius: 12px; }
+    .company-price-wrap { text-align: right; }
+    .company-price { font-size: 28px; font-weight: 800; color: #fff; }
+    .company-price-label { font-size: 12px; color: #64748B; margin-top: 2px; }
+
+    /* ── Tabs ── */
+    .tabs-bar { background: var(--white); border-bottom: 2px solid var(--border); padding: 0 32px; display: flex; gap: 0; overflow-x: auto; position: sticky; top: 56px; z-index: 90; }
+    .tab-btn {
+      background: none; border: none; color: var(--slate); font-size: 13px; font-weight: 600;
+      padding: 16px 20px; cursor: pointer; border-bottom: 2px solid transparent; margin-bottom: -2px;
+      transition: color .15s; white-space: nowrap; font-family: inherit;
+    }
+    .tab-btn:hover { color: var(--blue); }
+    .tab-btn.active { color: var(--blue); border-bottom-color: var(--blue); }
+
+    /* ── Tab content ── */
+    .tab-content { max-width: 960px; margin: 0 auto; padding: 32px 24px 64px; }
+    .tab-panel { display: none; }
+    .tab-panel.active { display: block; }
+
+    /* ── Section headings ── */
+    .section-title { font-size: 16px; font-weight: 700; color: var(--ink); margin-bottom: 4px; }
+    .section-sub { font-size: 13px; color: var(--slate); margin-bottom: 20px; }
+
+    /* ── Chart area ── */
+    .chart-card { background: var(--white); border: 1px solid var(--border); border-radius: var(--r); padding: 24px; margin-bottom: 24px; }
+    .chart-toggles { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 20px; }
+    .toggle-btn {
+      background: var(--bg); border: 1.5px solid var(--border); color: var(--slate);
+      font-size: 12px; font-weight: 600; padding: 6px 16px; border-radius: 20px; cursor: pointer;
+      transition: all .15s; font-family: inherit;
+    }
+    .toggle-btn:hover { border-color: var(--blue); color: var(--blue); }
+    .toggle-btn.active { background: var(--blue); border-color: var(--blue); color: #fff; }
+    .chart-wrap { position: relative; height: 280px; }
+
+    /* ── Data table ── */
+    .data-table { overflow-x: auto; margin-top: 20px; }
+    .data-table table { width: 100%; border-collapse: collapse; font-size: 12px; }
+    .data-table th { background: var(--ink); color: #fff; padding: 10px 14px; text-align: right; font-weight: 600; white-space: nowrap; }
+    .data-table th:first-child { text-align: left; border-radius: 8px 0 0 0; }
+    .data-table th:last-child { border-radius: 0 8px 0 0; }
+    .data-table td { padding: 9px 14px; text-align: right; border-bottom: 1px solid var(--border); color: var(--ink); font-variant-numeric: tabular-nums; }
+    .data-table td:first-child { text-align: left; font-weight: 600; color: var(--ink2); background: #F8FAFC; }
+    .data-table tr:last-child td { border-bottom: none; }
+    .data-table tr:hover td { background: var(--blue-lt); }
+    .data-table tr:hover td:first-child { background: #E0E7FF; }
+
+    /* ── CAGR table value colors ── */
+    .cagr-pos { color: var(--green); font-weight: 600; }
+    .cagr-neg { color: var(--red); font-weight: 600; }
+    .cagr-na  { color: #CBD5E1; }
+    .cagr-lin { font-style: italic; }
+
+    /* ── Valuation ── */
+    .val-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 28px; }
+    @media (max-width: 640px) { .val-grid { grid-template-columns: 1fr; } }
+    .val-card { background: var(--white); border: 1px solid var(--border); border-radius: var(--r); overflow: hidden; }
+    .val-card-header { padding: 16px 18px 12px; border-bottom: 1px solid var(--border); }
+    .val-card-header h3 { font-size: 13px; font-weight: 700; color: var(--ink); }
+    .val-card-header .growth { font-size: 22px; font-weight: 800; color: var(--blue); margin-top: 2px; }
+    .val-card-body { padding: 0; }
+    .val-row { display: flex; justify-content: space-between; align-items: center; padding: 9px 18px; border-bottom: 1px solid #F1F5F9; font-size: 13px; }
+    .val-row:last-child { border-bottom: none; }
+    .val-row .vr-label { color: var(--slate); }
+    .val-row .vr-val { font-weight: 600; font-variant-numeric: tabular-nums; }
+    .val-row.highlight { background: #FFF9C4; }
+    .val-row.highlight .vr-val { color: #92400E; }
+    .val-row.mos { background: var(--green-lt); }
+    .val-row.mos .vr-val { color: var(--green); }
+    .val-row.price-above { background: var(--red-lt); }
+    .val-row.price-above .vr-val { color: var(--red); }
+    .val-row.price-below { background: var(--green-lt); }
+    .val-row.price-below .vr-val { color: var(--green); }
+
+    /* ── EPS TTM warning banner ── */
+    .eps-warning { background: var(--amber-lt); border: 1px solid #FDE68A; border-radius: var(--r); padding: 12px 16px; font-size: 13px; color: #92400E; margin-bottom: 20px; }
+
+    /* ── Notes ── */
+    .note-card { display: flex; gap: 12px; padding: 14px 16px; border-radius: var(--r); margin-bottom: 10px; font-size: 13px; line-height: 1.6; border: 1px solid transparent; }
+    .note-card.positive { background: var(--green-lt); border-color: #A7F3D0; color: #065F46; }
+    .note-card.negative { background: var(--red-lt);   border-color: #FECACA; color: #7F1D1D; }
+    .note-card.warning  { background: var(--amber-lt); border-color: #FDE68A; color: #78350F; }
+    .note-card.info     { background: var(--sky-lt);   border-color: #BAE6FD; color: #075985; }
+    .note-icon { font-size: 16px; flex-shrink: 0; margin-top: 1px; }
+    .note-text { flex: 1; }
+
+    /* ── Custom analysis form ── */
+    .custom-form { background: var(--white); border: 1px solid var(--border); border-radius: var(--r); padding: 28px; max-width: 480px; margin-bottom: 28px; }
+    .custom-form h3 { font-size: 16px; font-weight: 700; margin-bottom: 20px; }
+    .form-field { margin-bottom: 16px; }
+    .form-field label { display: block; font-size: 12px; font-weight: 600; color: var(--slate); text-transform: uppercase; letter-spacing: .05em; margin-bottom: 6px; }
+    .form-field input {
+      width: 100%; padding: 11px 14px; border: 1.5px solid var(--border); border-radius: 8px;
+      font-size: 15px; font-family: inherit; color: var(--ink); background: var(--bg); outline: none; transition: border-color .15s;
+    }
+    .form-field input:focus { border-color: var(--blue); background: var(--white); }
+    .form-hint { font-size: 11px; color: var(--slate); margin-top: 4px; }
+    .calc-btn {
+      background: var(--blue); color: #fff; border: none; border-radius: 8px;
+      font-size: 14px; font-weight: 700; padding: 12px 28px; cursor: pointer;
+      font-family: inherit; transition: background .15s;
+    }
+    .calc-btn:hover { background: #4338CA; }
+    .calc-btn:disabled { background: #94A3B8; cursor: not-allowed; }
+
+    .custom-result { background: var(--white); border: 1px solid var(--border); border-radius: var(--r); overflow: hidden; max-width: 480px; }
+    .custom-result-header { background: var(--ink2); color: #fff; padding: 16px 20px; }
+    .custom-result-header h4 { font-size: 14px; font-weight: 700; }
+    .custom-result-header .cr-growth { font-size: 26px; font-weight: 800; color: #A5B4FC; }
+
+    /* ── Utility ── */
+    .hidden { display: none !important; }
+    .divider { border: none; border-top: 1px solid var(--border); margin: 28px 0; }
+
+    /* ── Disclaimer ── */
+    .disclaimer { background: var(--ink); color: #475569; font-size: 12px; text-align: center; padding: 20px 24px; line-height: 1.7; }
+    .disclaimer a { color: #64748B; }
+  </style>
+</head>
+<body>
+
+<!-- ── Nav ── -->
+<nav class="nav">
+  <a class="nav-back" href="../">
+    <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
+    hunterdoster.com
+  </a>
+  <span class="nav-title">Rule #1 Stock Analyzer</span>
+  <span class="nav-badge">Vibe Coded</span>
+</nav>
+
+<!-- ── Hero / Search ── -->
+<div class="hero">
+  <div class="hero-inner">
+    <div class="hero-eyebrow"><span class="hero-dot"></span>SimFin · EODHD · yfinance</div>
+    <h1>Rule #1<em>+</em> Stock Analyzer</h1>
+    <p class="hero-sub">Enter any ticker to get fundamentals, CAGR growth analysis, and Rule #1 valuations with analyst notes.</p>
+    <div class="search-row">
+      <input type="text" id="ticker-input" placeholder="Enter ticker (e.g. AAPL, MSFT, NVDA)"
+             onkeydown="if(event.key==='Enter') analyze()" autocomplete="off" autocapitalize="characters" spellcheck="false"/>
+      <button class="search-btn" id="analyze-btn" onclick="analyze()">Analyze →</button>
+    </div>
+    <div class="quick-tickers">
+      <span>Try:</span>
+      <button class="quick-btn" onclick="quickSearch('AAPL')">AAPL</button>
+      <button class="quick-btn" onclick="quickSearch('MSFT')">MSFT</button>
+      <button class="quick-btn" onclick="quickSearch('GOOGL')">GOOGL</button>
+      <button class="quick-btn" onclick="quickSearch('NVDA')">NVDA</button>
+      <button class="quick-btn" onclick="quickSearch('BRK.B')">BRK.B</button>
+      <button class="quick-btn" onclick="quickSearch('AMZN')">AMZN</button>
+    </div>
+  </div>
+</div>
+
+<!-- ── Loading ── -->
+<div id="loading" class="loading-wrap hidden">
+  <div class="spinner"></div>
+  <p id="loading-msg">Fetching fundamentals from SimFin &amp; EODHD...</p>
+  <p class="loading-sub">Pulling 10 years of data — takes about 15–30 seconds</p>
+</div>
+
+<!-- ── Error ── -->
+<div id="error-box" class="error-box hidden" style="padding: 20px 24px;"></div>
+
+<!-- ── Results ── -->
+<div id="results" class="hidden">
+
+  <!-- Company header -->
+  <div class="company-header">
+    <div class="company-left">
+      <div class="ticker-badge" id="res-ticker"></div>
+      <div>
+        <div class="company-name" id="res-name"></div>
+        <div class="company-meta" id="res-meta"></div>
+      </div>
+    </div>
+    <div class="company-price-wrap">
+      <div class="company-price" id="res-price"></div>
+      <div class="company-price-label">Current Price</div>
+    </div>
+  </div>
+
+  <!-- Tabs bar -->
+  <div class="tabs-bar">
+    <button class="tab-btn active" onclick="showTab('fundamentals')">Fundamentals</button>
+    <button class="tab-btn" onclick="showTab('growth')">Growth Rates</button>
+    <button class="tab-btn" onclick="showTab('valuation')">Valuation</button>
+    <button class="tab-btn" onclick="showTab('notes')">Analyst Notes <span id="notes-badge" style="background:#EF4444;color:#fff;font-size:10px;border-radius:10px;padding:1px 6px;margin-left:4px;"></span></button>
+    <button class="tab-btn" onclick="showTab('custom')">Custom Analysis</button>
+  </div>
+
+  <!-- Tab content -->
+  <div class="tab-content">
+
+    <!-- ── Fundamentals ── -->
+    <div class="tab-panel active" id="tab-fundamentals">
+      <p class="section-title">Annual Fundamentals</p>
+      <p class="section-sub" id="fund-sub"></p>
+      <div class="chart-card">
+        <div class="chart-toggles">
+          <button class="toggle-btn active" onclick="switchChart('revenue')">Revenue</button>
+          <button class="toggle-btn" onclick="switchChart('eps')">EPS</button>
+          <button class="toggle-btn" onclick="switchChart('equity')">Equity</button>
+          <button class="toggle-btn" onclick="switchChart('fcf')">Free Cash Flow</button>
+          <button class="toggle-btn" onclick="switchChart('pe')">P/E Ratio</button>
+        </div>
+        <div class="chart-wrap"><canvas id="fundChart"></canvas></div>
+      </div>
+      <div class="data-table" id="fund-table"></div>
+    </div>
+
+    <!-- ── Growth Rates ── -->
+    <div class="tab-panel" id="tab-growth">
+      <p class="section-title">CAGR Growth Rates</p>
+      <p class="section-sub">Compound annual growth rates across key periods. ~ prefix = linear estimate due to negative base value.</p>
+      <div class="chart-card">
+        <div class="chart-wrap" style="height:240px;"><canvas id="cagrChart"></canvas></div>
+      </div>
+      <div class="data-table" id="cagr-table"></div>
+    </div>
+
+    <!-- ── Valuation ── -->
+    <div class="tab-panel" id="tab-valuation">
+      <p class="section-title">Rule #1 Valuation</p>
+      <p class="section-sub">Minimum required rate of return: 15%. Three methods using different growth rate assumptions.</p>
+      <div id="eps-warning-banner" class="eps-warning hidden"></div>
+      <div id="equity-warning-banner" class="eps-warning hidden" style="background:#FEE2E2;border-color:#FECACA;color:#7F1D1D;"></div>
+      <div class="val-grid" id="val-grid"></div>
+      <div class="data-table" id="val-table"></div>
+    </div>
+
+    <!-- ── Notes ── -->
+    <div class="tab-panel" id="tab-notes">
+      <p class="section-title">Analyst Notes &amp; Flags</p>
+      <p class="section-sub">Automatically generated observations based on the data. Not financial advice.</p>
+      <div id="notes-list"></div>
+    </div>
+
+    <!-- ── Custom Analysis ── -->
+    <div class="tab-panel" id="tab-custom">
+      <p class="section-title">Custom Growth Rate Analysis</p>
+      <p class="section-sub">Override the growth rate and/or PE to see how the valuation changes.</p>
+      <div class="custom-form">
+        <h3>Enter Your Assumptions</h3>
+        <div class="form-field">
+          <label>Growth Rate (%)</label>
+          <input type="number" id="custom-growth" placeholder="e.g. 15" min="0.1" max="200" step="0.1"/>
+          <div class="form-hint">Enter as a percentage (15 = 15% annual growth)</div>
+        </div>
+        <div class="form-field">
+          <label>Custom PE <span style="font-weight:400;font-style:italic;">(optional)</span></label>
+          <input type="number" id="custom-pe" placeholder="Leave blank for auto (Rule 1 or historical avg)" min="1" max="999" step="0.1"/>
+          <div class="form-hint" id="default-pe-hint"></div>
+        </div>
+        <button class="calc-btn" id="calc-btn" onclick="calculateCustom()">Calculate →</button>
+      </div>
+      <div id="custom-result"></div>
+    </div>
+
+  </div><!-- /tab-content -->
+</div><!-- /results -->
+
+<div class="disclaimer">
+  Data sourced from SimFin (US fundamentals), EODHD (foreign/ADR stocks), and yfinance (price &amp; estimates).<br>
+  For informational and educational purposes only — not financial advice. Always do your own research.
+</div>
+
+<script>
+// ── CONFIG — update this URL after deploying the backend to Railway ──
+const API_BASE = 'https://YOUR_RAILWAY_BACKEND_URL';
+// Example: const API_BASE = 'https://stockanalyzer-production.up.railway.app';
+
+// ── State ──
+let _data = null;
+let _fundChart = null;
+let _cagrChart = null;
+let _currentMetric = 'revenue';
+
+// ── Helpers ──
+function fmt$(v) {
+  if (v == null) return 'N/A';
+  return '$' + parseFloat(v).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+}
+function fmtAbbrev(v, currency) {
+  if (v == null) return 'N/A';
+  const sym = currency && currency !== 'USD' ? currency + ' ' : '$';
+  const n = Math.abs(parseFloat(v));
+  const sign = parseFloat(v) < 0 ? '-' : '';
+  if (n >= 1e12) return sign + sym + (n/1e12).toFixed(2) + 'T';
+  if (n >= 1e9)  return sign + sym + (n/1e9).toFixed(2)  + 'B';
+  if (n >= 1e6)  return sign + sym + (n/1e6).toFixed(1)  + 'M';
+  if (n >= 1e3)  return sign + sym + (n/1e3).toFixed(1)  + 'K';
+  return sign + sym + n.toFixed(0);
+}
+function fmtPct(v, linear) {
+  if (v == null) return '<span class="cagr-na">—</span>';
+  const s = (Math.abs(parseFloat(v)*100) < 200 ? (linear ? '~' : '') + (parseFloat(v)*100).toFixed(1) + '%' : 'N/A');
+  const cls = parseFloat(v) >= 0 ? 'cagr-pos' : 'cagr-neg';
+  const italic = linear ? ' cagr-lin' : '';
+  return `<span class="${cls}${italic}">${s}</span>`;
+}
+
+// ── Tab switching ──
+function showTab(id) {
+  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('tab-' + id).classList.add('active');
+  const btns = document.querySelectorAll('.tab-btn');
+  const idx = ['fundamentals','growth','valuation','notes','custom'].indexOf(id);
+  if (idx >= 0) btns[idx].classList.add('active');
+}
+
+// ── Analyze ──
+async function analyze() {
+  const raw = document.getElementById('ticker-input').value.trim().toUpperCase();
+  if (!raw) return;
+
+  setLoading(true);
+  hideResults();
+  hideError();
+
+  try {
+    const res = await fetch(API_BASE + '/api/analyze', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ ticker: raw }),
+    });
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.error || 'Analysis failed');
+    _data = data;
+    renderAll(data);
+    showResults();
+    window.scrollTo({ top: document.getElementById('results').offsetTop - 60, behavior: 'smooth' });
+  } catch (err) {
+    showError(err.message || 'Could not connect to the analysis server.');
+  } finally {
+    setLoading(false);
+  }
+}
+
+function quickSearch(ticker) {
+  document.getElementById('ticker-input').value = ticker;
+  analyze();
+}
+
+function setLoading(on) {
+  document.getElementById('loading').classList.toggle('hidden', !on);
+  document.getElementById('analyze-btn').disabled = on;
+  document.getElementById('analyze-btn').textContent = on ? 'Analyzing...' : 'Analyze →';
+}
+function hideResults() { document.getElementById('results').classList.add('hidden'); }
+function showResults() { document.getElementById('results').classList.remove('hidden'); }
+function hideError()   { document.getElementById('error-box').classList.add('hidden'); }
+function showError(msg) {
+  const el = document.getElementById('error-box');
+  el.textContent = '⚠ ' + msg;
+  el.classList.remove('hidden');
+}
+
+// ── Render all sections ──
+function renderAll(d) {
+  // Company header
+  document.getElementById('res-ticker').textContent = d.ticker;
+  document.getElementById('res-name').textContent = d.company_name;
+  const meta = document.getElementById('res-meta');
+  meta.innerHTML = '';
+  if (d.ipo_date) meta.innerHTML += `<span>IPO: ${d.ipo_date}</span>`;
+  if (d.is_foreign && d.currency !== 'USD') meta.innerHTML += `<span>Currency: ${d.currency}</span>`;
+  meta.innerHTML += `<span>${d.routing.toUpperCase()}: ${d.routing_reason}</span>`;
+  if (d._cached) meta.innerHTML += `<span style="background:rgba(5,150,105,.15);color:#6EE7B7;">Cached</span>`;
+
+  document.getElementById('res-price').textContent = d.current_price ? '$' + parseFloat(d.current_price).toFixed(2) : '—';
+
+  const sub = `${d.all_years[0]} – ${d.all_years[d.all_years.length-1]} · ${d.all_years.length} years of data`;
+  document.getElementById('fund-sub').textContent = sub;
+
+  renderFundamentalsChart(d, _currentMetric);
+  renderFundamentalsTable(d);
+  renderCAGRChart(d);
+  renderCAGRTable(d);
+  renderValuation(d);
+  renderNotes(d);
+
+  // Reset custom tab
+  document.getElementById('custom-result').innerHTML = '';
+  if (d.valuation.estimated_future_pe) {
+    document.getElementById('default-pe-hint').textContent =
+      `Default: ${d.valuation.estimated_future_pe} (historical avg) or Rule 1 PE (2× growth), whichever is lower`;
+  } else {
+    document.getElementById('default-pe-hint').textContent = 'Default: Rule 1 PE (2× your growth rate × 100)';
+  }
+}
+
+// ── Fundamentals Chart ──
+function renderFundamentalsChart(d, metric) {
+  const years = d.all_years.map(String);
+  const fund  = d.fundamentals;
+  const curr  = d.currency !== 'USD' ? d.currency : 'USD';
+
+  let label, rawData, color, isPE;
+
+  if (metric === 'pe') {
+    label = 'PE High / PE Low';
+    isPE  = true;
+    color = '#8B5CF6';
+  } else {
+    isPE = false;
+    const map = { revenue: ['Revenue', fund.revenue, '#4F46E5'],
+                  eps:     ['EPS ($)',  fund.eps,     '#059669'],
+                  equity:  ['Equity',   fund.equity,  '#0EA5E9'],
+                  fcf:     ['Free Cash Flow', fund.fcf, '#D97706'] };
+    [label, rawData, color] = map[metric] || map.revenue;
+  }
+
+  const ctx = document.getElementById('fundChart');
+  if (_fundChart) { _fundChart.destroy(); _fundChart = null; }
+
+  if (isPE) {
+    const highs = years.map(y => fund.pe_highs[y] ?? null);
+    const lows  = years.map(y => fund.pe_lows[y]  ?? null);
+    _fundChart = new Chart(ctx, {
+      type: 'bar',
+      data: {
+        labels: years,
+        datasets: [
+          { label: 'PE High', data: highs, backgroundColor: 'rgba(139,92,246,.7)', borderRadius: 4 },
+          { label: 'PE Low',  data: lows,  backgroundColor: 'rgba(139,92,246,.3)', borderRadius: 4 },
+        ],
+      },
+      options: chartOpts('PE Ratio', v => v != null ? v.toFixed(1) : ''),
+    });
+  } else {
+    const isEPS = metric === 'eps';
+    const vals = years.map(y => rawData[y] ?? null);
+    _fundChart = new Chart(ctx, {
+      type: 'bar',
+      data: {
+        labels: years,
+        datasets: [{
+          label, data: vals,
+          backgroundColor: vals.map(v => v != null && v < 0 ? 'rgba(220,38,38,.6)' : color + 'BB'),
+          borderColor:     vals.map(v => v != null && v < 0 ? '#DC2626' : color),
+          borderWidth: 1.5, borderRadius: 4,
+        }],
+      },
+      options: chartOpts(label, v => {
+        if (v == null) return '';
+        return isEPS ? '$' + parseFloat(v).toFixed(2) : fmtAbbrev(v, curr);
+      }),
+    });
+  }
+}
+
+function chartOpts(title, fmt) {
+  return {
+    responsive: true, maintainAspectRatio: false,
+    plugins: {
+      legend: { display: false },
+      tooltip: {
+        callbacks: {
+          label: ctx => fmt(ctx.parsed.y)
+        }
+      }
+    },
+    scales: {
+      x: { grid: { display: false }, ticks: { font: { size: 11 }, color: '#64748B' } },
+      y: { grid: { color: '#F1F5F9' }, ticks: { font: { size: 11 }, color: '#64748B', callback: v => fmt(v) } }
+    }
+  };
+}
+
+function switchChart(metric) {
+  _currentMetric = metric;
+  document.querySelectorAll('.toggle-btn').forEach((b, i) => {
+    b.classList.toggle('active', ['revenue','eps','equity','fcf','pe'][i] === metric);
+  });
+  if (_data) renderFundamentalsChart(_data, metric);
+}
+
+// ── Fundamentals Table ──
+function renderFundamentalsTable(d) {
+  const years = d.all_years;
+  const f = d.fundamentals;
+  const curr = d.currency;
+
+  const metrics = [
+    ['Revenue',         y => fmtAbbrev(f.revenue[y],    curr)],
+    ['EPS',             y => f.eps[y]     != null ? '$' + parseFloat(f.eps[y]).toFixed(2)     : 'N/A'],
+    ['Equity',          y => fmtAbbrev(f.equity[y],     curr)],
+    ['Free Cash Flow',  y => fmtAbbrev(f.fcf[y],        curr)],
+    ['PE High',         y => f.pe_highs[y] != null ? parseFloat(f.pe_highs[y]).toFixed(1)     : 'N/A'],
+    ['PE Low',          y => f.pe_lows[y]  != null ? parseFloat(f.pe_lows[y]).toFixed(1)      : 'N/A'],
+    ['ROIC (SimFin)',   y => f.roic[y]     != null ? (f.roic[y]*100).toFixed(1)+'%'           : 'N/A'],
+    ['ROIC (Calc)',     y => f.roic_calc[y]!= null ? (f.roic_calc[y]*100).toFixed(1)+'%'     : 'N/A'],
+  ];
+
+  const yrs = years.map(String);
+  let html = '<table><thead><tr><th>Metric</th>';
+  yrs.forEach(y => html += `<th>${y}</th>`);
+  html += '</tr></thead><tbody>';
+  metrics.forEach(([label, fn]) => {
+    html += `<tr><td>${label}</td>`;
+    yrs.forEach(y => html += `<td>${fn(y)}</td>`);
+    html += '</tr>';
+  });
+  html += '</tbody></table>';
+  document.getElementById('fund-table').innerHTML = html;
+}
+
+// ── CAGR Chart ──
+function renderCAGRChart(d) {
+  const cagr = d.cagr;
+  const longLabel = cagr.long_label || 'Long';
+  const periods = [longLabel, '7yr', '5yr', '3yr', '1yr'];
+  const keys     = ['long', 'yr7', 'yr5', 'yr3', 'yr1'];
+
+  const metrics = [
+    { label: 'EPS',     key: 'eps',     color: '#059669' },
+    { label: 'Revenue', key: 'revenue', color: '#4F46E5' },
+    { label: 'Equity',  key: 'equity',  color: '#0EA5E9' },
+    { label: 'FCF',     key: 'fcf',     color: '#D97706' },
+  ];
+
+  const ctx = document.getElementById('cagrChart');
+  if (_cagrChart) { _cagrChart.destroy(); _cagrChart = null; }
+
+  _cagrChart = new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: periods,
+      datasets: metrics.map(m => ({
+        label: m.label,
+        data: keys.map(k => {
+          const v = cagr[m.key]?.[k];
+          return v != null ? parseFloat((v * 100).toFixed(2)) : null;
+        }),
+        backgroundColor: m.color + '99',
+        borderColor: m.color,
+        borderWidth: 1.5,
+        borderRadius: 3,
+      })),
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      plugins: {
+        legend: { position: 'top', labels: { font: { size: 11 }, boxWidth: 12, padding: 16 } },
+        tooltip: { callbacks: { label: ctx => (ctx.parsed.y != null ? ctx.dataset.label + ': ' + ctx.parsed.y.toFixed(1) + '%' : 'N/A') } }
+      },
+      scales: {
+        x: { grid: { display: false }, ticks: { font: { size: 11 }, color: '#64748B' } },
+        y: { grid: { color: '#F1F5F9' }, ticks: { font: { size: 11 }, color: '#64748B', callback: v => v + '%' } }
+      }
+    },
+  });
+}
+
+// ── CAGR Table ──
+function renderCAGRTable(d) {
+  const cagr = d.cagr;
+  const longLabel = cagr.long_label || 'Long';
+  const periods = [[longLabel, 'long'], ['7yr','yr7'], ['5yr','yr5'], ['3yr','yr3'], ['1yr','yr1']];
+  const rows = [
+    ['EPS',       'eps'],
+    ['Revenue',   'revenue'],
+    ['Equity',    'equity'],
+    ['Free CF',   'fcf'],
+    ['ROIC SF',   'roic'],
+    ['ROIC Calc', 'roic_calc'],
+  ];
+
+  let html = '<table><thead><tr><th>Metric</th>';
+  periods.forEach(([lbl]) => html += `<th>${lbl}</th>`);
+  html += '</tr></thead><tbody>';
+
+  rows.forEach(([label, key]) => {
+    html += `<tr><td>${label}</td>`;
+    periods.forEach(([, k]) => {
+      const row = cagr[key];
+      const v   = row?.[k];
+      const lin = row?.[k + '_linear'];
+      html += `<td>${fmtPct(v, lin)}</td>`;
+    });
+    html += '</tr>';
+  });
+  html += '</tbody></table>';
+  document.getElementById('cagr-table').innerHTML = html;
+}
+
+// ── Valuation ──
+function renderValuation(d) {
+  const v = d.valuation;
+  const price = d.current_price;
+
+  // Warnings
+  const epsWarn = document.getElementById('eps-warning-banner');
+  if (v.eps_ttm_negative && v.eps_ttm_orig != null) {
+    epsWarn.textContent = `⚠ TTM EPS was $${parseFloat(v.eps_ttm_orig).toFixed(2)} (negative) — valuation uses most recent positive annual EPS ($${parseFloat(v.eps_ttm).toFixed(2)}, ${v.best_annual_year}).`;
+    epsWarn.classList.remove('hidden');
+  } else {
+    epsWarn.classList.add('hidden');
+  }
+  const eqWarn = document.getElementById('equity-warning-banner');
+  if (v.equity_warning) {
+    eqWarn.textContent = `⚠ Shareholder equity jumped ${v.equity_warning[1].toFixed(0)}% in ${v.equity_warning[0]} — possible acquisition. Equity-based growth rate may be distorted.`;
+    eqWarn.classList.remove('hidden');
+  } else {
+    eqWarn.classList.add('hidden');
+  }
+
+  // 3 cards
+  const methods = [
+    { title: 'Equity Only',       growth: v.equity_based_growth, val: v.val_equity   },
+    { title: 'Equity + Analyst',  growth: v.combined_growth,     val: v.val_combined },
+    { title: 'Analyst Only',      growth: v.analyst_growth,      val: v.val_analyst  },
+  ];
+
+  const grid = document.getElementById('val-grid');
+  grid.innerHTML = '';
+  methods.forEach(m => {
+    const g = m.growth != null ? (m.growth * 100).toFixed(1) + '%' : '—';
+    const vv = m.val || {};
+    const sp = vv.sticker_price;
+    const mo = vv.mos_50;
+
+    let priceRowClass = '';
+    let priceLabel = 'Current Price';
+    if (price && sp) {
+      if (price <= mo) { priceRowClass = 'price-below'; priceLabel = '✅ Current Price (below MOS)'; }
+      else if (price > sp) { priceRowClass = 'price-above'; priceLabel = '⚠ Current Price (above sticker)'; }
+    }
+
+    grid.innerHTML += `
+    <div class="val-card">
+      <div class="val-card-header">
+        <h3>${m.title}</h3>
+        <div class="growth">${g} growth</div>
+      </div>
+      <div class="val-card-body">
+        ${valRow('Rule 1 PE', vv.r1_pe ?? '—')}
+        ${valRow('Chosen PE', vv.chosen_pe ?? '—')}
+        <hr style="border:none;border-top:1px solid #F1F5F9;"/>
+        ${valRow('Future EPS (10yr)', fmt$(vv.future_eps_10))}
+        ${valRow('Future Price', fmt$(vv.future_price))}
+        ${valRow('Sticker Price', fmt$(sp), 'highlight')}
+        ${valRow('MOS 50%', fmt$(mo), 'mos')}
+        ${valRow('MOS 60%', fmt$(vv.mos_60), 'mos')}
+        ${price ? valRow(priceLabel, fmt$(price), priceRowClass) : ''}
+      </div>
+    </div>`;
+  });
+
+  // Full comparison table
+  const valTable = document.getElementById('val-table');
+  const rows = [
+    ['EPS Used (TTM)',      fmt$(v.eps_ttm), fmt$(v.eps_ttm), fmt$(v.eps_ttm)],
+    ['Analyst Growth',     '—', fmtPctRaw(v.analyst_growth), fmtPctRaw(v.analyst_growth)],
+    ['Equity-Based Growth',fmtPctRaw(v.equity_based_growth), fmtPctRaw(v.equity_based_growth), '—'],
+    ['Chosen Growth',      fmtPctRaw(v.equity_based_growth), fmtPctRaw(v.combined_growth), fmtPctRaw(v.analyst_growth)],
+    ['Avg PE High',        String(v.avg_pe_high ?? 'N/A'), String(v.avg_pe_high ?? 'N/A'), String(v.avg_pe_high ?? 'N/A')],
+    ['Avg PE Low',         String(v.avg_pe_low  ?? 'N/A'), String(v.avg_pe_low  ?? 'N/A'), String(v.avg_pe_low  ?? 'N/A')],
+    ['Est. Future PE',     String(v.estimated_future_pe ?? 'N/A'), String(v.estimated_future_pe ?? 'N/A'), String(v.estimated_future_pe ?? 'N/A')],
+    ['Years to Double',    String(v.val_equity?.years_to_double ?? 'N/A'), String(v.val_combined?.years_to_double ?? 'N/A'), String(v.val_analyst?.years_to_double ?? 'N/A')],
+    ['Doubles in 10yr',    String(v.val_equity?.doubles_in_10 ?? 'N/A'),   String(v.val_combined?.doubles_in_10 ?? 'N/A'),   String(v.val_analyst?.doubles_in_10 ?? 'N/A')],
+    ['Future EPS (10yr)',  fmt$(v.val_equity?.future_eps_10),   fmt$(v.val_combined?.future_eps_10),   fmt$(v.val_analyst?.future_eps_10)],
+    ['Future Price',       fmt$(v.val_equity?.future_price),    fmt$(v.val_combined?.future_price),    fmt$(v.val_analyst?.future_price)],
+    ['Sticker Price',      fmt$(v.val_equity?.sticker_price),   fmt$(v.val_combined?.sticker_price),   fmt$(v.val_analyst?.sticker_price)],
+    ['MOS 50%',            fmt$(v.val_equity?.mos_50),          fmt$(v.val_combined?.mos_50),          fmt$(v.val_analyst?.mos_50)],
+    ['MOS 60%',            fmt$(v.val_equity?.mos_60),          fmt$(v.val_combined?.mos_60),          fmt$(v.val_analyst?.mos_60)],
+  ];
+  if (price) {
+    rows.push(['Current Price', fmt$(price), fmt$(price), fmt$(price)]);
+    const sp1 = v.val_equity?.sticker_price, sp2 = v.val_combined?.sticker_price, sp3 = v.val_analyst?.sticker_price;
+    rows.push(['Margin to Sticker',
+      sp1 ? (((sp1-price)/sp1)*100).toFixed(1)+'%' : 'N/A',
+      sp2 ? (((sp2-price)/sp2)*100).toFixed(1)+'%' : 'N/A',
+      sp3 ? (((sp3-price)/sp3)*100).toFixed(1)+'%' : 'N/A',
+    ]);
+  }
+
+  let thtml = '<table><thead><tr><th>Metric</th><th>Equity Only</th><th>Eq + Analyst</th><th>Analyst Only</th></tr></thead><tbody>';
+  rows.forEach(([lbl, ...vals]) => {
+    thtml += `<tr><td>${lbl}</td>${vals.map(v => `<td>${v}</td>`).join('')}</tr>`;
+  });
+  thtml += '</tbody></table>';
+  valTable.innerHTML = thtml;
+}
+
+function valRow(label, value, cls='') {
+  return `<div class="val-row ${cls}"><span class="vr-label">${label}</span><span class="vr-val">${value}</span></div>`;
+}
+function fmtPctRaw(v) {
+  if (v == null) return '—';
+  return (parseFloat(v)*100).toFixed(1) + '%';
+}
+
+// ── Notes ──
+function renderNotes(d) {
+  const notes = d.notes || [];
+  const list = document.getElementById('notes-list');
+
+  const badge = document.getElementById('notes-badge');
+  const negCount = notes.filter(n => n.includes('⚠')).length;
+  badge.textContent = negCount > 0 ? negCount : '';
+
+  if (!notes.length) {
+    list.innerHTML = '<div class="note-card positive"><span class="note-icon">✅</span><span class="note-text">No significant issues detected.</span></div>';
+    return;
+  }
+  list.innerHTML = notes.map(note => {
+    let cls, icon;
+    if (note.startsWith('✅')) { cls = 'positive'; icon = '✅'; }
+    else if (note.startsWith('⚠')) { cls = 'negative'; icon = '⚠'; }
+    else { cls = 'info'; icon = 'ℹ'; }
+    const text = note.replace(/^[✅⚠ℹ]\s*/, '');
+    return `<div class="note-card ${cls}"><span class="note-icon">${icon}</span><span class="note-text">${text}</span></div>`;
+  }).join('');
+}
+
+// ── Custom Valuation ──
+async function calculateCustom() {
+  if (!_data) return;
+  const growthInput = document.getElementById('custom-growth').value.trim();
+  const peInput     = document.getElementById('custom-pe').value.trim();
+
+  if (!growthInput) {
+    alert('Please enter a growth rate.');
+    return;
+  }
+  const growthRate = parseFloat(growthInput) / 100;
+  if (isNaN(growthRate) || growthRate <= 0 || growthRate > 2) {
+    alert('Growth rate must be between 0.1% and 200%.');
+    return;
+  }
+
+  const btn = document.getElementById('calc-btn');
+  btn.disabled = true; btn.textContent = 'Calculating...';
+
+  try {
+    const payload = {
+      eps_ttm:             _data.valuation.eps_ttm,
+      growth_rate:         growthRate,
+      estimated_future_pe: _data.valuation.estimated_future_pe,
+      custom_pe:           peInput ? parseFloat(peInput) : null,
+    };
+    const res  = await fetch(API_BASE + '/api/custom-valuation', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload),
+    });
+    const val = await res.json();
+    if (!res.ok) throw new Error(val.error || 'Calculation failed');
+    renderCustomResult(growthRate, peInput, val);
+  } catch (err) {
+    document.getElementById('custom-result').innerHTML =
+      `<div class="error-box" style="max-width:480px;">${err.message}</div>`;
+  } finally {
+    btn.disabled = false; btn.textContent = 'Calculate →';
+  }
+}
+
+function renderCustomResult(growthRate, peInput, val) {
+  const price = _data?.current_price;
+  const sp    = val.sticker_price;
+  const peLabel = peInput ? `Custom PE: ${parseFloat(peInput).toFixed(1)}` : `Rule 1 PE: ${val.r1_pe}`;
+
+  let priceNote = '';
+  if (price && sp) {
+    const pct = (((sp - price) / sp) * 100).toFixed(1);
+    const color = price <= val.mos_50 ? '#059669' : price > sp ? '#DC2626' : '#D97706';
+    priceNote = `<div class="val-row" style="background:#F8FAFC;">
+      <span class="vr-label">Current Price</span>
+      <span class="vr-val">${fmt$(price)}</span>
+    </div>
+    <div class="val-row" style="background:#F8FAFC;">
+      <span class="vr-label">Margin to Sticker</span>
+      <span class="vr-val" style="color:${color};">${pct}%</span>
+    </div>`;
+  }
+
+  document.getElementById('custom-result').innerHTML = `
+    <div class="custom-result">
+      <div class="custom-result-header">
+        <h4>Custom Growth Valuation</h4>
+        <div class="cr-growth">${(growthRate*100).toFixed(1)}% growth · ${peLabel}</div>
+      </div>
+      <div class="val-card-body">
+        ${valRow('EPS Used (TTM)', fmt$(_data?.valuation.eps_ttm))}
+        ${valRow('Rule 1 PE (2× growth)', val.r1_pe ?? '—')}
+        ${valRow('Chosen PE', val.chosen_pe ?? '—')}
+        <hr style="border:none;border-top:1px solid #F1F5F9;"/>
+        ${valRow('Future EPS (10yr)', fmt$(val.future_eps_10))}
+        ${valRow('Future Price', fmt$(val.future_price))}
+        ${valRow('Sticker Price', fmt$(sp), 'highlight')}
+        ${valRow('MOS 50%', fmt$(val.mos_50), 'mos')}
+        ${valRow('MOS 60%', fmt$(val.mos_60), 'mos')}
+        ${priceNote}
+      </div>
+    </div>`;
+}
+
+// Focus search on load
+document.getElementById('ticker-input').focus();
+</script>
+</body>
+</html>
