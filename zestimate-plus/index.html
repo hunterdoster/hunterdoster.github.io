@@ -353,7 +353,14 @@ body{font-family:'Outfit',sans-serif;background:var(--bg);color:var(--ink);line-
       <div class="ccard" id="cc2"><div class="cthumb">🏘️</div><div class="cbody"><div class="caddr">1203 Sunridge Blvd</div><div class="cprice">$502,500</div><div class="cmeta">4bd · 2ba · 2,100 sqft · 67 days ago</div></div><div class="cbtns"><button class="cbtn ca" onclick="acceptComp('cc2',event)">✓ Good Comp</button><button class="cbtn cr" onclick="rejectComp('cc2',event)">✗ Not Similar</button></div><div class="ccheck">✓</div></div>
       <div class="ccard" id="cc3"><div class="cthumb">🏠</div><div class="cbody"><div class="caddr">8841 Desert Rose Ln</div><div class="cprice">$461,000</div><div class="cmeta">3bd · 2ba · 1,750 sqft · 89 days ago</div></div><div class="cbtns"><button class="cbtn ca" onclick="acceptComp('cc3',event)">✓ Good Comp</button><button class="cbtn cr" onclick="rejectComp('cc3',event)">✗ Not Similar</button></div><div class="ccheck">✓</div></div>
     </div>
-    <div class="alt-note" id="alt-note">🔄 One comp removed. We found <strong>2 replacement homes</strong> from the past 6 months that may be a better fit. <a>View alternatives →</a></div>
+    <div class="alt-note" id="alt-note">🔄 One comp removed. We found <strong>2 replacement homes</strong> from the past 6 months that may be a better fit. <a onclick="showAltComps()" style="cursor:pointer;">View alternatives →</a></div>
+    <div id="alt-comps" style="display:none;margin-top:16px;">
+      <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:var(--teal);margin-bottom:12px;">🤖 AI-Suggested Replacements — Within 0.5 mi · Past 6 Months</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;">
+        <div class="ccard" id="cc4" style="border-color:rgba(0,184,156,.4);"><div style="position:absolute;top:9px;left:9px;background:var(--teal);color:#fff;font-size:10px;font-weight:700;padding:3px 10px;border-radius:100px;z-index:1;">AI Match</div><div class="cthumb" style="background:linear-gradient(135deg,#c5ede8,#a8ddd6);">🏡</div><div class="cbody"><div class="caddr">5512 Cactus Bloom Way</div><div class="cprice">$471,500</div><div class="cmeta">3bd · 2ba · 1,810 sqft · 28 days ago</div></div><div class="cbtns"><button class="cbtn ca" onclick="acceptComp('cc4',event)">✓ Good Comp</button><button class="cbtn cr" onclick="rejectComp('cc4',event)">✗ Not Similar</button></div><div class="ccheck">✓</div></div>
+        <div class="ccard" id="cc5" style="border-color:rgba(0,184,156,.4);"><div style="position:absolute;top:9px;left:9px;background:var(--teal);color:#fff;font-size:10px;font-weight:700;padding:3px 10px;border-radius:100px;z-index:1;">AI Match</div><div class="cthumb" style="background:linear-gradient(135deg,#c5ede8,#a8ddd6);">🏘️</div><div class="cbody"><div class="caddr">9204 Ironwood Ct</div><div class="cprice">$464,000</div><div class="cmeta">3bd · 2ba · 1,790 sqft · 41 days ago</div></div><div class="cbtns"><button class="cbtn ca" onclick="acceptComp('cc5',event)">✓ Good Comp</button><button class="cbtn cr" onclick="rejectComp('cc5',event)">✗ Not Similar</button></div><div class="ccheck">✓</div></div>
+      </div>
+    </div>
     <div class="navrow"><button class="btn btn-ghost" onclick="goStep(1)">← Back</button><button class="btn btn-blue" onclick="goStep(3)">Add Home Details →</button></div>
   </div>
 
@@ -380,12 +387,11 @@ body{font-family:'Outfit',sans-serif;background:var(--bg);color:var(--ink);line-
     <div class="bkdn">
       <div class="bkdn-h">📊 Adjustment Breakdown — Appraiser Logic Applied</div>
       <div class="brow"><span style="color:var(--slate)">Base (seller-verified comps)</span><span>$487,000</span></div>
-      <div class="brow"><span style="color:var(--slate)">Kitchen — Quartz + stainless appliances</span><span class="pos">+$10,500</span></div>
-      <div class="brow"><span style="color:var(--slate)">Bathroom — Master full remodel</span><span class="pos">+$12,000</span></div>
-      <div class="brow"><span style="color:var(--slate)">Exterior — Pool + maintained landscaping</span><span class="pos">+$9,500</span></div>
-      <div class="brow"><span style="color:var(--slate)">Location — Golf course view premium</span><span class="pos">+$7,000</span></div>
-      <div class="brow"><span style="color:var(--slate)">Location — Quiet street bonus</span><span class="pos">+$4,000</span></div>
-      <div class="brow"><span style="font-weight:700">Your Zestimate+</span><span style="color:var(--blue);font-weight:700">$530,000</span></div>
+      <div class="brow"><span style="color:var(--slate)" id="bdn-kitchen-lbl">Kitchen upgrades</span><span class="pos" id="bdn-kitchen">+$10,500</span></div>
+      <div class="brow"><span style="color:var(--slate)" id="bdn-bath-lbl">Bathroom upgrades</span><span class="pos" id="bdn-bath">+$12,000</span></div>
+      <div class="brow"><span style="color:var(--slate)" id="bdn-exterior-lbl">Exterior &amp; lot</span><span class="pos" id="bdn-exterior">+$9,500</span></div>
+      <div class="brow"><span style="color:var(--slate)" id="bdn-location-lbl">Location factors</span><span class="pos" id="bdn-location">+$11,000</span></div>
+      <div class="brow"><span style="font-weight:700">Your Zestimate+</span><span style="color:var(--blue);font-weight:700" id="bdn-total">$530,000</span></div>
     </div>
     <div class="info-bar" style="margin-top:20px;"><span style="font-size:22px;flex-shrink:0">🎯</span><div>You're ready to list with confidence. <strong>Next: see what your neighbors upgraded</strong> to sell for even more — your personalized Value Roadmap, powered by AI analysis of comparable listing descriptions.</div></div>
     <div class="navrow"><button class="btn btn-ghost" onclick="goStep(3)">← Adjust Details</button><button class="btn btn-teal" onclick="showTab('roadmap')">See My Value Roadmap ✨ →</button></div>
@@ -592,17 +598,57 @@ function goStep(n) {
 
 function acceptComp(id,e){ e.stopPropagation(); document.getElementById(id).className='ccard acc'; }
 function rejectComp(id,e){ e.stopPropagation(); document.getElementById(id).className='ccard rej'; document.getElementById('alt-note').style.display='block'; }
+function showAltComps(){
+  document.getElementById('alt-comps').style.display='block';
+  document.getElementById('alt-note').innerHTML='🔄 One comp removed. Showing <strong>2 AI-suggested replacements</strong> below — accept the ones that fit.';
+}
 function toggleR(id){ document.getElementById(id).classList.toggle('open'); }
 
 function recalc(){
-  const sels=document.querySelectorAll('.rsel'); let bonus=0;
-  sels.forEach(s=>{ bonus+=s.selectedIndex*3800; });
-  const base=487000, nv=base+bonus+33000, diff=nv-base;
-  document.getElementById('fval').textContent='$'+Math.round(nv/1000)+'K';
-  document.getElementById('fdelta').textContent=(diff>=0?'+':'')+'$'+diff.toLocaleString()+' · Seller-verified';
-  const conf=Math.min(95,72+Math.floor(bonus/1000));
-  document.getElementById('fpct').textContent=conf+'%';
-  document.getElementById('cfill').style.width=conf+'%';
+  const kitVals  = [[0,2000,5000],[0,2000,5500],[0,3500,7000]];
+  const bathVals = [[0,4500,9000],[0,3000,6500]];
+  const extVals  = [[0,7500,16000],[0,2000,4500]];
+  const locVals  = [[0,7000,14000],[4000,0,-2500]];
+  const kitLbls  = [['Original countertops','Granite countertops','Quartz countertops'],['Original cabinets','Refaced cabinets','New cabinets'],['Standard appliances','Stainless appliances','High-end appliances']];
+  const bathLbls = [['Original master bath','Updated master bath','Master bath remodel'],['Original secondary baths','Updated secondary baths','Secondary bath remodel']];
+  const extLbls  = [['No pool','Basic pool','Premium / heated pool'],['Basic landscaping','Maintained landscaping','Custom landscaping']];
+  const locLbls  = [['Standard view','Golf course view','Mountain/panoramic view'],['Quiet street bonus','Moderate street','Busy road penalty']];
+
+  const selKit  = document.querySelectorAll('#rc1 .rsel');
+  const selBath = document.querySelectorAll('#rc2 .rsel');
+  const selExt  = document.querySelectorAll('#rc3 .rsel');
+  const selLoc  = document.querySelectorAll('#rc4 .rsel');
+
+  const sumCat = (sels, vals) => [...sels].reduce((t,s,i)=>t+vals[i][s.selectedIndex], 0);
+  const descCat = (sels, lbls) => [...sels].map((s,i)=>lbls[i][s.selectedIndex]).join(', ');
+  const fmt = v => (v>=0?'+$':'-$')+Math.abs(v).toLocaleString();
+  const cls = v => v<0?'neg':'pos';
+
+  const kitchen  = sumCat(selKit,  kitVals);
+  const bath     = sumCat(selBath, bathVals);
+  const exterior = sumCat(selExt,  extVals);
+  const location = sumCat(selLoc,  locVals);
+  const base = 487000;
+  const total = base + kitchen + bath + exterior + location;
+  const diff  = total - base;
+
+  document.getElementById('fval').textContent   = '$'+Math.round(total/1000)+'K';
+  document.getElementById('fdelta').textContent = fmt(diff)+' · Seller-verified';
+
+  document.getElementById('bdn-kitchen-lbl').textContent  = 'Kitchen — '+descCat(selKit,  kitLbls);
+  document.getElementById('bdn-bath-lbl').textContent     = 'Bathrooms — '+descCat(selBath, bathLbls);
+  document.getElementById('bdn-exterior-lbl').textContent = 'Exterior — '+descCat(selExt,  extLbls);
+  document.getElementById('bdn-location-lbl').textContent = 'Location — '+descCat(selLoc,  locLbls);
+
+  document.getElementById('bdn-kitchen').textContent  = fmt(kitchen);  document.getElementById('bdn-kitchen').className  = cls(kitchen);
+  document.getElementById('bdn-bath').textContent     = fmt(bath);     document.getElementById('bdn-bath').className     = cls(bath);
+  document.getElementById('bdn-exterior').textContent = fmt(exterior); document.getElementById('bdn-exterior').className = cls(exterior);
+  document.getElementById('bdn-location').textContent = fmt(location); document.getElementById('bdn-location').className = cls(location);
+  document.getElementById('bdn-total').textContent    = '$'+total.toLocaleString();
+
+  const conf = Math.min(95, 72+Math.floor(Math.max(0,diff)/1000));
+  document.getElementById('fpct').textContent  = conf+'%';
+  document.getElementById('cfill').style.width = conf+'%';
 }
 
 const upVals={uc1:24000,uc2:18000,uc3:31000,uc4:15000,uc5:22000};
