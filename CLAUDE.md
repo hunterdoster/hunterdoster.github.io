@@ -174,6 +174,31 @@ Always edit `index.html` directly — it's the entire site.
 
 ---
 
+## Verification Suite (Playwright)
+
+End-to-end test suite at `tests/portfolio.spec.js` runs against the **live site** (https://hunterdoster.com) and exercises every interactive feature across all three products plus the JobAlert and Stock Analyzer Railway endpoints.
+
+```bash
+# One-time setup
+npm install
+npx playwright install chromium
+
+# Run on demand
+npm test
+```
+
+What it covers:
+- **Top-level:** title, all nav anchors resolve, product card hrefs, LinkedIn + email links
+- **Zestimate+:** all 5 tabs activate, 4-step prototype navigation, comp accept/reject + view-alternatives, home-detail dropdowns recalc breakdown, roadmap upgrade cards update projected price
+- **Stock Analyzer:** all 5 tabs visible, every quick-pick fills the input, **BRK.B is absent** (regression check), full AAPL analyze + custom valuation hit the Railway backend end-to-end
+- **External health:** JobAlert + Stock Analyzer Railway URLs return < 500
+
+Runs ~2-3 min total (the AAPL analyze drives most of the wall time). On-demand only, no CI.
+
+When adding a new product or interactive feature, add a `test.describe(...)` block in `tests/portfolio.spec.js` mirroring the existing patterns.
+
+---
+
 ## Known Limitations / Future Ideas
 
 - GitHub link intentionally omitted from contact section (Hunter doesn't use GitHub for networking)

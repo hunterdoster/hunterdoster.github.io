@@ -1,0 +1,12 @@
+{
+  "name": "hunterdoster-site-tests",
+  "private": true,
+  "version": "1.0.0",
+  "description": "End-to-end verification suite for hunterdoster.com and its products.",
+  "scripts": {
+    "test": "playwright test"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.49.0"
+  }
+}
