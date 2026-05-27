@@ -48,7 +48,7 @@ Always edit `index.html` directly — it's the entire site.
 1. **Nav** — About · Experience · Products · Skills · Contact (button)
 2. **Hero** — dark navy, headshot (rounded), name, "Product Manager · 7+ years experience", tagline, CTAs, badge pills
 3. **Education** — AFIT M.S. Computer Engineering (Focus: Computer Networks & AI), USAFA B.S. Computer Engineering (no years shown)
-4. **Products** — "Created with AI Vibe Coding" subtitle, AI Vibe Coding callout banner, JobAlert card (live demo + GitHub), Zestimate+ card (links to zestimate-plus/), Stock Analyzer card (links to stock-analyzer/)
+4. **Products** — "Created with AI Vibe Coding" subtitle, AI Vibe Coding callout banner, JobAlert card (live demo + GitHub), Zestimate+ card (links to zestimate-plus/), Workout Generator card (links to workout-generator/), Stock Analyzer card (links to stock-analyzer/)
 5. **Skills** — 3 columns: Product Management, Technical, AI & Tools (includes Claude, ChatGPT/Codex, Grok)
 6. **About** — 4-paragraph summary from LinkedIn
 7. **Experience** — newest to oldest timeline (left border, indigo ▸ bullets):
@@ -191,6 +191,7 @@ What it covers:
 - **Top-level:** title, all nav anchors resolve, product card hrefs, LinkedIn + email links
 - **Zestimate+:** all 5 tabs activate, 4-step prototype navigation, comp accept/reject + view-alternatives, home-detail dropdowns recalc breakdown, roadmap upgrade cards update projected price
 - **Stock Analyzer:** all 5 tabs visible, every quick-pick fills the input, **BRK.B is absent** (regression check), full AAPL analyze + custom valuation hit the Railway backend end-to-end
+- **Workout Generator** (`tests/workout-generator.spec.js`, 11 tests): direct-to-form load (no password gate), instructions panel, no Pure Barre branding leaking through, schema sections render, all input types update state, Clear-form confirm-and-wipe, Preview/Edit nav, real PDF generation (verified via `%PDF-` magic bytes on the blob URL), localStorage draft survives reload, console-error sweep, portfolio card link
 - **External health:** JobAlert + Stock Analyzer Railway URLs return < 500
 
 Runs ~2-3 min total (the AAPL analyze drives most of the wall time). On-demand only, no CI.
@@ -204,5 +205,28 @@ When adding a new product or interactive feature, add a `test.describe(...)` blo
 - GitHub link intentionally omitted from contact section (Hunter doesn't use GitHub for networking)
 - JobAlert product card links to live Railway demo + GitHub repo
 - Zestimate+ product card links to `zestimate-plus/` → `zestimate-plus/index.html` (self-contained interactive prototype, opens in new tab)
+- Workout Generator card links to `workout-generator/` — Vite + React SPA, fully client-side (no backend, jsPDF for PDF generation). Source lives outside this repo at `C:\Users\16786\Documents\claudeProjects\workout-demo\` (see that folder's CLAUDE.md for build/deploy workflow).
 - Stock Analyzer card links to `stock-analyzer/` — backend at Railway, frontend on GitHub Pages
 - Skills section manually curated — update when skill set changes
+
+---
+
+## Session — 2026-04-30
+
+### Workout Generator product added
+- **Why:** Hunter wanted to publish his Pure Barre choreography tool as a public portfolio piece, but had to strip company branding for privacy.
+- **Source repo (outside this folder):** `C:\Users\16786\Documents\claudeProjects\workout-demo\` — a Vite + React 19 + TypeScript SPA forked from the private `pure-bare-choreo-tool` (which we did not modify per Hunter's instruction). See that folder's CLAUDE.md for the build/deploy workflow.
+- **Deployed bundle:** `workout-generator/` in this repo (built `dist` of the SPA, asset paths prefixed with `/workout-generator/` via Vite `base` config). Static; no Railway needed since PDF generation is client-side via jsPDF.
+- **Branding-stripping work:** removed `PasswordGate` (lands directly on form), removed Pure Barre logo + red theme + "PURE BARRE" PDF header text + "Pure Barre" workout-sheet eyebrow, retitled to "Workout Generator", added a "How it works" instructions panel above the form, switched accent color to indigo to match this site's theme. Workout content (`exercises.json`, PRINT_ORDER, all 121 exercises) is byte-identical to the original.
+- **Portfolio card:** added between Zestimate+ and Stock Analyzer (indigo gradient header with a lightning-bolt icon), "Launch Generator →" CTA, tags: React 19 / TypeScript / Vite / jsPDF / GitHub Pages.
+- **Tests:** new `tests/workout-generator.spec.js` (11 tests, all passing against live URL).
+- **Commit:** `e0cd9b6 Add Workout Generator to products section`
+
+### Updating the Workout Generator
+Source code is **not in this repo** — it's at `C:\Users\16786\Documents\claudeProjects\workout-demo\`. To ship a change:
+```bash
+cd C:\Users\16786\Documents\claudeProjects\workout-demo\app
+npm run build
+# then copy app/dist/* → hunterdoster.github.io/workout-generator/, commit, push
+```
+Full workflow lives in that folder's CLAUDE.md.
