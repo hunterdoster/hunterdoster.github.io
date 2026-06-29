@@ -16,6 +16,13 @@
     .toggle-switch input:checked + .toggle-track { background:#0B91DF; }
     .toggle-track::after { content:''; position:absolute; top:3px; left:3px; width:18px; height:18px; background:#fff; border-radius:50%; transition:transform 0.2s; box-shadow:0 1px 3px rgba(0,0,0,0.2); }
     .toggle-switch input:checked + .toggle-track::after { transform:translateX(20px); }
+    /* Obvious "try the demo" callout at the top of the card */
+    .demo-callout { background:#EAF4FB; border:1px solid #0B91DF; border-left:4px solid #0B91DF; border-radius:10px; padding:14px 16px; margin-bottom:22px; text-align:left; }
+    .demo-callout-title { font-size:14px; font-weight:700; color:#0B6FB0; margin-bottom:10px; }
+    .demo-callout-steps { display:flex; align-items:center; flex-wrap:wrap; gap:8px 10px; font-size:13px; color:#22293B; }
+    .demo-step { display:inline-flex; align-items:center; gap:7px; }
+    .demo-step-num { display:inline-flex; align-items:center; justify-content:center; width:20px; height:20px; background:#0B91DF; color:#fff; border-radius:50%; font-size:12px; font-weight:700; flex-shrink:0; }
+    .demo-step-arrow { color:#0B91DF; font-weight:700; }
     .demo-ribbon { background:#16314E; color:#fff; text-align:center; font-size:12.5px; padding:7px 16px; letter-spacing:0.02em; }
     .demo-ribbon a { color:#3EB2EF; text-decoration:none; font-weight:600; }
   </style>
@@ -48,11 +55,17 @@
   <div class="upload-page">
     <div class="upload-card">
       <h1 class="upload-title">Lead Slip Detector</h1>
-      <p class="upload-subtitle">Upload your leads and outreach files to identify contacts that have slipped through without being reached and duplicate leads.</p>
+      <p class="upload-subtitle">Upload your leads and outreach files to identify contacts that slipped through without being reached and duplicate leads that may have been contacted twice.</p>
 
-      
-        
-      
+      <!-- Obvious demo instructions for first-time visitors -->
+      <div class="demo-callout" id="demo-callout">
+        <div class="demo-callout-title">👋 Just want a demo? No files needed.</div>
+        <div class="demo-callout-steps">
+          <span class="demo-step"><span class="demo-step-num">1</span> Click <strong>“Load Demo Data”</strong></span>
+          <span class="demo-step-arrow">→</span>
+          <span class="demo-step"><span class="demo-step-num">2</span> Click <strong>“Analyze Pipeline”</strong></span>
+        </div>
+      </div>
 
       <form method="POST" action="#" enctype="multipart/form-data" id="upload-form">
         <input type="hidden" name="demo" id="demo-flag" value="">
@@ -76,8 +89,11 @@
 
         <div class="email-toggle-wrap">
           <div>
-            <div style="font-size:14px; font-weight:600; color:#22293B;">Email report on completion</div>
-            <div style="font-size:12px; color:#86A5C6; margin-top:2px;">Send results to hunterdoster@gmail.com</div>
+            <div style="display:flex; align-items:center; gap:8px; flex-wrap:wrap;">
+              <span style="font-size:14px; font-weight:600; color:#22293B;">Email report on completion</span>
+              <span style="background:#EAF4FB; color:#0B6FB0; border:1px solid #BFCBDE; font-size:11px; font-weight:700; padding:1px 7px; border-radius:4px; letter-spacing:0.02em;">Proposed</span>
+            </div>
+            <div style="font-size:12px; color:#86A5C6; margin-top:4px; max-width:340px; line-height:1.5;">Proposed feature — delivering the report would require an outbound messaging integration (e.g. SendGrid / Resend). Preview only in this hosted demo. Send results to hunterdoster@gmail.com.</div>
           </div>
           <label class="toggle-switch">
             <input type="checkbox" name="email_notifications" id="email-toggle" value="true">
@@ -294,7 +310,7 @@
         </div>
       </div>
 
-      
+      <div class="scroll-hint">Swipe the table sideways to see all lead data →</div>
       <div class="table-wrapper">
         <table>
           <thead>
@@ -1096,7 +1112,7 @@
       <!-- Collapsible syntax details -->
       <details class="syntax-details">
         <summary>View Detailed Syntax Report</summary>
-        
+        <div class="scroll-hint">Swipe the table sideways to see all lead data →</div>
         <div class="table-wrapper" style="margin-top:16px;">
           <table>
             <thead>
@@ -4258,6 +4274,7 @@
       <div style="padding:16px 24px 8px; border-bottom:1px solid var(--color-border);">
         <div style="font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:0.06em; color:var(--color-muted);">Repeat Slips — Flagged Multiple Times</div>
       </div>
+      <div class="scroll-hint">Swipe the table sideways to see all lead data →</div>
       <div class="table-wrapper">
         <table>
           <thead>
@@ -4505,8 +4522,7 @@
         </div>
       </div>
 
-      
-      
+      <div class="scroll-hint">Swipe the tables sideways to see all lead data →</div>
       <div style="border-bottom:1px solid var(--color-border);">
         <div style="display:flex; align-items:center; gap:10px; padding:14px 24px 10px;">
           <span style="font-size:12px; font-weight:700; color:var(--color-muted); text-transform:uppercase; letter-spacing:0.06em;">DUP-001</span>
@@ -5015,12 +5031,11 @@
           <span style="background:#FEF2F2; color:#EF4444; border:1px solid #FECACA; font-size:12px; font-weight:600; padding:4px 10px; border-radius:4px;">
             Landline or non-SMS-capable number <strong>(12)</strong>
           </span>
-          
+
         </div>
       </div>
-      
 
-      
+      <div class="scroll-hint">Swipe the table sideways to see all lead data →</div>
       <div class="table-wrapper">
         <table>
           <thead>

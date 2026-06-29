@@ -422,6 +422,18 @@ body {
 
 .table-wrapper {
   overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  max-width: 100%;
+}
+
+/* Mobile-only hint that the table scrolls sideways. Hidden on wide screens;
+   revealed in the <=768px breakpoint below. */
+.scroll-hint {
+  display: none;
+  padding: 10px 24px 0;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--color-muted);
 }
 
 table {
@@ -681,6 +693,9 @@ code {
   padding: 0 24px;
   display: flex;
   gap: 0;
+  overflow-x: auto;               /* horizontal scroll when tabs exceed width */
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: thin;
 }
 
 .tab-link {
@@ -694,6 +709,7 @@ code {
   border-bottom: 3px solid transparent;
   transition: color 0.15s, border-color 0.15s;
   white-space: nowrap;
+  flex-shrink: 0;                 /* don't squash tabs — let them scroll instead */
 }
 
 .tab-link:hover {
@@ -733,6 +749,16 @@ code {
 @media (max-width: 768px) {
   .stat-grid {
     grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    padding: 16px;
+  }
+
+  .stat-card {
+    padding: 14px 16px;
+  }
+
+  .stat-number {
+    font-size: 26px;
   }
 
   table {
@@ -747,8 +773,65 @@ code {
     padding: 10px 10px;
   }
 
+  /* Nav: drop the fixed 64px height + sticky so the wrapped second row
+     ("Last analyzed…") is fully visible and never sits under the tab bar. */
+  .nav {
+    position: static;
+    height: auto;
+    min-height: 64px;
+    padding: 10px 16px;
+  }
+
   .nav-right {
     gap: 10px;
+    width: 100%;
+  }
+
+  /* Tab bar: own row below the nav, horizontally scrollable, clearly
+     separated from the meta line above it. */
+  .tab-bar {
+    position: static;
+    top: auto;
+  }
+
+  .tab-bar-inner {
+    padding: 0 12px;
+  }
+
+  .tab-link {
+    padding: 13px 16px;          /* tappable, not cramped */
+    font-size: 13px;
+  }
+
+  /* Section headers stack so the title no longer overlaps the buttons. */
+  .section-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 16px;
+  }
+
+  .section-header > div:last-child {
+    width: 100%;
+  }
+
+  .section-header .btn-sm {
+    flex: 1 1 auto;              /* buttons share the row / wrap full-width */
+    justify-content: center;
+  }
+
+  /* No tall sticky offset to clear on mobile (nav/tabs are static now). */
+  .section {
+    scroll-margin-top: 12px;
+  }
+
+  .main {
+    padding: 20px 14px;
+  }
+
+  /* Reveal the swipe-to-scroll hint above each data table. */
+  .scroll-hint {
+    display: block;
   }
 
   .upload-card {
