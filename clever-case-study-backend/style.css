@@ -1,0 +1,800 @@
+/* ============================================================
+   CLEVER REAL ESTATE — Lead Slip Detector
+   style.css — Complete Clever Brand System
+   ============================================================ */
+
+/* ============================================================
+   CSS Custom Properties — Clever Brand Tokens
+   ============================================================ */
+
+:root {
+  /* Blue — Primary Brand (Dominant) */
+  --color-hero-bg:        #0072CE;
+  --color-primary:        #0B91DF;
+  --color-primary-hover:  #0078C0;
+  --color-mid-blue:       #3EB2EF;
+
+  /* Green — Conversion CTAs ONLY */
+  --color-action:         #0EC18F;
+  --color-action-hover:   #0AA87C;
+
+  /* Dark / Footer */
+  --color-navy:           #16314E;
+
+  /* Neutrals */
+  --color-white:          #FFFFFF;
+  --color-bg-subtle:      #F5F8FC;
+  --color-border:         #BFCBDE;
+  --color-muted:          #86A5C6;
+
+  /* Text */
+  --color-text:           #22293B;
+  --color-heading:        #2A4A6A;
+
+  /* Accents */
+  --color-warning:        #F59E0B;
+  --color-error:          #EF4444;
+  --color-success:        #10B981;
+}
+
+/* ============================================================
+   Reset & Base
+   ============================================================ */
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  background: var(--color-bg-subtle);
+  color: var(--color-text);
+  font-size: 15px;
+  line-height: 1.6;
+}
+
+/* ============================================================
+   Navigation
+   ============================================================ */
+
+.nav {
+  background-color: #FFFFFF;
+  border-bottom: 3px solid #0B91DF;
+  height: 64px;
+  display: flex;
+  align-items: center;
+  padding: 0 24px;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  box-shadow: 0 1px 4px rgba(22, 49, 78, 0.08);
+}
+
+.nav-inner {
+  max-width: 1200px;
+  width: 100%;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+}
+
+.nav-inner--spread {
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.nav-right {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.wordmark {
+  font-size: 22px;
+  font-weight: 800;
+  color: var(--color-primary);
+  letter-spacing: -0.5px;
+}
+
+.nav-subtitle {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--color-muted);
+}
+
+.nav-ts {
+  font-size: 12px;
+  color: var(--color-muted);
+  white-space: nowrap;
+}
+
+/* ============================================================
+   Upload Page — Blue Hero
+   ============================================================ */
+
+.upload-page {
+  min-height: calc(100vh - 64px);
+  background: var(--color-hero-bg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 24px;
+}
+
+.upload-card {
+  background: var(--color-white);
+  border-radius: 16px;
+  box-shadow: 0 8px 40px rgba(22, 49, 78, 0.18);
+  padding: 48px;
+  width: 100%;
+  max-width: 480px;
+}
+
+.upload-title {
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--color-heading);
+  margin-bottom: 8px;
+}
+
+.upload-subtitle {
+  font-size: 15px;
+  color: var(--color-muted);
+  margin-bottom: 32px;
+  line-height: 1.6;
+}
+
+/* ============================================================
+   Form Fields
+   ============================================================ */
+
+.field-group {
+  margin-bottom: 20px;
+}
+
+.field-label {
+  display: block;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--color-heading);
+  margin-bottom: 6px;
+}
+
+.file-input {
+  display: block;
+  width: 100%;
+  padding: 10px 14px;
+  border: 2px dashed var(--color-border);
+  border-radius: 8px;
+  background: var(--color-bg-subtle);
+  font-size: 14px;
+  color: var(--color-text);
+  cursor: pointer;
+  transition: border-color 0.2s;
+}
+
+.file-input:hover {
+  border-color: var(--color-primary);
+}
+
+.file-input:focus {
+  outline: none;
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px rgba(11, 145, 223, 0.20);
+}
+
+/* ============================================================
+   Buttons
+   ============================================================ */
+
+/* PRIMARY — Green conversion action (form submits, primary downloads) */
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 22px;
+  background: var(--color-action);
+  color: var(--color-white);
+  border: none;
+  border-radius: 6px;
+  font-size: 15px;
+  font-weight: 600;
+  font-family: inherit;
+  cursor: pointer;
+  text-decoration: none;
+  transition: background 0.2s;
+  white-space: nowrap;
+}
+
+.btn-primary:hover {
+  background: var(--color-action-hover);
+}
+
+/* SECONDARY / OUTLINE — Blue outline for nav actions, secondary links */
+.btn-secondary,
+.btn-outline {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 22px;
+  background: transparent;
+  color: var(--color-primary);
+  border: 1.5px solid var(--color-primary);
+  border-radius: 6px;
+  font-size: 15px;
+  font-weight: 600;
+  font-family: inherit;
+  cursor: pointer;
+  text-decoration: none;
+  transition: background 0.2s, border-color 0.2s;
+  white-space: nowrap;
+}
+
+.btn-secondary:hover,
+.btn-outline:hover {
+  background: rgba(11, 145, 223, 0.06);
+  border-color: var(--color-primary-hover);
+}
+
+/* ============================================================
+   Alerts / Flash Messages
+   ============================================================ */
+
+.alert {
+  padding: 12px 16px;
+  border-radius: 8px;
+  margin-bottom: 16px;
+  font-size: 14px;
+}
+
+.alert-error {
+  background: #FEF2F2;
+  border: 1px solid #FECACA;
+  color: #991B1B;
+}
+
+.alert-warning {
+  background: #FFFBEB;
+  border: 1px solid #FDE68A;
+  color: #92400E;
+}
+
+.alert-success {
+  background: #ECFDF5;
+  border: 1px solid #A7F3D0;
+  color: #065F46;
+}
+
+/* ============================================================
+   Loading State
+   ============================================================ */
+
+.loading-state {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--color-muted);
+  font-size: 14px;
+  margin-top: 16px;
+}
+
+.spinner {
+  width: 20px;
+  height: 20px;
+  border: 2px solid var(--color-border);
+  border-top-color: var(--color-primary);
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+  flex-shrink: 0;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* ============================================================
+   Dashboard Main Layout
+   ============================================================ */
+
+.main {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 32px 24px;
+}
+
+/* ============================================================
+   Section Cards
+   ============================================================ */
+
+.section {
+  background: var(--color-white);
+  border-radius: 12px;
+  border: 1px solid var(--color-border);
+  margin-bottom: 24px;
+  overflow: hidden;
+  box-shadow: 0 1px 3px rgba(22, 49, 78, 0.07);
+  scroll-margin-top: 116px; /* 64px nav + ~42px tab bar + 10px breathing room */
+}
+
+.section-header {
+  padding: 20px 24px;
+  border-bottom: 1px solid var(--color-border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: var(--color-bg-subtle);
+}
+
+.section-title {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--color-heading);
+}
+
+.section-count {
+  background: var(--color-white);
+  border: 1px solid var(--color-border);
+  color: var(--color-muted);
+  border-radius: 20px;
+  padding: 2px 10px;
+  font-size: 12px;
+}
+
+/* ============================================================
+   Stat Grid & Cards
+   ============================================================ */
+
+.stat-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 16px;
+  padding: 20px 24px;
+}
+
+.stat-card {
+  background: var(--color-white);
+  border: 1px solid var(--color-border);
+  border-radius: 12px;
+  padding: 20px 24px;
+  box-shadow: 0 1px 3px rgba(22, 49, 78, 0.07);
+}
+
+/* stat-card inside a section — no double shadow */
+.section .stat-card {
+  box-shadow: none;
+}
+
+.stat-number {
+  font-size: 32px;
+  font-weight: 700;
+  line-height: 1;
+  color: var(--color-heading);
+}
+
+.stat-label {
+  font-size: 12px;
+  color: var(--color-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-top: 4px;
+}
+
+.stat-red   .stat-number { color: var(--color-error); }
+.stat-amber .stat-number { color: var(--color-warning); }
+.stat-green .stat-number { color: var(--color-success); }
+
+/* ============================================================
+   Priority Bar (Pills Row)
+   ============================================================ */
+
+.priority-bar {
+  display: flex;
+  gap: 12px;
+  padding: 16px 24px;
+  flex-wrap: wrap;
+}
+
+.priority-pill {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  border-radius: 8px;
+  font-size: 14px;
+}
+
+.priority-pill.high   { background: #FEF2F2; color: var(--color-error);   border: 1px solid #FECACA; }
+.priority-pill.medium { background: #FFFBEB; color: var(--color-warning);  border: 1px solid #FDE68A; }
+.priority-pill.low    { background: #ECFDF5; color: var(--color-success);  border: 1px solid #A7F3D0; }
+
+.priority-pill strong {
+  font-size: 20px;
+  font-weight: 700;
+}
+
+/* ============================================================
+   Tables
+   ============================================================ */
+
+.table-wrapper {
+  overflow-x: auto;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+
+th {
+  text-align: left;
+  padding: 10px 16px;
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--color-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  background: var(--color-bg-subtle);
+  border-bottom: 1px solid var(--color-border);
+}
+
+td {
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--color-border);
+  color: var(--color-text);
+  vertical-align: middle;
+}
+
+tr:last-child td {
+  border-bottom: none;
+}
+
+tbody tr:hover {
+  background: var(--color-bg-subtle);
+}
+
+/* High-priority row left border accent */
+.row-high td:first-child {
+  border-left: 3px solid var(--color-error);
+  padding-left: 13px;
+}
+
+/* ============================================================
+   Badges
+   ============================================================ */
+
+.badge {
+  display: inline-block;
+  border-radius: 4px;
+  padding: 3px 8px;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  white-space: nowrap;
+}
+
+.badge-high {
+  background: #FEF2F2;
+  color: var(--color-error);
+  border: 1px solid #FECACA;
+}
+
+.badge-medium {
+  background: #FFFBEB;
+  color: var(--color-warning);
+  border: 1px solid #FDE68A;
+}
+
+.badge-low {
+  background: #ECFDF5;
+  color: var(--color-success);
+  border: 1px solid #A7F3D0;
+}
+
+/* Syntax issue type badges */
+.badge-phone-format,
+.badge-phone_format {
+  background: #FFFBEB;
+  color: #92400E;
+  border: 1px solid #FDE68A;
+}
+
+.badge-date-format,
+.badge-date_format {
+  background: #FFFBEB;
+  color: #92400E;
+  border: 1px solid #FDE68A;
+}
+
+.badge-null-required-field,
+.badge-null_required_field {
+  background: #FEF2F2;
+  color: #991B1B;
+  border: 1px solid #FECACA;
+}
+
+.badge-email-format,
+.badge-email_format {
+  background: #FEF2F2;
+  color: #991B1B;
+  border: 1px solid #FECACA;
+}
+
+.badge-inconsistent-boolean,
+.badge-inconsistent_boolean {
+  background: #FEF2F2;
+  color: #991B1B;
+  border: 1px solid #FECACA;
+}
+
+.badge-whitespace {
+  background: #EFF6FF;
+  color: #1E40AF;
+  border: 1px solid #BFDBFE;
+}
+
+.badge-capitalization {
+  background: #F0FDF4;
+  color: #166534;
+  border: 1px solid #BBF7D0;
+}
+
+/* ============================================================
+   Raw Value & Inline Code
+   ============================================================ */
+
+.raw-value {
+  font-family: 'Courier New', monospace;
+  background: #FFFBEB;
+  border: 1px solid #FDE68A;
+  border-radius: 3px;
+  padding: 1px 6px;
+  font-size: 12px;
+}
+
+code {
+  font-family: 'Courier New', monospace;
+  background: var(--color-bg-subtle);
+  border: 1px solid var(--color-border);
+  border-radius: 3px;
+  padding: 1px 6px;
+  font-size: 12px;
+}
+
+/* ============================================================
+   Bar Chart
+   ============================================================ */
+
+.bar-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 8px 24px;
+}
+
+.bar-label {
+  width: 180px;
+  font-size: 13px;
+  color: var(--color-text);
+  flex-shrink: 0;
+}
+
+.bar-track {
+  flex: 1;
+  background: var(--color-bg-subtle);
+  border-radius: 4px;
+  height: 8px;
+  overflow: hidden;
+}
+
+.bar-fill {
+  height: 100%;
+  background: var(--color-primary);
+  border-radius: 4px;
+  min-width: 4px;
+}
+
+.bar-count {
+  width: 40px;
+  text-align: right;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--color-heading);
+}
+
+/* ============================================================
+   Syntax Details (collapsible)
+   ============================================================ */
+
+.syntax-details {
+  padding: 16px 24px;
+}
+
+.syntax-details summary {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 18px;
+  border: 1px solid var(--color-border);
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--color-primary);
+  background: var(--color-white);
+  cursor: pointer;
+  user-select: none;
+  list-style: none;
+}
+
+.syntax-details summary:hover {
+  background: var(--color-bg-subtle);
+}
+
+.syntax-details summary::-webkit-details-marker {
+  display: none;
+}
+
+/* ============================================================
+   Download Row
+   ============================================================ */
+
+.download-row {
+  display: flex;
+  gap: 12px;
+  padding: 16px 24px;
+  border-top: 1px solid var(--color-border);
+  flex-wrap: wrap;
+}
+
+/* ============================================================
+   No-Data / Empty State
+   ============================================================ */
+
+.no-data {
+  padding: 48px 24px;
+  text-align: center;
+  color: var(--color-muted);
+  font-size: 14px;
+}
+
+/* ============================================================
+   Tab bar (dashboard section navigation)
+   ============================================================ */
+
+.tab-bar {
+  background: var(--color-white);
+  border-bottom: 1px solid var(--color-border);
+  position: sticky;
+  top: 64px;        /* sits just below the 64px nav */
+  z-index: 90;
+  box-shadow: 0 1px 3px rgba(22, 49, 78, 0.06);
+}
+
+.tab-bar-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 24px;
+  display: flex;
+  gap: 0;
+}
+
+.tab-link {
+  display: inline-flex;
+  align-items: center;
+  padding: 14px 20px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--color-muted);
+  text-decoration: none;
+  border-bottom: 3px solid transparent;
+  transition: color 0.15s, border-color 0.15s;
+  white-space: nowrap;
+}
+
+.tab-link:hover {
+  color: var(--color-primary);
+  border-bottom-color: var(--color-mid-blue);
+}
+
+/* Small button variant for section headers */
+.btn-sm {
+  padding: 6px 14px;
+  font-size: 12px;
+}
+
+/* ============================================================
+   Footer
+   ============================================================ */
+
+.footer {
+  background: var(--color-navy);
+  color: rgba(255, 255, 255, 0.7);
+  text-align: center;
+  padding: 24px;
+  font-size: 13px;
+  margin-top: 40px;
+}
+
+/* ============================================================
+   Responsive
+   ============================================================ */
+
+@media (max-width: 960px) {
+  .stat-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .stat-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  table {
+    font-size: 12px;
+  }
+
+  th {
+    padding: 8px 10px;
+  }
+
+  td {
+    padding: 10px 10px;
+  }
+
+  .nav-right {
+    gap: 10px;
+  }
+
+  .upload-card {
+    padding: 32px 24px;
+  }
+
+  .bar-label {
+    width: 120px;
+  }
+}
+
+/* ============================================================
+   Pipeline Health Status Indicator
+   ============================================================ */
+
+.pipeline-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  border-radius: 20px;
+  font-size: 14px;
+  font-weight: 600;
+  margin: 0 0 20px 0;
+}
+
+.pipeline-status--healthy {
+  background: #ECFDF5;
+  color: #10B981;
+  border: 1px solid #A7F3D0;
+}
+
+.pipeline-status--issues {
+  background: #FEF2F2;
+  color: #EF4444;
+  border: 1px solid #FECACA;
+}
+
+.pipeline-status-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.pipeline-status--healthy .pipeline-status-dot { background: #10B981; }
+.pipeline-status--issues  .pipeline-status-dot { background: #EF4444; }
+
+.pipeline-status-text { line-height: 1.2; }

@@ -1,0 +1,1103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lead Slip Detector — Syntax Inconsistency Report</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --color-primary: #04A862;
+      --color-primary-hover: #038A50;
+      --color-bg: #F7F8FA;
+      --color-white: #FFFFFF;
+      --color-border: #E5E7EB;
+      --color-text: #1F2937;
+      --color-heading: #111827;
+      --color-muted: #6B7280;
+      --color-error: #EF4444;
+      --color-success: #10B981;
+      --color-warning: #F59E0B;
+    }
+
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background: var(--color-bg);
+      color: var(--color-text);
+      line-height: 1.5;
+      font-size: 14px;
+    }
+
+    /* ------------------------------------------------------------------ */
+    /* Header / Nav                                                         */
+    /* ------------------------------------------------------------------ */
+    .header {
+      background: var(--color-white);
+      border-bottom: 1px solid var(--color-border);
+      padding: 16px 24px;
+    }
+
+    .header-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .wordmark {
+      font-size: 22px;
+      font-weight: 800;
+      color: var(--color-primary);
+      letter-spacing: -0.5px;
+      line-height: 1.2;
+    }
+
+    .report-title {
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--color-heading);
+      margin-top: 4px;
+    }
+
+    .generated-at {
+      font-size: 12px;
+      color: var(--color-muted);
+      margin-top: 2px;
+    }
+
+    /* ------------------------------------------------------------------ */
+    /* Main layout                                                          */
+    /* ------------------------------------------------------------------ */
+    .main {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 32px 24px 64px;
+      display: flex;
+      flex-direction: column;
+      gap: 28px;
+    }
+
+    /* ------------------------------------------------------------------ */
+    /* Summary hero stat cards                                              */
+    /* ------------------------------------------------------------------ */
+    .summary-grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 16px;
+    }
+
+    @media (max-width: 900px) {
+      .summary-grid { grid-template-columns: repeat(3, 1fr); }
+    }
+
+    @media (max-width: 600px) {
+      .summary-grid { grid-template-columns: 1fr 1fr; }
+    }
+
+    .stat-card {
+      background: var(--color-white);
+      border-radius: 12px;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+      padding: 24px 20px;
+    }
+
+    .stat-number {
+      font-size: 64px;
+      font-weight: 800;
+      line-height: 1;
+      letter-spacing: -2px;
+    }
+
+    .stat-label {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--color-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      margin-top: 8px;
+    }
+
+    .stat-green .stat-number  { color: var(--color-success); }
+    .stat-red .stat-number    { color: var(--color-error); }
+    .stat-amber .stat-number  { color: var(--color-warning); }
+
+    /* ------------------------------------------------------------------ */
+    /* Sections (cards)                                                     */
+    /* ------------------------------------------------------------------ */
+    .section {
+      background: var(--color-white);
+      border-radius: 12px;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+      overflow: hidden;
+    }
+
+    .section-header {
+      padding: 18px 24px;
+      border-bottom: 1px solid var(--color-border);
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .section-title {
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--color-heading);
+    }
+
+    .section-count {
+      font-size: 12px;
+      font-weight: 600;
+      padding: 3px 10px;
+      border-radius: 12px;
+      background: var(--color-bg);
+      color: var(--color-muted);
+      border: 1px solid var(--color-border);
+    }
+
+    /* Red header for orphan activity */
+    .section-header-orphan {
+      background: rgba(239, 68, 68, 0.04);
+      border-bottom-color: rgba(239, 68, 68, 0.2);
+    }
+    .section-header-orphan .section-title { color: var(--color-error); }
+
+    /* ------------------------------------------------------------------ */
+    /* Tables                                                               */
+    /* ------------------------------------------------------------------ */
+    .table-wrapper {
+      overflow-x: auto;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    th {
+      padding: 10px 16px;
+      text-align: left;
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--color-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      background: var(--color-bg);
+      border-bottom: 1px solid var(--color-border);
+      white-space: nowrap;
+    }
+
+    td {
+      padding: 11px 16px;
+      font-size: 13px;
+      border-bottom: 1px solid var(--color-border);
+      vertical-align: top;
+    }
+
+    tbody tr:last-child td { border-bottom: none; }
+
+    tbody tr:hover td {
+      background: rgba(4, 168, 98, 0.025);
+    }
+
+    .col-row   { width: 60px; font-variant-numeric: tabular-nums; }
+    .col-field { width: 140px; }
+    .col-raw   { width: 200px; }
+    .col-type  { width: 160px; white-space: nowrap; }
+    .col-desc  { }
+
+    code {
+      font-family: 'Courier New', 'Consolas', monospace;
+      font-size: 12px;
+      background: var(--color-bg);
+      padding: 2px 5px;
+      border-radius: 3px;
+      border: 1px solid var(--color-border);
+    }
+
+    /* ------------------------------------------------------------------ */
+    /* Issue-type badge                                                     */
+    /* ------------------------------------------------------------------ */
+    .badge {
+      display: inline-block;
+      padding: 3px 8px;
+      border-radius: 4px;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      background: var(--color-error);
+      color: var(--color-white);
+      white-space: nowrap;
+    }
+
+    /* ------------------------------------------------------------------ */
+    /* Raw value cell highlight                                             */
+    /* ------------------------------------------------------------------ */
+    .raw-value {
+      display: inline-block;
+      background: #FFFBEB;
+      border: 1px solid #FDE68A;
+      border-radius: 4px;
+      padding: 2px 7px;
+      font-family: 'Courier New', 'Consolas', monospace;
+      font-size: 12px;
+      word-break: break-all;
+      color: #92400E;
+    }
+
+    /* ------------------------------------------------------------------ */
+    /* No-issues / no-results message                                      */
+    /* ------------------------------------------------------------------ */
+    .no-issues {
+      padding: 24px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      color: var(--color-success);
+      font-weight: 500;
+      font-size: 14px;
+    }
+
+    /* ------------------------------------------------------------------ */
+    /* Suspected match cards                                                */
+    /* ------------------------------------------------------------------ */
+    .match-pair {
+      padding: 24px;
+      border-bottom: 1px solid var(--color-border);
+    }
+
+    .match-pair:last-child { border-bottom: none; }
+
+    .match-index {
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--color-muted);
+      margin-bottom: 12px;
+    }
+
+    .match-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin-bottom: 14px;
+    }
+
+    @media (max-width: 700px) {
+      .match-grid { grid-template-columns: 1fr; }
+    }
+
+    .record-card {
+      background: var(--color-bg);
+      border-radius: 8px;
+      padding: 16px;
+      border: 1px solid var(--color-border);
+    }
+
+    .record-card-title {
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--color-muted);
+      margin-bottom: 10px;
+    }
+
+    .record-field {
+      display: flex;
+      gap: 10px;
+      padding: 5px 8px;
+      border-radius: 4px;
+      margin-bottom: 3px;
+    }
+
+    .field-name {
+      font-weight: 600;
+      font-size: 11px;
+      min-width: 110px;
+      color: var(--color-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      padding-top: 1px;
+    }
+
+    .field-value {
+      font-size: 13px;
+      color: var(--color-text);
+      word-break: break-all;
+    }
+
+    .field-match    { background: rgba(16, 185, 129, 0.12); }
+    .field-mismatch { background: rgba(245, 158, 11, 0.12); }
+
+    .match-note {
+      font-size: 13px;
+      color: var(--color-muted);
+      padding: 10px 14px;
+      background: var(--color-bg);
+      border-radius: 6px;
+      border-left: 3px solid var(--color-primary);
+      font-style: italic;
+    }
+
+    /* ------------------------------------------------------------------ */
+    /* Group sub-headers within file sections                               */
+    /* ------------------------------------------------------------------ */
+    .group-block {
+      border-top: 1px solid var(--color-border);
+    }
+
+    .group-block:first-child {
+      border-top: none;
+    }
+
+    .group-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 12px 16px;
+      background: var(--color-bg);
+      border-bottom: 1px solid var(--color-border);
+      flex-wrap: wrap;
+    }
+
+    .group-title {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--color-heading);
+    }
+
+    .group-count {
+      margin-left: auto;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--color-muted);
+    }
+
+    /* ------------------------------------------------------------------ */
+    /* Breakdown bar (issue type pills)                                     */
+    /* ------------------------------------------------------------------ */
+    .breakdown-bar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      padding: 20px 24px;
+    }
+
+    .breakdown-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 6px 14px;
+      border-radius: 20px;
+      font-size: 13px;
+      font-weight: 500;
+      white-space: nowrap;
+    }
+
+    .breakdown-pill strong {
+      font-size: 15px;
+      font-weight: 700;
+    }
+
+    /* ------------------------------------------------------------------ */
+    /* Pattern summary cards                                                */
+    /* ------------------------------------------------------------------ */
+    .pattern-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1px;
+      background: var(--color-border);
+    }
+
+    @media (max-width: 768px) {
+      .pattern-grid { grid-template-columns: 1fr; }
+    }
+
+    .pattern-card {
+      background: var(--color-white);
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .pattern-card-top {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .pattern-count {
+      font-size: 52px;
+      font-weight: 800;
+      letter-spacing: -2px;
+      line-height: 1;
+    }
+
+    .pattern-title {
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--color-heading);
+    }
+
+    .pattern-meta {
+      font-size: 12px;
+      color: var(--color-muted);
+    }
+
+    .pattern-meta code {
+      font-size: 11px;
+      background: var(--color-bg);
+      border: 1px solid var(--color-border);
+      padding: 1px 5px;
+      border-radius: 3px;
+      color: var(--color-text);
+    }
+
+    .pattern-examples {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: 2px;
+    }
+
+    .pattern-desc {
+      font-size: 13px;
+      color: var(--color-muted);
+      line-height: 1.55;
+      border-top: 1px solid var(--color-border);
+      padding-top: 10px;
+      margin-top: 2px;
+    }
+
+    /* ------------------------------------------------------------------ */
+    /* Footer                                                               */
+    /* ------------------------------------------------------------------ */
+    .footer {
+      background: var(--color-white);
+      border-top: 1px solid var(--color-border);
+      padding: 24px;
+      text-align: center;
+      color: var(--color-muted);
+      font-size: 12px;
+      line-height: 1.6;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Header / Nav -->
+  <header class="header">
+    <div class="header-inner">
+      <div class="wordmark">Clever Real Estate</div>
+      <div class="report-title">Lead Slip Detector — Syntax Inconsistency Report</div>
+      <div class="generated-at">Generated June 29, 2026 at 14:52 UTC</div>
+    </div>
+  </header>
+
+  <main class="main">
+
+    <!-- Summary hero -->
+    <div class="summary-grid">
+      <div class="stat-card stat-green">
+        <div class="stat-number">206</div>
+        <div class="stat-label">Total Leads Reviewed</div>
+      </div>
+      <div class="stat-card stat-green">
+        <div class="stat-number">379</div>
+        <div class="stat-label">Total Outreach Records</div>
+      </div>
+      <div class="stat-card stat-red">
+        <div class="stat-number">345</div>
+        <div class="stat-label">Total Syntax Issues</div>
+      </div>
+      <div class="stat-card stat-green">
+        <div class="stat-number">0</div>
+        <div class="stat-label">Suspected Matches</div>
+      </div>
+      <div class="stat-card stat-green">
+        <div class="stat-number">0</div>
+        <div class="stat-label">Orphan Activity Records</div>
+      </div>
+    </div>
+
+    
+    <div class="section" id="breakdown">
+      <div class="section-header">
+        <h2 class="section-title">Issues by Type</h2>
+        <span class="section-count">345 total</span>
+      </div>
+      <div class="breakdown-bar"><span class="breakdown-pill" style="background:#FEF3C7;color:#92400E"><strong>206</strong>&nbsp;Phone Format</span><span class="breakdown-pill" style="background:#FEF3C7;color:#92400E"><strong>107</strong>&nbsp;Date Format</span><span class="breakdown-pill" style="background:#FEE2E2;color:#991B1B"><strong>32</strong>&nbsp;Missing Required Field</span></div>
+    </div>
+    
+    <div class="section" id="pattern-summary">
+      <div class="section-header">
+        <h2 class="section-title">Key Findings</h2>
+        <span class="section-count">5 patterns detected</span>
+      </div>
+      <div class="pattern-grid">
+        <div class="pattern-card">
+          <div class="pattern-card-top">
+            <div class="pattern-count" style="color:#92400E">206</div>
+            <span class="breakdown-pill" style="background:#FEF3C7;color:#92400E">Phone Format</span>
+          </div>
+          <div class="pattern-title">Phone Number Format Inconsistency</div>
+          <div class="pattern-meta">leads.csv - leads.csv &mdash; <code>phone</code></div>
+          <div class="pattern-examples"><span class="raw-value">365-959-8239</span> <span class="raw-value">7174079792</span> <span class="raw-value">(841) 444-5499</span> <span class="raw-value">+15094037302</span> <span class="raw-value">494.648.8941</span></div>
+          <div class="pattern-desc">All 206 phone numbers use inconsistent formats (dashes, digits only, parentheses, +1 prefix, dots detected in sample). Downstream deduplication and routing systems that normalize to one format may fail to match records reliably.</div>
+        </div>
+        <div class="pattern-card">
+          <div class="pattern-card-top">
+            <div class="pattern-count" style="color:#92400E">66</div>
+            <span class="breakdown-pill" style="background:#FEF3C7;color:#92400E">Date Format</span>
+          </div>
+          <div class="pattern-title">Single-Digit Hour in ‘attempted_at’</div>
+          <div class="pattern-meta">outreach_log.csv - outreach_log.csv &mdash; <code>attempted_at</code></div>
+          <div class="pattern-examples"><span class="raw-value">2026-05-04 7:37:00</span> <span class="raw-value">2026-05-04 7:47:00</span> <span class="raw-value">2026-05-05 1:41:00</span> <span class="raw-value">2026-05-05 1:46:00</span> <span class="raw-value">2026-05-05 6:41:00</span></div>
+          <div class="pattern-desc">66 datetime values use a single-digit hour (e.g., ‘8:40:00’ instead of ‘08:40:00’). ISO 8601-strict parsers will reject these; string-based sorting will mis-order records.</div>
+        </div>
+        <div class="pattern-card">
+          <div class="pattern-card-top">
+            <div class="pattern-count" style="color:#92400E">41</div>
+            <span class="breakdown-pill" style="background:#FEF3C7;color:#92400E">Date Format</span>
+          </div>
+          <div class="pattern-title">Single-Digit Hour in ‘received_at’</div>
+          <div class="pattern-meta">leads.csv - leads.csv &mdash; <code>received_at</code></div>
+          <div class="pattern-examples"><span class="raw-value">2026-05-11 8:40:00</span> <span class="raw-value">2026-05-14 7:31:00</span> <span class="raw-value">2026-05-11 9:02:00</span> <span class="raw-value">2026-05-15 7:32:00</span> <span class="raw-value">2026-05-12 3:24:00</span></div>
+          <div class="pattern-desc">41 datetime values use a single-digit hour (e.g., ‘8:40:00’ instead of ‘08:40:00’). ISO 8601-strict parsers will reject these; string-based sorting will mis-order records.</div>
+        </div>
+        <div class="pattern-card">
+          <div class="pattern-card-top">
+            <div class="pattern-count" style="color:#991B1B">17</div>
+            <span class="breakdown-pill" style="background:#FEE2E2;color:#991B1B">Missing Required Field</span>
+          </div>
+          <div class="pattern-title">Missing Required Field — consent_sms</div>
+          <div class="pattern-meta">leads.csv - leads.csv &mdash; <code>consent_sms</code></div>
+          <div class="pattern-examples"><span class="raw-value"></span></div>
+          <div class="pattern-desc">17 records have a blank ‘consent_sms’. This field is required for routing or compliance — blank values cause these records to be skipped or produce errors downstream.</div>
+        </div>
+        <div class="pattern-card">
+          <div class="pattern-card-top">
+            <div class="pattern-count" style="color:#991B1B">15</div>
+            <span class="breakdown-pill" style="background:#FEE2E2;color:#991B1B">Missing Required Field</span>
+          </div>
+          <div class="pattern-title">Missing Required Field — email</div>
+          <div class="pattern-meta">leads.csv - leads.csv &mdash; <code>email</code></div>
+          <div class="pattern-examples"><span class="raw-value"></span></div>
+          <div class="pattern-desc">15 records have a blank ‘email’. This field is required for routing or compliance — blank values cause these records to be skipped or produce errors downstream.</div>
+        </div></div>
+    </div>
+    
+    <div class="section " id="leads-issues">
+      <div class="section-header">
+        <h2 class="section-title">Syntax Issues — leads.csv - leads.csv</h2>
+        <span class="section-count">279 issues</span>
+      </div>
+      
+        <div class="group-block">
+          <div class="group-header">
+            <span class="group-title">Phone Number Format Inconsistency</span>
+            <span class="breakdown-pill" style="background:#FEF3C7;color:#92400E">Phone Format</span>
+            <span class="group-count">206 rows</span>
+          </div>
+          <div class="table-wrapper">
+            <table>
+              <thead>
+                <tr>
+                  <th class="col-row">Row #</th>
+                  <th class="col-field">Field</th>
+                  <th class="col-raw">Raw Value</th>
+                  <th class="col-type">Issue Type</th>
+                  <th class="col-desc">Description</th>
+                </tr>
+              </thead>
+              <tbody><tr><td class="col-row">1</td><td class="col-field"><code>phone</code></td><td class="col-raw"><span class="raw-value">365-959-8239</span></td><td class="col-type"><span class="badge">phone_format</span></td><td class="col-desc">Phone uses dashes (e.g. 365-959-8239) format (&#x27;365-959-8239&#x27;). File contains mixed formats: dashes (e.g. 365-959-8239), digits-only (e.g. 7174079792), dots (e.g. 494.648.8941), parentheses (e.g. (841) 444-5499), +1 prefix (e.g. +15094037302) — downstream normalizers may fail to canonicalize consistently.</td></tr>
+<tr><td class="col-row">2</td><td class="col-field"><code>phone</code></td><td class="col-raw"><span class="raw-value">7174079792</span></td><td class="col-type"><span class="badge">phone_format</span></td><td class="col-desc">Phone uses digits-only (e.g. 7174079792) format (&#x27;7174079792&#x27;). File contains mixed formats: dashes (e.g. 365-959-8239), digits-only (e.g. 7174079792), dots (e.g. 494.648.8941), parentheses (e.g. (841) 444-5499), +1 prefix (e.g. +15094037302) — downstream normalizers may fail to canonicalize consistently.</td></tr>
+<tr><td class="col-row">3</td><td class="col-field"><code>phone</code></td><td class="col-raw"><span class="raw-value">(841) 444-5499</span></td><td class="col-type"><span class="badge">phone_format</span></td><td class="col-desc">Phone uses parentheses (e.g. (841) 444-5499) format (&#x27;(841) 444-5499&#x27;). File contains mixed formats: dashes (e.g. 365-959-8239), digits-only (e.g. 7174079792), dots (e.g. 494.648.8941), parentheses (e.g. (841) 444-5499), +1 prefix (e.g. +15094037302) — downstream normalizers may fail to canonicalize consistently.</td></tr>
+<tr><td class="col-row">4</td><td class="col-field"><code>phone</code></td><td class="col-raw"><span class="raw-value">+15094037302</span></td><td class="col-type"><span class="badge">phone_format</span></td><td class="col-desc">Phone uses +1 prefix (e.g. +15094037302) format (&#x27;+15094037302&#x27;). File contains mixed formats: dashes (e.g. 365-959-8239), digits-only (e.g. 7174079792), dots (e.g. 494.648.8941), parentheses (e.g. (841) 444-5499), +1 prefix (e.g. +15094037302) — downstream normalizers may fail to canonicalize consistently.</td></tr>
+<tr><td class="col-row">5</td><td class="col-field"><code>phone</code></td><td class="col-raw"><span class="raw-value">494.648.8941</span></td><td class="col-type"><span class="badge">phone_format</span></td><td class="col-desc">Phone uses dots (e.g. 494.648.8941) format (&#x27;494.648.8941&#x27;). File contains mixed formats: dashes (e.g. 365-959-8239), digits-only (e.g. 7174079792), dots (e.g. 494.648.8941), parentheses (e.g. (841) 444-5499), +1 prefix (e.g. +15094037302) — downstream normalizers may fail to canonicalize consistently.</td></tr>
+<tr><td class="col-row">6</td><td class="col-field"><code>phone</code></td><td class="col-raw"><span class="raw-value">(475) 842-7786</span></td><td class="col-type"><span class="badge">phone_format</span></td><td class="col-desc">Phone uses parentheses (e.g. (841) 444-5499) format (&#x27;(475) 842-7786&#x27;). File contains mixed formats: dashes (e.g. 365-959-8239), digits-only (e.g. 7174079792), dots (e.g. 494.648.8941), parentheses (e.g. (841) 444-5499), +1 prefix (e.g. +15094037302) — downstream normalizers may fail to canonicalize consistently.</td></tr>
+<tr><td class="col-row">7</td><td class="col-field"><code>phone</code></td><td class="col-raw"><span class="raw-value">+14159857825</span></td><td class="col-type"><span class="badge">phone_format</span></td><td class="col-desc">Phone uses +1 prefix (e.g. +15094037302) format (&#x27;+14159857825&#x27;). File contains mixed formats: dashes (e.g. 365-959-8239), digits-only (e.g. 7174079792), dots (e.g. 494.648.8941), parentheses (e.g. (841) 444-5499), +1 prefix (e.g. +15094037302) — downstream normalizers may fail to canonicalize consistently.</td></tr>
+<tr><td class="col-row">8</td><td class="col-field"><code>phone</code></td><td class="col-raw"><span class="raw-value">717.407.9792</span></td><td class="col-type"><span class="badge">phone_format</span></td><td class="col-desc">Phone uses dots (e.g. 494.648.8941) format (&#x27;717.407.9792&#x27;). File contains mixed formats: dashes (e.g. 365-959-8239), digits-only (e.g. 7174079792), dots (e.g. 494.648.8941), parentheses (e.g. (841) 444-5499), +1 prefix (e.g. +15094037302) — downstream normalizers may fail to canonicalize consistently.</td></tr>
+<tr><td class="col-row">9</td><td class="col-field"><code>phone</code></td><td class="col-raw"><span class="raw-value">403.277.4978</span></td><td class="col-type"><span class="badge">phone_format</span></td><td class="col-desc">Phone uses dots (e.g. 494.648.8941) format (&#x27;403.277.4978&#x27;). File contains mixed formats: dashes (e.g. 365-959-8239), digits-only (e.g. 7174079792), dots (e.g. 494.648.8941), parentheses (e.g. (841) 444-5499), +1 prefix (e.g. +15094037302) — downstream normalizers may fail to canonicalize consistently.</td></tr>
+<tr><td class="col-row">10</td><td class="col-field"><code>phone</code></td><td class="col-raw"><span class="raw-value">+18765892404</span></td><td class="col-type"><span class="badge">phone_format</span></td><td class="col-desc">Phone uses +1 prefix (e.g. +15094037302) format (&#x27;+18765892404&#x27;). File contains mixed formats: dashes (e.g. 365-959-8239), digits-only (e.g. 7174079792), dots (e.g. 494.648.8941), parentheses (e.g. (841) 444-5499), +1 prefix (e.g. +15094037302) — downstream normalizers may fail to canonicalize consistently.</td></tr>
+<tr><td class="col-row">11</td><td class="col-field"><code>phone</code></td><td class="col-raw"><span class="raw-value">2488716438</span></td><td class="col-type"><span class="badge">phone_format</span></td><td class="col-desc">Phone uses digits-only (e.g. 7174079792) format (&#x27;2488716438&#x27;). File contains mixed formats: dashes (e.g. 365-959-8239), digits-only (e.g. 7174079792), dots (e.g. 494.648.8941), parentheses (e.g. (841) 444-5499), +1 prefix (e.g. +15094037302) — downstream normalizers may fail to canonicalize consistently.</td></tr>
+<tr><td class="col-row">12</td><td class="col-field"><code>phone</code></td><td class="col-raw"><span class="raw-value">8719041090</span></td><td class="col-type"><span class="badge">phone_format</span></td><td class="col-desc">Phone uses digits-only (e.g. 7174079792) format (&#x27;8719041090&#x27;). File contains mixed formats: dashes (e.g. 365-959-8239), digits-only (e.g. 7174079792), dots (e.g. 494.648.8941), parentheses (e.g. (841) 444-5499), +1 prefix (e.g. +15094037302) — downstream normalizers may fail to canonicalize consistently.</td></tr>
+<tr><td class="col-row">13</td><td class="col-field"><code>phone</code></td><td class="col-raw"><span class="raw-value">+16857318487</span></td><td class="col-type"><span class="badge">phone_format</span></td><td class="col-desc">Phone uses +1 prefix (e.g. +15094037302) format (&#x27;+16857318487&#x27;). File contains mixed formats: dashes (e.g. 365-959-8239), digits-only (e.g. 7174079792), dots (e.g. 494.648.8941), parentheses (e.g. (841) 444-5499), +1 prefix (e.g. +15094037302) — downstream normalizers may fail to canonicalize consistently.</td></tr>
+<tr><td class="col-row">14</td><td class="col-field"><code>phone</code></td><td class="col-raw"><span class="raw-value">+14936833273</span></td><td class="col-type"><span class="badge">phone_format</span></td><td class="col-desc">Phone uses +1 prefix (e.g. +15094037302) format (&#x27;+14936833273&#x27;). File contains mixed formats: dashes (e.g. 365-959-8239), digits-only (e.g. 7174079792), dots (e.g. 494.648.8941), parentheses (e.g. (841) 444-5499), +1 prefix (e.g. +15094037302) — downstream normalizers may fail to canonicalize consistently.</td></tr>
+<tr><td class="col-row">15</td><td class="col-field"><code>phone</code></td><td class="col-raw"><span class="raw-value">+14315072320</span></td><td class="col-type"><span class="badge">phone_format</span></td><td class="col-desc">Phone uses +1 prefix (e.g. +15094037302) format (&#x27;+14315072320&#x27;). File contains mixed formats: dashes (e.g. 365-959-8239), digits-only (e.g. 7174079792), dots (e.g. 494.648.8941), parentheses (e.g. (841) 444-5499), +1 prefix (e.g. +15094037302) — downstream normalizers may fail to canonicalize consistently.</td></tr>
+<tr><td class="col-row">16</td><td class="col-field"><code>phone</code></td><td class="col-raw"><span class="raw-value">840.510.9740</span></td><td class="col-type"><span class="badge">phone_format</span></td><td class="col-desc">Phone uses dots (e.g. 494.648.8941) format (&#x27;840.510.9740&#x27;). File contains mixed formats: dashes (e.g. 365-959-8239), digits-only (e.g. 7174079792), dots (e.g. 494.648.8941), parentheses (e.g. (841) 444-5499), +1 prefix (e.g. +15094037302) — downstream normalizers may fail to canonicalize consistently.</td></tr>
+<tr><td class="col-row">17</td><td class="col-field"><code>phone</code></td><td class="col-raw"><span class="raw-value">620-562-7929</span></td><td class="col-type"><span class="badge">phone_format</span></td><td class="col-desc">Phone uses dashes (e.g. 365-959-8239) format (&#x27;620-562-7929&#x27;). File contains mixed formats: dashes (e.g. 365-959-8239), digits-only (e.g. 7174079792), dots (e.g. 494.648.8941), parentheses (e.g. (841) 444-5499), +1 prefix (e.g. +15094037302) — downstream normalizers may fail to canonicalize consistently.</td></tr>
+<tr><td class="col-row">18</td><td class="col-field"><code>phone</code></td><td class="col-raw"><span class="raw-value">+16829532020</span></td><td class="col-type"><span class="badge">phone_format</span></td><td class="col-desc">Phone uses +1 prefix (e.g. +15094037302) format (&#x27;+16829532020&#x27;). File contains mixed formats: dashes (e.g. 365-959-8239), digits-only (e.g. 7174079792), dots (e.g. 494.648.8941), parentheses (e.g. (841) 444-5499), +1 prefix (e.g. +15094037302) — downstream normalizers may fail to canonicalize consistently.</td></tr>
+<tr><td class="col-row">19</td><td class="col-field"><code>phone</code></td><td class="col-raw"><span class="raw-value">7778781444</span></td><td class="col-type"><span class="badge">phone_format</span></td><td class="col-desc">Phone uses digits-only (e.g. 7174079792) format (&#x27;7778781444&#x27;). File contains mixed formats: dashes (e.g. 365-959-8239), digits-only (e.g. 7174079792), dots (e.g. 494.648.8941), parentheses (e.g. (841) 444-5499), +1 prefix (e.g. +15094037302) — downstream normalizers may fail to canonicalize consistently.</td></tr>
+<tr><td class="col-row">20</td><td class="col-field"><code>phone</code></td><td class="col-raw"><span class="raw-value">7876147843</span></td><td class="col-type"><span class="badge">phone_format</span></td><td class="col-desc">Phone uses digits-only (e.g. 7174079792) format (&#x27;7876147843&#x27;). File contains mixed formats: dashes (e.g. 365-959-8239), digits-only (e.g. 7174079792), dots (e.g. 494.648.8941), parentheses (e.g. (841) 444-5499), +1 prefix (e.g. +15094037302) — downstream normalizers may fail to canonicalize consistently.</td></tr>
+<tr><td class="col-row">21</td><td class="col-field"><code>phone</code></td><td class="col-raw"><span class="raw-value">640-866-3230</span></td><td class="col-type"><span class="badge">phone_format</span></td><td class="col-desc">Phone uses dashes (e.g. 365-959-8239) format (&#x27;640-866-3230&#x27;). File contains mixed formats: dashes (e.g. 365-959-8239), digits-only (e.g. 7174079792), dots (e.g. 494.648.8941), parentheses (e.g. (841) 444-5499), +1 prefix (e.g. +15094037302) — downstream normalizers may fail to canonicalize consistently.</td></tr>
+<tr><td class="col-row">22</td><td class="col-field"><code>phone</code></td><td class="col-raw"><span class="raw-value">+12793354705</span></td><td class="col-type"><span class="badge">phone_format</span></td><td class="col-desc">Phone uses +1 prefix (e.g. +15094037302) format (&#x27;+12793354705&#x27;). File contains mixed formats: dashes (e.g. 365-959-8239), digits-only (e.g. 7174079792), dots (e.g. 494.648.8941), parentheses (e.g. (841) 444-5499), +1 prefix (e.g. +15094037302) — downstream normalizers may fail to canonicalize consistently.</td></tr>
+<tr><td class="col-row">23</td><td class="col-field"><code>phone</code></td><td class="col-raw"><span class="raw-value">752-743-1009</span></td><td class="col-type"><span class="badge">phone_format</span></td><td class="col-desc">Phone uses dashes (e.g. 365-959-8239) format (&#x27;752-743-1009&#x27;). File contains mixed formats: dashes (e.g. 365-959-8239), digits-only (e.g. 7174079792), dots (e.g. 494.648.8941), parentheses (e.g. (841) 444-5499), +1 prefix (e.g. +15094037302) — downstream normalizers may fail to canonicalize consistently.</td></tr>
+<tr><td class="col-row">24</td><td class="col-field"><code>phone</code></td><td class="col-raw"><span class="raw-value">(212) 450-1753</span></td><td class="col-type"><span class="badge">phone_format</span></td><td class="col-desc">Phone uses parentheses (e.g. (841) 444-5499) format (&#x27;(212) 450-1753&#x27;). File contains mixed formats: dashes (e.g. 365-959-8239), digits-only (e.g. 7174079792), dots (e.g. 494.648.8941), parentheses (e.g. (841) 444-5499), +1 prefix (e.g. +15094037302) — downstream normalizers may fail to canonicalize consistently.</td></tr>
+<tr><td class="col-row">25</td><td class="col-field"><code>phone</code></td><td class="col-raw"><span class="raw-value">556.560.8501</span></td><td class="col-type"><span class="badge">phone_format</span></td><td class="col-desc">Phone uses dots (e.g. 494.648.8941) format (&#x27;556.560.8501&#x27;). File contains mixed formats: dashes (e.g. 365-959-8239), digits-only (e.g. 7174079792), dots (e.g. 494.648.8941), parentheses (e.g. (841) 444-5499), +1 prefix (e.g. +15094037302) — downstream normalizers may fail to canonicalize consistently.</td></tr>
+<tr><td class="col-row">26</td><td class="col-field"><code>phone</code></td><td class="col-raw"><span class="raw-value">3875823316</span></td><td class="col-type"><span class="badge">phone_format</span></td><td class="col-desc">Phone uses digits-only (e.g. 7174079792) format (&#x27;3875823316&#x27;). File contains mixed formats: dashes (e.g. 365-959-8239), digits-only (e.g. 7174079792), dots (e.g. 494.648.8941), parentheses (e.g. (841) 444-5499), +1 prefix (e.g. +15094037302) — downstream normalizers may fail to canonicalize consistently.</td></tr>
+<tr><td class="col-row">27</td><td class="col-field"><code>phone</code></td><td class="col-raw"><span class="raw-value">(816) 227-4257</span></td><td class="col-type"><span class="badge">phone_format</span></td><td class="col-desc">Phone uses parentheses (e.g. (841) 444-5499) format (&#x27;(816) 227-4257&#x27;). File contains mixed formats: dashes (e.g. 365-959-8239), digits-only (e.g. 7174079792), dots (e.g. 494.648.8941), parentheses (e.g. (841) 444-5499), +1 prefix (e.g. +15094037302) — downstream normalizers may fail to canonicalize consistently.</td></tr>
+<tr><td class="col-row">28</td><td class="col-field"><code>phone</code></td><td class="col-raw"><span class="raw-value">7757179109</span></td><td class="col-type"><span class="badge">phone_format</span></td><td class="col-desc">Phone uses digits-only (e.g. 7174079792) format (&#x27;7757179109&#x27;). File contains mixed formats: dashes (e.g. 365-959-8239), digits-only (e.g. 7174079792), dots (e.g. 494.648.8941), parentheses (e.g. (841) 444-5499), +1 prefix (e.g. +15094037302) — downstream normalizers may fail to canonicalize consistently.</td></tr>
+<tr><td class="col-row">29</td><td class="col-field"><code>phone</code></td><td class="col-raw"><span class="raw-value">391-481-5585</span></td><td class="col-type"><span class="badge">phone_format</span></td><td class="col-desc">Phone uses dashes (e.g. 365-959-8239) format (&#x27;391-481-5585&#x27;). File contains mixed formats: dashes (e.g. 365-959-8239), digits-only (e.g. 7174079792), dots (e.g. 494.648.8941), parentheses (e.g. (841) 444-5499), +1 prefix (e.g. +15094037302) — downstream normalizers may fail to canonicalize consistently.</td></tr>
+<tr><td class="col-row">30</td><td class="col-field"><code>phone</code></td><td class="col-raw"><span class="raw-value">(526) 447-8642</span></td><td class="col-type"><span class="badge">phone_format</span></td><td class="col-desc">Phone uses parentheses (e.g. (841) 444-5499) format (&#x27;(526) 447-8642&#x27;). File contains mixed formats: dashes (e.g. 365-959-8239), digits-only (e.g. 7174079792), dots (e.g. 494.648.8941), parentheses (e.g. (841) 444-5499), +1 prefix (e.g. +15094037302) — downstream normalizers may fail to canonicalize consistently.</td></tr>
+<tr><td class="col-row">31</td><td class="col-field"><code>phone</code></td><td class="col-raw"><span class="raw-value">245.611.8191</span></td><td class="col-type"><span class="badge">phone_format</span></td><td class="col-desc">Phone uses dots (e.g. 494.648.8941) format (&#x27;245.611.8191&#x27;). File contains mixed formats: dashes (e.g. 365-959-8239), digits-only (e.g. 7174079792), dots (e.g. 494.648.8941), parentheses (e.g. (841) 444-5499), +1 prefix (e.g. +15094037302) — downstream normalizers may fail to canonicalize consistently.</td></tr>
+<tr><td class="col-row">32</td><td class="col-field"><code>phone</code></td><td class="col-raw"><span class="raw-value">+17455509950</span></td><td class="col-type"><span class="badge">phone_format</span></td><td class="col-desc">Phone uses +1 prefix (e.g. +15094037302) format (&#x27;+17455509950&#x27;). File contains mixed formats: dashes (e.g. 365-959-8239), digits-only (e.g. 7174079792), dots (e.g. 494.648.8941), parentheses (e.g. (841) 444-5499), +1 prefix (e.g. +15094037302) — downstream normalizers may fail to canonicalize consistently.</td></tr>
+<tr><td class="col-row">33</td><td class="col-field"><code>phone</code></td><td class="col-raw"><span class="raw-value">+16212605543</span></td><td class="col-type"><span class="badge">phone_format</span></td><td class="col-desc">Phone uses +1 prefix (e.g. +15094037302) format (&#x27;+16212605543&#x27;). File contains mixed formats: dashes (e.g. 365-959-8239), digits-only (e.g. 7174079792), dots (e.g. 494.648.8941), parentheses (e.g. (841) 444-5499), +1 prefix (e.g. +15094037302) — downstream normalizers may fail to canonicalize consistently.</td></tr>
+<tr><td class="col-row">34</td><td class="col-field"><code>phone</code></td><td class="col-raw"><span class="raw-value">493-435-6772</span></td><td class="col-type"><span class="badge">phone_format</span></td><td class="col-desc">Phone uses dashes (e.g. 365-959-8239) format (&#x27;493-435-6772&#x27;). File contains mixed formats: dashes (e.g. 365-959-8239), digits-only (e.g. 7174079792), dots (e.g. 494.648.8941), parentheses (e.g. (841) 444-5499), +1 prefix (e.g. +15094037302) — downstream normalizers may fail to canonicalize consistently.</td></tr>
+<tr><td class="col-row">35</td><td class="col-field"><code>phone</code></td><td class="col-raw"><span class="raw-value">(982) 763-5582</span></td><td class="col-type"><span class="badge">phone_format</span></td><td class="col-desc">Phone uses parentheses (e.g. (841) 444-5499) format (&#x27;(982) 763-5582&#x27;). File contains mixed formats: dashes (e.g. 365-959-8239), digits-only (e.g. 7174079792), dots (e.g. 494.648.8941), parentheses (e.g. (841) 444-5499), +1 prefix (e.g. +15094037302) — downstream normalizers may fail to canonicalize consistently.</td></tr>
+<tr><td class="col-row">36</td><td class="col-field"><code>phone</code></td><td class="col-raw"><span class="raw-value">+16769165198</span></td><td class="col-type"><span class="badge">phone_format</span></td><td class="col-desc">Phone uses +1 prefix (e.g. +15094037302) format (&#x27;+16769165198&#x27;). File contains mixed formats: dashes (e.g. 365-959-8239), digits-only (e.g. 7174079792), dots (e.g. 494.648.8941), parentheses (e.g. (841) 444-5499), +1 prefix (e.g. +15094037302) — downstream normalizers may fail to canonicalize consistently.</td></tr>
+<tr><td class="col-row">37</td><td class="col-field"><code>phone</code></td><td class="col-raw"><span class="raw-value">680.398.7026</span></td><td class="col-type"><span class="badge">phone_format</span></td><td class="col-desc">Phone uses dots (e.g. 494.648.8941) format (&#x27;680.398.7026&#x27;). File contains mixed formats: dashes (e.g. 365-959-8239), digits-only (e.g. 7174079792), dots (e.g. 494.648.8941), parentheses (e.g. (841) 444-5499), +1 prefix (e.g. +15094037302) — downstream normalizers may fail to canonicalize consistently.</td></tr>
+<tr><td class="col-row">38</td><td class="col-field"><code>phone</code></td><td class="col-raw"><span class="raw-value">454-363-6364</span></td><td class="col-type"><span class="badge">phone_format</span></td><td class="col-desc">Phone uses dashes (e.g. 365-959-8239) format (&#x27;454-363-6364&#x27;). File contains mixed formats: dashes (e.g. 365-959-8239), digits-only (e.g. 7174079792), dots (e.g. 494.648.8941), parentheses (e.g. (841) 444-5499), +1 prefix (e.g. +15094037302) — downstream normalizers may fail to canonicalize consistently.</td></tr>
+<tr><td class="col-row">39</td><td class="col-field"><code>phone</code></td><td class="col-raw"><span class="raw-value">425-699-4595</span></td><td class="col-type"><span class="badge">phone_format</span></td><td class="col-desc">Phone uses dashes (e.g. 365-959-8239) format (&#x27;425-699-4595&#x27;). File contains mixed formats: dashes (e.g. 365-959-8239), digits-only (e.g. 7174079792), dots (e.g. 494.648.8941), parentheses (e.g. (841) 444-5499), +1 prefix (e.g. +15094037302) — downstream normalizers may fail to canonicalize consistently.</td></tr>
+<tr><td class="col-row">40</td><td class="col-field"><code>phone</code></td><td class="col-raw"><span class="raw-value">+15488213353</span></td><td class="col-type"><span class="badge">phone_format</span></td><td class="col-desc">Phone uses +1 prefix (e.g. +15094037302) format (&#x27;+15488213353&#x27;). File contains mixed formats: dashes (e.g. 365-959-8239), digits-only (e.g. 7174079792), dots (e.g. 494.648.8941), parentheses (e.g. (841) 444-5499), +1 prefix (e.g. +15094037302) — downstream normalizers may fail to canonicalize consistently.</td></tr>
+<tr><td class="col-row">41</td><td class="col-field"><code>phone</code></td><td class="col-raw"><span class="raw-value">(323) 453-4681</span></td><td class="col-type"><span class="badge">phone_format</span></td><td class="col-desc">Phone uses parentheses (e.g. (841) 444-5499) format (&#x27;(323) 453-4681&#x27;). File contains mixed formats: dashes (e.g. 365-959-8239), digits-only (e.g. 7174079792), dots (e.g. 494.648.8941), parentheses (e.g. (841) 444-5499), +1 prefix (e.g. +15094037302) — downstream normalizers may fail to canonicalize consistently.</td></tr>
+<tr><td class="col-row">42</td><td class="col-field"><code>phone</code></td><td class="col-raw"><span class="raw-value">834-543-2530</span></td><td class="col-type"><span class="badge">phone_format</span></td><td class="col-desc">Phone uses dashes (e.g. 365-959-8239) format (&#x27;834-543-2530&#x27;). File contains mixed formats: dashes (e.g. 365-959-8239), digits-only (e.g. 7174079792), dots (e.g. 494.648.8941), parentheses (e.g. (841) 444-5499), +1 prefix (e.g. +15094037302) — downstream normalizers may fail to canonicalize consistently.</td></tr>
+<tr><td class="col-row">43</td><td class="col-field"><code>phone</code></td><td class="col-raw"><span class="raw-value">(267) 516-7523</span></td><td class="col-type"><span class="badge">phone_format</span></td><td class="col-desc">Phone uses parentheses (e.g. (841) 444-5499) format (&#x27;(267) 516-7523&#x27;). File contains mixed formats: dashes (e.g. 365-959-8239), digits-only (e.g. 7174079792), dots (e.g. 494.648.8941), parentheses (e.g. (841) 444-5499), +1 prefix (e.g. +15094037302) — downstream normalizers may fail to canonicalize consistently.</td></tr>
+<tr><td class="col-row">44</td><td class="col-field"><code>phone</code></td><td class="col-raw"><span class="raw-value">5077196067</span></td><td class="col-type"><span class="badge">phone_format</span></td><td class="col-desc">Phone uses digits-only (e.g. 7174079792) format (&#x27;5077196067&#x27;). File contains mixed formats: dashes (e.g. 365-959-8239), digits-only (e.g. 7174079792), dots (e.g. 494.648.8941), parentheses (e.g. (841) 444-5499), +1 prefix (e.g. +15094037302) — downstream normalizers may fail to canonicalize consistently.</td></tr>
+<tr><td class="col-row">45</td><td class="col-field"><code>phone</code></td><td class="col-raw"><span class="raw-value">+14962814814</span></td><td class="col-type"><span class="badge">phone_format</span></td><td class="col-desc">Phone uses +1 prefix (e.g. +15094037302) format (&#x27;+14962814814&#x27;). File contains mixed formats: dashes (e.g. 365-959-8239), digits-only (e.g. 7174079792), dots (e.g. 494.648.8941), parentheses (e.g. (841) 444-5499), +1 prefix (e.g. +15094037302) — downstream normalizers may fail to canonicalize consistently.</td></tr>
+<tr><td class="col-row">46</td><td class="col-field"><code>phone</code></td><td class="col-raw"><span class="raw-value">(746) 589-6188</span></td><td class="col-type"><span class="badge">phone_format</span></td><td class="col-desc">Phone uses parentheses (e.g. (841) 444-5499) format (&#x27;(746) 589-6188&#x27;). File contains mixed formats: dashes (e.g. 365-959-8239), digits-only (e.g. 7174079792), dots (e.g. 494.648.8941), parentheses (e.g. (841) 444-5499), +1 prefix (e.g. +15094037302) — downstream normalizers may fail to canonicalize consistently.</td></tr>
+<tr><td class="col-row">47</td><td class="col-field"><code>phone</code></td><td class="col-raw"><span class="raw-value">865.368.8210</span></td><td class="col-type"><span class="badge">phone_format</span></td><td class="col-desc">Phone uses dots (e.g. 494.648.8941) format (&#x27;865.368.8210&#x27;). File contains mixed formats: dashes (e.g. 365-959-8239), digits-only (e.g. 7174079792), dots (e.g. 494.648.8941), parentheses (e.g. (841) 444-5499), +1 prefix (e.g. +15094037302) — downstream normalizers may fail to canonicalize consistently.</td></tr>
+<tr><td class="col-row">48</td><td class="col-field"><code>phone</code></td><td class="col-raw"><span class="raw-value">(650) 302-9617</span></td><td class="col-type"><span class="badge">phone_format</span></td><td class="col-desc">Phone uses parentheses (e.g. (841) 444-5499) format (&#x27;(650) 302-9617&#x27;). File contains mixed formats: dashes (e.g. 365-959-8239), digits-only (e.g. 7174079792), dots (e.g. 494.648.8941), parentheses (e.g. (841) 444-5499), +1 prefix (e.g. +15094037302) — downstream normalizers may fail to canonicalize consistently.</td></tr>
+<tr><td class="col-row">49</td><td class="col-field"><code>phone</code></td><td class="col-raw"><span class="raw-value">(359) 749-6353</span></td><td class="col-type"><span class="badge">phone_format</span></td><td class="col-desc">Phone uses parentheses (e.g. (841) 444-5499) format (&#x27;(359) 749-6353&#x27;). File contains mixed formats: dashes (e.g. 365-959-8239), digits-only (e.g. 7174079792), dots (e.g. 494.648.8941), parentheses (e.g. (841) 444-5499), +1 prefix (e.g. +15094037302) — downstream normalizers may fail to canonicalize consistently.</td></tr>
+<tr><td class="col-row">50</td><td class="col-field"><code>phone</code></td><td class="col-raw"><span class="raw-value">+15474266456</span></td><td class="col-type"><span class="badge">phone_format</span></td><td class="col-desc">Phone uses +1 prefix (e.g. +15094037302) format (&#x27;+15474266456&#x27;). File contains mixed formats: dashes (e.g. 365-959-8239), digits-only (e.g. 7174079792), dots (e.g. 494.648.8941), parentheses (e.g. (841) 444-5499), +1 prefix (e.g. +15094037302) — downstream normalizers may fail to canonicalize consistently.</td></tr>
+<tr><td class="col-row">51</td><td class="col-field"><code>phone</code></td><td class="col-raw"><span class="raw-value">(802) 531-1258</span></td><td class="col-type"><span class="badge">phone_format</span></td><td class="col-desc">Phone uses parentheses (e.g. (841) 444-5499) format (&#x27;(802) 531-1258&#x27;). File contains mixed formats: dashes (e.g. 365-959-8239), digits-only (e.g. 7174079792), dots (e.g. 494.648.8941), parentheses (e.g. (841) 444-5499), +1 prefix (e.g. +15094037302) — downstream normalizers may fail to canonicalize consistently.</td></tr>
+<tr><td class="col-row">52</td><td class="col-field"><code>phone</code></td><td class="col-raw"><span class="raw-value">5455024164</span></td><td class="col-type"><span class="badge">phone_format</span></td><td class="col-desc">Phone uses digits-only (e.g. 7174079792) format (&#x27;5455024164&#x27;). File contains mixed formats: dashes (e.g. 365-959-8239), digits-only (e.g. 7174079792), dots (e.g. 494.648.8941), parentheses (e.g. (841) 444-5499), +1 prefix (e.g. +15094037302) — downstream normalizers may fail to canonicalize consistently.</td></tr>
+<tr><td class="col-row">53</td><td class="col-field"><code>phone</code></td><td class="col-raw"><span class="raw-value">9562428368</span></td><td class="col-type"><span class="badge">phone_format</span></td><td class="col-desc">Phone uses digits-only (e.g. 7174079792) format (&#x27;9562428368&#x27;). File contains mixed formats: dashes (e.g. 365-959-8239), digits-only (e.g. 7174079792), dots (e.g. 494.648.8941), parentheses (e.g. (841) 444-5499), +1 prefix (e.g. +15094037302) — downstream normalizers may fail to canonicalize consistently.</td></tr>
+<tr><td class="col-row">54</td><td class="col-field"><code>phone</code></td><td class="col-raw"><span class="raw-value">2269534048</span></td><td class="col-type"><span class="badge">phone_format</span></td><td class="col-desc">Phone uses digits-only (e.g. 7174079792) format (&#x27;2269534048&#x27;). File contains mixed formats: dashes (e.g. 365-959-8239), digits-only (e.g. 7174079792), dots (e.g. 494.648.8941), parentheses (e.g. (841) 444-5499), +1 prefix (e.g. +15094037302) — downstream normalizers may fail to canonicalize consistently.</td></tr>
+<tr><td class="col-row">55</td><td class="col-field"><code>phone</code></td><td class="col-raw"><span class="raw-value">570.720.4673</span></td><td class="col-type"><span class="badge">phone_format</span></td><td class="col-desc">Phone uses dots (e.g. 494.648.8941) format (&#x27;570.720.4673&#x27;). File contains mixed formats: dashes (e.g. 365-959-8239), digits-only (e.g. 7174079792), dots (e.g. 494.648.8941), parentheses (e.g. (841) 444-5499), +1 prefix (e.g. +15094037302) — downstream normalizers may fail to canonicalize consistently.</td></tr>
+<tr><td class="col-row">56</td><td class="col-field"><code>phone</code></td><td class="col-raw"><span class="raw-value">698-739-6053</span></td><td class="col-type"><span class="badge">phone_format</span></td><td class="col-desc">Phone uses dashes (e.g. 365-959-8239) format (&#x27;698-739-6053&#x27;). File contains mixed formats: dashes (e.g. 365-959-8239), digits-only (e.g. 7174079792), dots (e.g. 494.648.8941), parentheses (e.g. (841) 444-5499), +1 prefix (e.g. +15094037302) — downstream normalizers may fail to canonicalize consistently.</td></tr>
+<tr><td class="col-row">57</td><td class="col-field"><code>phone</code></td><td class="col-raw"><span class="raw-value">+13256652501</span></td><td class="col-type"><span class="badge">phone_format</span></td><td class="col-desc">Phone uses +1 prefix (e.g. +15094037302) format (&#x27;+13256652501&#x27;). File contains mixed formats: dashes (e.g. 365-959-8239), digits-only (e.g. 7174079792), dots (e.g. 494.648.8941), parentheses (e.g. (841) 444-5499), +1 prefix (e.g. +15094037302) — downstream normalizers may fail to canonicalize consistently.</td></tr>
+<tr><td class="col-row">58</td><td class="col-field"><code>phone</code></td><td class="col-raw"><span class="raw-value">(700) 940-9037</span></td><td class="col-type"><span class="badge">phone_format</span></td><td class="col-desc">Phone uses parentheses (e.g. (841) 444-5499) format (&#x27;(700) 940-9037&#x27;). File contains mixed formats: dashes (e.g. 365-959-8239), digits-only (e.g. 7174079792), dots (e.g. 494.648.8941), parentheses (e.g. (841) 444-5499), +1 prefix (e.g. +15094037302) — downstream normalizers may fail to canonicalize consistently.</td></tr>
+<tr><td class="col-row">59</td><td class="col-field"><code>phone</code></td><td class="col-raw"><span class="raw-value">(312) 626-6040</span></td><td class="col-type"><span class="badge">phone_format</span></td><td class="col-desc">Phone uses parentheses (e.g. (841) 444-5499) format (&#x27;(312) 626-6040&#x27;). File contains mixed formats: dashes (e.g. 365-959-8239), digits-only (e.g. 7174079792), dots (e.g. 494.648.8941), parentheses (e.g. (841) 444-5499), +1 prefix (e.g. +15094037302) — downstream normalizers may fail to canonicalize consistently.</td></tr>
+<tr><td class="col-row">60</td><td class="col-field"><code>phone</code></td><td class="col-raw"><span class="raw-value">412-800-4538</span></td><td class="col-type"><span class="badge">phone_format</span></td><td class="col-desc">Phone uses dashes (e.g. 365-959-8239) format (&#x27;412-800-4538&#x27;). File contains mixed formats: dashes (e.g. 365-959-8239), digits-only (e.g. 7174079792), dots (e.g. 494.648.8941), parentheses (e.g. (841) 444-5499), +1 prefix (e.g. +15094037302) — downstream normalizers may fail to canonicalize consistently.</td></tr>
+<tr><td class="col-row">61</td><td class="col-field"><code>phone</code></td><td class="col-raw"><span class="raw-value">+18745084366</span></td><td class="col-type"><span class="badge">phone_format</span></td><td class="col-desc">Phone uses +1 prefix (e.g. +15094037302) format (&#x27;+18745084366&#x27;). File contains mixed formats: dashes (e.g. 365-959-8239), digits-only (e.g. 7174079792), dots (e.g. 494.648.8941), parentheses (e.g. (841) 444-5499), +1 prefix (e.g. +15094037302) — downstream normalizers may fail to canonicalize consistently.</td></tr>
+<tr><td class="col-row">62</td><td class="col-field"><code>phone</code></td><td class="col-raw"><span class="raw-value">+12915622524</span></td><td class="col-type"><span class="badge">phone_format</span></td><td class="col-desc">Phone uses +1 prefix (e.g. +15094037302) format (&#x27;+12915622524&#x27;). File contains mixed formats: dashes (e.g. 365-959-8239), digits-only (e.g. 7174079792), dots (e.g. 494.648.8941), parentheses (e.g. (841) 444-5499), +1 prefix (e.g. +15094037302) — downstream normalizers may fail to canonicalize consistently.</td></tr>
+<tr><td class="col-row">63</td><td class="col-field"><code>phone</code></td><td class="col-raw"><span class="raw-value">3939144912</span></td><td class="col-type"><span class="badge">phone_format</span></td><td class="col-desc">Phone uses digits-only (e.g. 7174079792) format (&#x27;3939144912&#x27;). File contains mixed formats: dashes (e.g. 365-959-8239), digits-only (e.g. 7174079792), dots (e.g. 494.648.8941), parentheses (e.g. (841) 444-5499), +1 prefix (e.g. +15094037302) — downstream normalizers may fail to canonicalize consistently.</td></tr>
+<tr><td class="col-row">64</td><td class="col-field"><code>phone</code></td><td class="col-raw"><span class="raw-value">3359408744</span></td><td class="col-type"><span class="badge">phone_format</span></td><td class="col-desc">Phone uses digits-only (e.g. 7174079792) format (&#x27;3359408744&#x27;). File contains mixed formats: dashes (e.g. 365-959-8239), digits-only (e.g. 7174079792), dots (e.g. 494.648.8941), parentheses (e.g. (841) 444-5499), +1 prefix (e.g. +15094037302) — downstream normalizers may fail to canonicalize consistently.</td></tr>
+<tr><td class="col-row">65</td><td class="col-field"><code>phone</code></td><td class="col-raw"><span class="raw-value">885-952-5065</span></td><td class="col-type"><span class="badge">phone_format</span></td><td class="col-desc">Phone uses dashes (e.g. 365-959-8239) format (&#x27;885-952-5065&#x27;). File contains mixed formats: dashes (e.g. 365-959-8239), digits-only (e.g. 7174079792), dots (e.g. 494.648.8941), parentheses (e.g. (841) 444-5499), +1 prefix (e.g. +15094037302) — downstream normalizers may fail to canonicalize consistently.</td></tr>
+<tr><td class="col-row">66</td><td class="col-field"><code>phone</code></td><td class="col-raw"><span class="raw-value">386-986-3114</span></td><td class="col-type"><span class="badge">phone_format</span></td><td class="col-desc">Phone uses dashes (e.g. 365-959-8239) format (&#x27;386-986-3114&#x27;). File contains mixed formats: dashes (e.g. 365-959-8239), digits-only (e.g. 7174079792), dots (e.g. 494.648.8941), parentheses (e.g. (841) 444-5499), +1 prefix (e.g. +15094037302) — downstream normalizers may fail to canonicalize consistently.</td></tr>
+<tr><td class="col-row">67</td><td class="col-field"><code>phone</code></td><td class="col-raw"><span class="raw-value">289.649.2923</span></td><td class="col-type"><span class="badge">phone_format</span></td><td class="col-desc">Phone uses dots (e.g. 494.648.8941) format (&#x27;289.649.2923&#x27;). File contains mixed formats: dashes (e.g. 365-959-8239), digits-only (e.g. 7174079792), dots (e.g. 494.648.8941), parentheses (e.g. (841) 444-5499), +1 prefix (e.g. +15094037302) — downstream normalizers may fail to canonicalize consistently.</td></tr>
+<tr><td class="col-row">68</td><td class="col-field"><code>phone</code></td><td class="col-raw"><span class="raw-value">2634117883</span></td><td class="col-type"><span class="badge">phone_format</span></td><td class="col-desc">Phone uses digits-only (e.g. 7174079792) format (&#x27;2634117883&#x27;). File contains mixed formats: dashes (e.g. 365-959-8239), digits-only (e.g. 7174079792), dots (e.g. 494.648.8941), parentheses (e.g. (841) 444-5499), +1 prefix (e.g. +15094037302) — downstream normalizers may fail to canonicalize consistently.</td></tr>
+<tr><td class="col-row">69</td><td class="col-field"><code>phone</code></td><td class="col-raw"><span class="raw-value">506.807.6511</span></td><td class="col-type"><span class="badge">phone_format</span></td><td class="col-desc">Phone uses dots (e.g. 494.648.8941) format (&#x27;506.807.6511&#x27;). File contains mixed formats: dashes (e.g. 365-959-8239), digits-only (e.g. 7174079792), dots (e.g. 494.648.8941), parentheses (e.g. (841) 444-5499), +1 prefix (e.g. +15094037302) — downstream normalizers may fail to canonicalize consistently.</td></tr>
+<tr><td class="col-row">70</td><td class="col-field"><code>phone</code></td><td class="col-raw"><span class="raw-value">+13162667565</span></td><td class="col-type"><span class="badge">phone_format</span></td><td class="col-desc">Phone uses +1 prefix (e.g. +15094037302) format (&#x27;+13162667565&#x27;). File contains mixed formats: dashes (e.g. 365-959-8239), digits-only (e.g. 7174079792), dots (e.g. 494.648.8941), parentheses (e.g. (841) 444-5499), +1 prefix (e.g. +15094037302) — downstream normalizers may fail to canonicalize consistently.</td></tr>
+<tr><td class="col-row">71</td><td class="col-field"><code>phone</code></td><td class="col-raw"><span class="raw-value">9384805715</span></td><td class="col-type"><span class="badge">phone_format</span></td><td class="col-desc">Phone uses digits-only (e.g. 7174079792) format (&#x27;9384805715&#x27;). File contains mixed formats: dashes (e.g. 365-959-8239), digits-only (e.g. 7174079792), dots (e.g. 494.648.8941), parentheses (e.g. (841) 444-5499), +1 prefix (e.g. +15094037302) — downstream normalizers may fail to canonicalize consistently.</td></tr>
+<tr><td class="col-row">72</td><td class="col-field"><code>phone</code></td><td class="col-raw"><span class="raw-value">+17014953298</span></td><td class="col-type"><span class="badge">phone_format</span></td><td class="col-desc">Phone uses +1 prefix (e.g. +15094037302) format (&#x27;+17014953298&#x27;). File contains mixed formats: dashes (e.g. 365-959-8239), digits-only (e.g. 7174079792), dots (e.g. 494.648.8941), parentheses (e.g. (841) 444-5499), +1 prefix (e.g. +15094037302) — downstream normalizers may fail to canonicalize consistently.</td></tr>
+<tr><td class="col-row">73</td><td class="col-field"><code>phone</code></td><td class="col-raw"><span class="raw-value">215-295-4872</span></td><td class="col-type"><span class="badge">phone_format</span></td><td class="col-desc">Phone uses dashes (e.g. 365-959-8239) format (&#x27;215-295-4872&#x27;). File contains mixed formats: dashes (e.g. 365-959-8239), digits-only (e.g. 7174079792), dots (e.g. 494.648.8941), parentheses (e.g. (841) 444-5499), +1 prefix (e.g. +15094037302) — downstream normalizers may fail to canonicalize consistently.</td></tr>
+<tr><td class="col-row">74</td><td class="col-field"><code>phone</code></td><td class="col-raw"><span class="raw-value">446-950-2698</span></td><td class="col-type"><span class="badge">phone_format</span></td><td class="col-desc">Phone uses dashes (e.g. 365-959-8239) format (&#x27;446-950-2698&#x27;). File contains mixed formats: dashes (e.g. 365-959-8239), digits-only (e.g. 7174079792), dots (e.g. 494.648.8941), parentheses (e.g. (841) 444-5499), +1 prefix (e.g. +15094037302) — downstream normalizers may fail to canonicalize consistently.</td></tr>
+<tr><td class="col-row">75</td><td class="col-field"><code>phone</code></td><td class="col-raw"><span class="raw-value">816.384.9937</span></td><td class="col-type"><span class="badge">phone_format</span></td><td class="col-desc">Phone uses dots (e.g. 494.648.8941) format (&#x27;816.384.9937&#x27;). File contains mixed formats: dashes (e.g. 365-959-8239), digits-only (e.g. 7174079792), dots (e.g. 494.648.8941), parentheses (e.g. (841) 444-5499), +1 prefix (e.g. +15094037302) — downstream normalizers may fail to canonicalize consistently.</td></tr>
+<tr><td class="col-row">76</td><td class="col-field"><code>phone</code></td><td class="col-raw"><span class="raw-value">2613455584</span></td><td class="col-type"><span class="badge">phone_format</span></td><td class="col-desc">Phone uses digits-only (e.g. 7174079792) format (&#x27;2613455584&#x27;). File contains mixed formats: dashes (e.g. 365-959-8239), digits-only (e.g. 7174079792), dots (e.g. 494.648.8941), parentheses (e.g. (841) 444-5499), +1 prefix (e.g. +15094037302) — downstream normalizers may fail to canonicalize consistently.</td></tr>
+<tr><td class="col-row">77</td><td class="col-field"><code>phone</code></td><td class="col-raw"><span class="raw-value">(941) 395-1844</span></td><td class="col-type"><span class="badge">phone_format</span></td><td class="col-desc">Phone uses parentheses (e.g. (841) 444-5499) format (&#x27;(941) 395-1844&#x27;). File contains mixed formats: dashes (e.g. 365-959-8239), digits-only (e.g. 7174079792), dots (e.g. 494.648.8941), parentheses (e.g. (841) 444-5499), +1 prefix (e.g. +15094037302) — downstream normalizers may fail to canonicalize consistently.</td></tr>
+<tr><td class="col-row">78</td><td class="col-field"><code>phone</code></td><td class="col-raw"><span class="raw-value">+12636453141</span></td><td class="col-type"><span class="badge">phone_format</span></td><td class="col-desc">Phone uses +1 prefix (e.g. +15094037302) format (&#x27;+12636453141&#x27;). File contains mixed formats: dashes (e.g. 365-959-8239), digits-only (e.g. 7174079792), dots (e.g. 494.648.8941), parentheses (e.g. (841) 444-5499), +1 prefix (e.g. +15094037302) — downstream normalizers may fail to canonicalize consistently.</td></tr>
+<tr><td class="col-row">79</td><td class="col-field"><code>phone</code></td><td class="col-raw"><span class="raw-value">964.743.4524</span></td><td class="col-type"><span class="badge">phone_format</span></td><td class="col-desc">Phone uses dots (e.g. 494.648.8941) format (&#x27;964.743.4524&#x27;). File contains mixed formats: dashes (e.g. 365-959-8239), digits-only (e.g. 7174079792), dots (e.g. 494.648.8941), parentheses (e.g. (841) 444-5499), +1 prefix (e.g. +15094037302) — downstream normalizers may fail to canonicalize consistently.</td></tr>
+<tr><td class="col-row">80</td><td class="col-field"><code>phone</code></td><td class="col-raw"><span class="raw-value">792.791.4728</span></td><td class="col-type"><span class="badge">phone_format</span></td><td class="col-desc">Phone uses dots (e.g. 494.648.8941) format (&#x27;792.791.4728&#x27;). File contains mixed formats: dashes (e.g. 365-959-8239), digits-only (e.g. 7174079792), dots (e.g. 494.648.8941), parentheses (e.g. (841) 444-5499), +1 prefix (e.g. +15094037302) — downstream normalizers may fail to canonicalize consistently.</td></tr>
+<tr><td class="col-row">81</td><td class="col-field"><code>phone</code></td><td class="col-raw"><span class="raw-value">890.283.5458</span></td><td class="col-type"><span class="badge">phone_format</span></td><td class="col-desc">Phone uses dots (e.g. 494.648.8941) format (&#x27;890.283.5458&#x27;). File contains mixed formats: dashes (e.g. 365-959-8239), digits-only (e.g. 7174079792), dots (e.g. 494.648.8941), parentheses (e.g. (841) 444-5499), +1 prefix (e.g. +15094037302) — downstream normalizers may fail to canonicalize consistently.</td></tr>
+<tr><td class="col-row">82</td><td class="col-field"><code>phone</code></td><td class="col-raw"><span class="raw-value">8736427481</span></td><td class="col-type"><span class="badge">phone_format</span></td><td class="col-desc">Phone uses digits-only (e.g. 7174079792) format (&#x27;8736427481&#x27;). File contains mixed formats: dashes (e.g. 365-959-8239), digits-only (e.g. 7174079792), dots (e.g. 494.648.8941), parentheses (e.g. (841) 444-5499), +1 prefix (e.g. +15094037302) — downstream normalizers may fail to canonicalize consistently.</td></tr>
+<tr><td class="col-row">83</td><td class="col-field"><code>phone</code></td><td class="col-raw"><span class="raw-value">762-682-9806</span></td><td class="col-type"><span class="badge">phone_format</span></td><td class="col-desc">Phone uses dashes (e.g. 365-959-8239) format (&#x27;762-682-9806&#x27;). File contains mixed formats: dashes (e.g. 365-959-8239), digits-only (e.g. 7174079792), dots (e.g. 494.648.8941), parentheses (e.g. (841) 444-5499), +1 prefix (e.g. +15094037302) — downstream normalizers may fail to canonicalize consistently.</td></tr>
+<tr><td class="col-row">84</td><td class="col-field"><code>phone</code></td><td class="col-raw"><span class="raw-value">(444) 471-7484</span></td><td class="col-type"><span class="badge">phone_format</span></td><td class="col-desc">Phone uses parentheses (e.g. (841) 444-5499) format (&#x27;(444) 471-7484&#x27;). File contains mixed formats: dashes (e.g. 365-959-8239), digits-only (e.g. 7174079792), dots (e.g. 494.648.8941), parentheses (e.g. (841) 444-5499), +1 prefix (e.g. +15094037302) — downstream normalizers may fail to canonicalize consistently.</td></tr>
+<tr><td class="col-row">85</td><td class="col-field"><code>phone</code></td><td class="col-raw"><span class="raw-value">661-449-8613</span></td><td class="col-type"><span class="badge">phone_format</span></td><td class="col-desc">Phone uses dashes (e.g. 365-959-8239) format (&#x27;661-449-8613&#x27;). File contains mixed formats: dashes (e.g. 365-959-8239), digits-only (e.g. 7174079792), dots (e.g. 494.648.8941), parentheses (e.g. (841) 444-5499), +1 prefix (e.g. +15094037302) — downstream normalizers may fail to canonicalize consistently.</td></tr>
+<tr><td class="col-row">86</td><td class="col-field"><code>phone</code></td><td class="col-raw"><span class="raw-value">908.449.6016</span></td><td class="col-type"><span class="badge">phone_format</span></td><td class="col-desc">Phone uses dots (e.g. 494.648.8941) format (&#x27;908.449.6016&#x27;). File contains mixed formats: dashes (e.g. 365-959-8239), digits-only (e.g. 7174079792), dots (e.g. 494.648.8941), parentheses (e.g. (841) 444-5499), +1 prefix (e.g. +15094037302) — downstream normalizers may fail to canonicalize consistently.</td></tr>
+<tr><td class="col-row">87</td><td class="col-field"><code>phone</code></td><td class="col-raw"><span class="raw-value">261.832.8916</span></td><td class="col-type"><span class="badge">phone_format</span></td><td class="col-desc">Phone uses dots (e.g. 494.648.8941) format (&#x27;261.832.8916&#x27;). File contains mixed formats: dashes (e.g. 365-959-8239), digits-only (e.g. 7174079792), dots (e.g. 494.648.8941), parentheses (e.g. (841) 444-5499), +1 prefix (e.g. +15094037302) — downstream normalizers may fail to canonicalize consistently.</td></tr>
+<tr><td class="col-row">88</td><td class="col-field"><code>phone</code></td><td class="col-raw"><span class="raw-value">276.887.7655</span></td><td class="col-type"><span class="badge">phone_format</span></td><td class="col-desc">Phone uses dots (e.g. 494.648.8941) format (&#x27;276.887.7655&#x27;). File contains mixed formats: dashes (e.g. 365-959-8239), digits-only (e.g. 7174079792), dots (e.g. 494.648.8941), parentheses (e.g. (841) 444-5499), +1 prefix (e.g. +15094037302) — downstream normalizers may fail to canonicalize consistently.</td></tr>
+<tr><td class="col-row">89</td><td class="col-field"><code>phone</code></td><td class="col-raw"><span class="raw-value">(869) 888-8710</span></td><td class="col-type"><span class="badge">phone_format</span></td><td class="col-desc">Phone uses parentheses (e.g. (841) 444-5499) format (&#x27;(869) 888-8710&#x27;). File contains mixed formats: dashes (e.g. 365-959-8239), digits-only (e.g. 7174079792), dots (e.g. 494.648.8941), parentheses (e.g. (841) 444-5499), +1 prefix (e.g. +15094037302) — downstream normalizers may fail to canonicalize consistently.</td></tr>
+<tr><td class="col-row">90</td><td class="col-field"><code>phone</code></td><td class="col-raw"><span class="raw-value">909.989.3712</span></td><td class="col-type"><span class="badge">phone_format</span></td><td class="col-desc">Phone uses dots (e.g. 494.648.8941) format (&#x27;909.989.3712&#x27;). File contains mixed formats: dashes (e.g. 365-959-8239), digits-only (e.g. 7174079792), dots (e.g. 494.648.8941), parentheses (e.g. (841) 444-5499), +1 prefix (e.g. +15094037302) — downstream normalizers may fail to canonicalize consistently.</td></tr>
+<tr><td class="col-row">91</td><td class="col-field"><code>phone</code></td><td class="col-raw"><span class="raw-value">7437726198</span></td><td class="col-type"><span class="badge">phone_format</span></td><td class="col-desc">Phone uses digits-only (e.g. 7174079792) format (&#x27;7437726198&#x27;). File contains mixed formats: dashes (e.g. 365-959-8239), digits-only (e.g. 7174079792), dots (e.g. 494.648.8941), parentheses (e.g. (841) 444-5499), +1 prefix (e.g. +15094037302) — downstream normalizers may fail to canonicalize consistently.</td></tr>
+<tr><td class="col-row">92</td><td class="col-field"><code>phone</code></td><td class="col-raw"><span class="raw-value">+19209886095</span></td><td class="col-type"><span class="badge">phone_format</span></td><td class="col-desc">Phone uses +1 prefix (e.g. +15094037302) format (&#x27;+19209886095&#x27;). File contains mixed formats: dashes (e.g. 365-959-8239), digits-only (e.g. 7174079792), dots (e.g. 494.648.8941), parentheses (e.g. (841) 444-5499), +1 prefix (e.g. +15094037302) — downstream normalizers may fail to canonicalize consistently.</td></tr>
+<tr><td class="col-row">93</td><td class="col-field"><code>phone</code></td><td class="col-raw"><span class="raw-value">3569782234</span></td><td class="col-type"><span class="badge">phone_format</span></td><td class="col-desc">Phone uses digits-only (e.g. 7174079792) format (&#x27;3569782234&#x27;). File contains mixed formats: dashes (e.g. 365-959-8239), digits-only (e.g. 7174079792), dots (e.g. 494.648.8941), parentheses (e.g. (841) 444-5499), +1 prefix (e.g. +15094037302) — downstream normalizers may fail to canonicalize consistently.</td></tr>
+<tr><td class="col-row">94</td><td class="col-field"><code>phone</code></td><td class="col-raw"><span class="raw-value">(938) 465-3735</span></td><td class="col-type"><span class="badge">phone_format</span></td><td class="col-desc">Phone uses parentheses (e.g. (841) 444-5499) format (&#x27;(938) 465-3735&#x27;). File contains mixed formats: dashes (e.g. 365-959-8239), digits-only (e.g. 7174079792), dots (e.g. 494.648.8941), parentheses (e.g. (841) 444-5499), +1 prefix (e.g. +15094037302) — downstream normalizers may fail to canonicalize consistently.</td></tr>
+<tr><td class="col-row">95</td><td class="col-field"><code>phone</code></td><td class="col-raw"><span class="raw-value">(530) 490-6533</span></td><td class="col-type"><span class="badge">phone_format</span></td><td class="col-desc">Phone uses parentheses (e.g. (841) 444-5499) format (&#x27;(530) 490-6533&#x27;). File contains mixed formats: dashes (e.g. 365-959-8239), digits-only (e.g. 7174079792), dots (e.g. 494.648.8941), parentheses (e.g. (841) 444-5499), +1 prefix (e.g. +15094037302) — downstream normalizers may fail to canonicalize consistently.</td></tr>
+<tr><td class="col-row">96</td><td class="col-field"><code>phone</code></td><td class="col-raw"><span class="raw-value">(771) 574-3363</span></td><td class="col-type"><span class="badge">phone_format</span></td><td class="col-desc">Phone uses parentheses (e.g. (841) 444-5499) format (&#x27;(771) 574-3363&#x27;). File contains mixed formats: dashes (e.g. 365-959-8239), digits-only (e.g. 7174079792), dots (e.g. 494.648.8941), parentheses (e.g. (841) 444-5499), +1 prefix (e.g. +15094037302) — downstream normalizers may fail to canonicalize consistently.</td></tr>
+<tr><td class="col-row">97</td><td class="col-field"><code>phone</code></td><td class="col-raw"><span class="raw-value">(271) 485-6753</span></td><td class="col-type"><span class="badge">phone_format</span></td><td class="col-desc">Phone uses parentheses (e.g. (841) 444-5499) format (&#x27;(271) 485-6753&#x27;). File contains mixed formats: dashes (e.g. 365-959-8239), digits-only (e.g. 7174079792), dots (e.g. 494.648.8941), parentheses (e.g. (841) 444-5499), +1 prefix (e.g. +15094037302) — downstream normalizers may fail to canonicalize consistently.</td></tr>
+<tr><td class="col-row">98</td><td class="col-field"><code>phone</code></td><td class="col-raw"><span class="raw-value">425.499.1535</span></td><td class="col-type"><span class="badge">phone_format</span></td><td class="col-desc">Phone uses dots (e.g. 494.648.8941) format (&#x27;425.499.1535&#x27;). File contains mixed formats: dashes (e.g. 365-959-8239), digits-only (e.g. 7174079792), dots (e.g. 494.648.8941), parentheses (e.g. (841) 444-5499), +1 prefix (e.g. +15094037302) — downstream normalizers may fail to canonicalize consistently.</td></tr>
+<tr><td class="col-row">99</td><td class="col-field"><code>phone</code></td><td class="col-raw"><span class="raw-value">+19569019624</span></td><td class="col-type"><span class="badge">phone_format</span></td><td class="col-desc">Phone uses +1 prefix (e.g. +15094037302) format (&#x27;+19569019624&#x27;). File contains mixed formats: dashes (e.g. 365-959-8239), digits-only (e.g. 7174079792), dots (e.g. 494.648.8941), parentheses (e.g. (841) 444-5499), +1 prefix (e.g. +15094037302) — downstream normalizers may fail to canonicalize consistently.</td></tr>
+<tr><td class="col-row">100</td><td class="col-field"><code>phone</code></td><td class="col-raw"><span class="raw-value">618-319-3290</span></td><td class="col-type"><span class="badge">phone_format</span></td><td class="col-desc">Phone uses dashes (e.g. 365-959-8239) format (&#x27;618-319-3290&#x27;). File contains mixed formats: dashes (e.g. 365-959-8239), digits-only (e.g. 7174079792), dots (e.g. 494.648.8941), parentheses (e.g. (841) 444-5499), +1 prefix (e.g. +15094037302) — downstream normalizers may fail to canonicalize consistently.</td></tr>
+<tr><td class="col-row">101</td><td class="col-field"><code>phone</code></td><td class="col-raw"><span class="raw-value">3733425405</span></td><td class="col-type"><span class="badge">phone_format</span></td><td class="col-desc">Phone uses digits-only (e.g. 7174079792) format (&#x27;3733425405&#x27;). File contains mixed formats: dashes (e.g. 365-959-8239), digits-only (e.g. 7174079792), dots (e.g. 494.648.8941), parentheses (e.g. (841) 444-5499), +1 prefix (e.g. +15094037302) — downstream normalizers may fail to canonicalize consistently.</td></tr>
+<tr><td class="col-row">102</td><td class="col-field"><code>phone</code></td><td class="col-raw"><span class="raw-value">229.247.6314</span></td><td class="col-type"><span class="badge">phone_format</span></td><td class="col-desc">Phone uses dots (e.g. 494.648.8941) format (&#x27;229.247.6314&#x27;). File contains mixed formats: dashes (e.g. 365-959-8239), digits-only (e.g. 7174079792), dots (e.g. 494.648.8941), parentheses (e.g. (841) 444-5499), +1 prefix (e.g. +15094037302) — downstream normalizers may fail to canonicalize consistently.</td></tr>
+<tr><td class="col-row">103</td><td class="col-field"><code>phone</code></td><td class="col-raw"><span class="raw-value">5004061717</span></td><td class="col-type"><span class="badge">phone_format</span></td><td class="col-desc">Phone uses digits-only (e.g. 7174079792) format (&#x27;5004061717&#x27;). File contains mixed formats: dashes (e.g. 365-959-8239), digits-only (e.g. 7174079792), dots (e.g. 494.648.8941), parentheses (e.g. (841) 444-5499), +1 prefix (e.g. +15094037302) — downstream normalizers may fail to canonicalize consistently.</td></tr>
+<tr><td class="col-row">104</td><td class="col-field"><code>phone</code></td><td class="col-raw"><span class="raw-value">240.566.4441</span></td><td class="col-type"><span class="badge">phone_format</span></td><td class="col-desc">Phone uses dots (e.g. 494.648.8941) format (&#x27;240.566.4441&#x27;). File contains mixed formats: dashes (e.g. 365-959-8239), digits-only (e.g. 7174079792), dots (e.g. 494.648.8941), parentheses (e.g. (841) 444-5499), +1 prefix (e.g. +15094037302) — downstream normalizers may fail to canonicalize consistently.</td></tr>
+<tr><td class="col-row">105</td><td class="col-field"><code>phone</code></td><td class="col-raw"><span class="raw-value">557.270.5002</span></td><td class="col-type"><span class="badge">phone_format</span></td><td class="col-desc">Phone uses dots (e.g. 494.648.8941) format (&#x27;557.270.5002&#x27;). File contains mixed formats: dashes (e.g. 365-959-8239), digits-only (e.g. 7174079792), dots (e.g. 494.648.8941), parentheses (e.g. (841) 444-5499), +1 prefix (e.g. +15094037302) — downstream normalizers may fail to canonicalize consistently.</td></tr>
+<tr><td class="col-row">106</td><td class="col-field"><code>phone</code></td><td class="col-raw"><span class="raw-value">5092149751</span></td><td class="col-type"><span class="badge">phone_format</span></td><td class="col-desc">Phone uses digits-only (e.g. 7174079792) format (&#x27;5092149751&#x27;). File contains mixed formats: dashes (e.g. 365-959-8239), digits-only (e.g. 7174079792), dots (e.g. 494.648.8941), parentheses (e.g. (841) 444-5499), +1 prefix (e.g. +15094037302) — downstream normalizers may fail to canonicalize consistently.</td></tr>
+<tr><td class="col-row">107</td><td class="col-field"><code>phone</code></td><td class="col-raw"><span class="raw-value">918-482-1166</span></td><td class="col-type"><span class="badge">phone_format</span></td><td class="col-desc">Phone uses dashes (e.g. 365-959-8239) format (&#x27;918-482-1166&#x27;). File contains mixed formats: dashes (e.g. 365-959-8239), digits-only (e.g. 7174079792), dots (e.g. 494.648.8941), parentheses (e.g. (841) 444-5499), +1 prefix (e.g. +15094037302) — downstream normalizers may fail to canonicalize consistently.</td></tr>
+<tr><td class="col-row">108</td><td class="col-field"><code>phone</code></td><td class="col-raw"><span class="raw-value">653-504-8025</span></td><td class="col-type"><span class="badge">phone_format</span></td><td class="col-desc">Phone uses dashes (e.g. 365-959-8239) format (&#x27;653-504-8025&#x27;). File contains mixed formats: dashes (e.g. 365-959-8239), digits-only (e.g. 7174079792), dots (e.g. 494.648.8941), parentheses (e.g. (841) 444-5499), +1 prefix (e.g. +15094037302) — downstream normalizers may fail to canonicalize consistently.</td></tr>
+<tr><td class="col-row">109</td><td class="col-field"><code>phone</code></td><td class="col-raw"><span class="raw-value">547-311-5073</span></td><td class="col-type"><span class="badge">phone_format</span></td><td class="col-desc">Phone uses dashes (e.g. 365-959-8239) format (&#x27;547-311-5073&#x27;). File contains mixed formats: dashes (e.g. 365-959-8239), digits-only (e.g. 7174079792), dots (e.g. 494.648.8941), parentheses (e.g. (841) 444-5499), +1 prefix (e.g. +15094037302) — downstream normalizers may fail to canonicalize consistently.</td></tr>
+<tr><td class="col-row">110</td><td class="col-field"><code>phone</code></td><td class="col-raw"><span class="raw-value">929.790.2262</span></td><td class="col-type"><span class="badge">phone_format</span></td><td class="col-desc">Phone uses dots (e.g. 494.648.8941) format (&#x27;929.790.2262&#x27;). File contains mixed formats: dashes (e.g. 365-959-8239), digits-only (e.g. 7174079792), dots (e.g. 494.648.8941), parentheses (e.g. (841) 444-5499), +1 prefix (e.g. +15094037302) — downstream normalizers may fail to canonicalize consistently.</td></tr>
+<tr><td class="col-row">111</td><td class="col-field"><code>phone</code></td><td class="col-raw"><span class="raw-value">863-357-9165</span></td><td class="col-type"><span class="badge">phone_format</span></td><td class="col-desc">Phone uses dashes (e.g. 365-959-8239) format (&#x27;863-357-9165&#x27;). File contains mixed formats: dashes (e.g. 365-959-8239), digits-only (e.g. 7174079792), dots (e.g. 494.648.8941), parentheses (e.g. (841) 444-5499), +1 prefix (e.g. +15094037302) — downstream normalizers may fail to canonicalize consistently.</td></tr>
+<tr><td class="col-row">112</td><td class="col-field"><code>phone</code></td><td class="col-raw"><span class="raw-value">(246) 633-6644</span></td><td class="col-type"><span class="badge">phone_format</span></td><td class="col-desc">Phone uses parentheses (e.g. (841) 444-5499) format (&#x27;(246) 633-6644&#x27;). File contains mixed formats: dashes (e.g. 365-959-8239), digits-only (e.g. 7174079792), dots (e.g. 494.648.8941), parentheses (e.g. (841) 444-5499), +1 prefix (e.g. +15094037302) — downstream normalizers may fail to canonicalize consistently.</td></tr>
+<tr><td class="col-row">113</td><td class="col-field"><code>phone</code></td><td class="col-raw"><span class="raw-value">830-958-4920</span></td><td class="col-type"><span class="badge">phone_format</span></td><td class="col-desc">Phone uses dashes (e.g. 365-959-8239) format (&#x27;830-958-4920&#x27;). File contains mixed formats: dashes (e.g. 365-959-8239), digits-only (e.g. 7174079792), dots (e.g. 494.648.8941), parentheses (e.g. (841) 444-5499), +1 prefix (e.g. +15094037302) — downstream normalizers may fail to canonicalize consistently.</td></tr>
+<tr><td class="col-row">114</td><td class="col-field"><code>phone</code></td><td class="col-raw"><span class="raw-value">+17996469056</span></td><td class="col-type"><span class="badge">phone_format</span></td><td class="col-desc">Phone uses +1 prefix (e.g. +15094037302) format (&#x27;+17996469056&#x27;). File contains mixed formats: dashes (e.g. 365-959-8239), digits-only (e.g. 7174079792), dots (e.g. 494.648.8941), parentheses (e.g. (841) 444-5499), +1 prefix (e.g. +15094037302) — downstream normalizers may fail to canonicalize consistently.</td></tr>
+<tr><td class="col-row">115</td><td class="col-field"><code>phone</code></td><td class="col-raw"><span class="raw-value">+19413951844</span></td><td class="col-type"><span class="badge">phone_format</span></td><td class="col-desc">Phone uses +1 prefix (e.g. +15094037302) format (&#x27;+19413951844&#x27;). File contains mixed formats: dashes (e.g. 365-959-8239), digits-only (e.g. 7174079792), dots (e.g. 494.648.8941), parentheses (e.g. (841) 444-5499), +1 prefix (e.g. +15094037302) — downstream normalizers may fail to canonicalize consistently.</td></tr>
+<tr><td class="col-row">116</td><td class="col-field"><code>phone</code></td><td class="col-raw"><span class="raw-value">+13268037291</span></td><td class="col-type"><span class="badge">phone_format</span></td><td class="col-desc">Phone uses +1 prefix (e.g. +15094037302) format (&#x27;+13268037291&#x27;). File contains mixed formats: dashes (e.g. 365-959-8239), digits-only (e.g. 7174079792), dots (e.g. 494.648.8941), parentheses (e.g. (841) 444-5499), +1 prefix (e.g. +15094037302) — downstream normalizers may fail to canonicalize consistently.</td></tr>
+<tr><td class="col-row">117</td><td class="col-field"><code>phone</code></td><td class="col-raw"><span class="raw-value">+16125741741</span></td><td class="col-type"><span class="badge">phone_format</span></td><td class="col-desc">Phone uses +1 prefix (e.g. +15094037302) format (&#x27;+16125741741&#x27;). File contains mixed formats: dashes (e.g. 365-959-8239), digits-only (e.g. 7174079792), dots (e.g. 494.648.8941), parentheses (e.g. (841) 444-5499), +1 prefix (e.g. +15094037302) — downstream normalizers may fail to canonicalize consistently.</td></tr>
+<tr><td class="col-row">118</td><td class="col-field"><code>phone</code></td><td class="col-raw"><span class="raw-value">(874) 733-5941</span></td><td class="col-type"><span class="badge">phone_format</span></td><td class="col-desc">Phone uses parentheses (e.g. (841) 444-5499) format (&#x27;(874) 733-5941&#x27;). File contains mixed formats: dashes (e.g. 365-959-8239), digits-only (e.g. 7174079792), dots (e.g. 494.648.8941), parentheses (e.g. (841) 444-5499), +1 prefix (e.g. +15094037302) — downstream normalizers may fail to canonicalize consistently.</td></tr>
+<tr><td class="col-row">119</td><td class="col-field"><code>phone</code></td><td class="col-raw"><span class="raw-value">223.292.7442</span></td><td class="col-type"><span class="badge">phone_format</span></td><td class="col-desc">Phone uses dots (e.g. 494.648.8941) format (&#x27;223.292.7442&#x27;). File contains mixed formats: dashes (e.g. 365-959-8239), digits-only (e.g. 7174079792), dots (e.g. 494.648.8941), parentheses (e.g. (841) 444-5499), +1 prefix (e.g. +15094037302) — downstream normalizers may fail to canonicalize consistently.</td></tr>
+<tr><td class="col-row">120</td><td class="col-field"><code>phone</code></td><td class="col-raw"><span class="raw-value">858-887-7244</span></td><td class="col-type"><span class="badge">phone_format</span></td><td class="col-desc">Phone uses dashes (e.g. 365-959-8239) format (&#x27;858-887-7244&#x27;). File contains mixed formats: dashes (e.g. 365-959-8239), digits-only (e.g. 7174079792), dots (e.g. 494.648.8941), parentheses (e.g. (841) 444-5499), +1 prefix (e.g. +15094037302) — downstream normalizers may fail to canonicalize consistently.</td></tr>
+<tr><td class="col-row">121</td><td class="col-field"><code>phone</code></td><td class="col-raw"><span class="raw-value">+18272457547</span></td><td class="col-type"><span class="badge">phone_format</span></td><td class="col-desc">Phone uses +1 prefix (e.g. +15094037302) format (&#x27;+18272457547&#x27;). File contains mixed formats: dashes (e.g. 365-959-8239), digits-only (e.g. 7174079792), dots (e.g. 494.648.8941), parentheses (e.g. (841) 444-5499), +1 prefix (e.g. +15094037302) — downstream normalizers may fail to canonicalize consistently.</td></tr>
+<tr><td class="col-row">122</td><td class="col-field"><code>phone</code></td><td class="col-raw"><span class="raw-value">8645676053</span></td><td class="col-type"><span class="badge">phone_format</span></td><td class="col-desc">Phone uses digits-only (e.g. 7174079792) format (&#x27;8645676053&#x27;). File contains mixed formats: dashes (e.g. 365-959-8239), digits-only (e.g. 7174079792), dots (e.g. 494.648.8941), parentheses (e.g. (841) 444-5499), +1 prefix (e.g. +15094037302) — downstream normalizers may fail to canonicalize consistently.</td></tr>
+<tr><td class="col-row">123</td><td class="col-field"><code>phone</code></td><td class="col-raw"><span class="raw-value">232-786-2800</span></td><td class="col-type"><span class="badge">phone_format</span></td><td class="col-desc">Phone uses dashes (e.g. 365-959-8239) format (&#x27;232-786-2800&#x27;). File contains mixed formats: dashes (e.g. 365-959-8239), digits-only (e.g. 7174079792), dots (e.g. 494.648.8941), parentheses (e.g. (841) 444-5499), +1 prefix (e.g. +15094037302) — downstream normalizers may fail to canonicalize consistently.</td></tr>
+<tr><td class="col-row">124</td><td class="col-field"><code>phone</code></td><td class="col-raw"><span class="raw-value">8288097499</span></td><td class="col-type"><span class="badge">phone_format</span></td><td class="col-desc">Phone uses digits-only (e.g. 7174079792) format (&#x27;8288097499&#x27;). File contains mixed formats: dashes (e.g. 365-959-8239), digits-only (e.g. 7174079792), dots (e.g. 494.648.8941), parentheses (e.g. (841) 444-5499), +1 prefix (e.g. +15094037302) — downstream normalizers may fail to canonicalize consistently.</td></tr>
+<tr><td class="col-row">125</td><td class="col-field"><code>phone</code></td><td class="col-raw"><span class="raw-value">(379) 332-7229</span></td><td class="col-type"><span class="badge">phone_format</span></td><td class="col-desc">Phone uses parentheses (e.g. (841) 444-5499) format (&#x27;(379) 332-7229&#x27;). File contains mixed formats: dashes (e.g. 365-959-8239), digits-only (e.g. 7174079792), dots (e.g. 494.648.8941), parentheses (e.g. (841) 444-5499), +1 prefix (e.g. +15094037302) — downstream normalizers may fail to canonicalize consistently.</td></tr>
+<tr><td class="col-row">126</td><td class="col-field"><code>phone</code></td><td class="col-raw"><span class="raw-value">359.478.5616</span></td><td class="col-type"><span class="badge">phone_format</span></td><td class="col-desc">Phone uses dots (e.g. 494.648.8941) format (&#x27;359.478.5616&#x27;). File contains mixed formats: dashes (e.g. 365-959-8239), digits-only (e.g. 7174079792), dots (e.g. 494.648.8941), parentheses (e.g. (841) 444-5499), +1 prefix (e.g. +15094037302) — downstream normalizers may fail to canonicalize consistently.</td></tr>
+<tr><td class="col-row">127</td><td class="col-field"><code>phone</code></td><td class="col-raw"><span class="raw-value">3042947224</span></td><td class="col-type"><span class="badge">phone_format</span></td><td class="col-desc">Phone uses digits-only (e.g. 7174079792) format (&#x27;3042947224&#x27;). File contains mixed formats: dashes (e.g. 365-959-8239), digits-only (e.g. 7174079792), dots (e.g. 494.648.8941), parentheses (e.g. (841) 444-5499), +1 prefix (e.g. +15094037302) — downstream normalizers may fail to canonicalize consistently.</td></tr>
+<tr><td class="col-row">128</td><td class="col-field"><code>phone</code></td><td class="col-raw"><span class="raw-value">258.720.2312</span></td><td class="col-type"><span class="badge">phone_format</span></td><td class="col-desc">Phone uses dots (e.g. 494.648.8941) format (&#x27;258.720.2312&#x27;). File contains mixed formats: dashes (e.g. 365-959-8239), digits-only (e.g. 7174079792), dots (e.g. 494.648.8941), parentheses (e.g. (841) 444-5499), +1 prefix (e.g. +15094037302) — downstream normalizers may fail to canonicalize consistently.</td></tr>
+<tr><td class="col-row">129</td><td class="col-field"><code>phone</code></td><td class="col-raw"><span class="raw-value">2616079300</span></td><td class="col-type"><span class="badge">phone_format</span></td><td class="col-desc">Phone uses digits-only (e.g. 7174079792) format (&#x27;2616079300&#x27;). File contains mixed formats: dashes (e.g. 365-959-8239), digits-only (e.g. 7174079792), dots (e.g. 494.648.8941), parentheses (e.g. (841) 444-5499), +1 prefix (e.g. +15094037302) — downstream normalizers may fail to canonicalize consistently.</td></tr>
+<tr><td class="col-row">130</td><td class="col-field"><code>phone</code></td><td class="col-raw"><span class="raw-value">448-533-7161</span></td><td class="col-type"><span class="badge">phone_format</span></td><td class="col-desc">Phone uses dashes (e.g. 365-959-8239) format (&#x27;448-533-7161&#x27;). File contains mixed formats: dashes (e.g. 365-959-8239), digits-only (e.g. 7174079792), dots (e.g. 494.648.8941), parentheses (e.g. (841) 444-5499), +1 prefix (e.g. +15094037302) — downstream normalizers may fail to canonicalize consistently.</td></tr>
+<tr><td class="col-row">131</td><td class="col-field"><code>phone</code></td><td class="col-raw"><span class="raw-value">856-692-7081</span></td><td class="col-type"><span class="badge">phone_format</span></td><td class="col-desc">Phone uses dashes (e.g. 365-959-8239) format (&#x27;856-692-7081&#x27;). File contains mixed formats: dashes (e.g. 365-959-8239), digits-only (e.g. 7174079792), dots (e.g. 494.648.8941), parentheses (e.g. (841) 444-5499), +1 prefix (e.g. +15094037302) — downstream normalizers may fail to canonicalize consistently.</td></tr>
+<tr><td class="col-row">132</td><td class="col-field"><code>phone</code></td><td class="col-raw"><span class="raw-value">(631) 458-2341</span></td><td class="col-type"><span class="badge">phone_format</span></td><td class="col-desc">Phone uses parentheses (e.g. (841) 444-5499) format (&#x27;(631) 458-2341&#x27;). File contains mixed formats: dashes (e.g. 365-959-8239), digits-only (e.g. 7174079792), dots (e.g. 494.648.8941), parentheses (e.g. (841) 444-5499), +1 prefix (e.g. +15094037302) — downstream normalizers may fail to canonicalize consistently.</td></tr>
+<tr><td class="col-row">133</td><td class="col-field"><code>phone</code></td><td class="col-raw"><span class="raw-value">271.482.7798</span></td><td class="col-type"><span class="badge">phone_format</span></td><td class="col-desc">Phone uses dots (e.g. 494.648.8941) format (&#x27;271.482.7798&#x27;). File contains mixed formats: dashes (e.g. 365-959-8239), digits-only (e.g. 7174079792), dots (e.g. 494.648.8941), parentheses (e.g. (841) 444-5499), +1 prefix (e.g. +15094037302) — downstream normalizers may fail to canonicalize consistently.</td></tr>
+<tr><td class="col-row">134</td><td class="col-field"><code>phone</code></td><td class="col-raw"><span class="raw-value">+12795022657</span></td><td class="col-type"><span class="badge">phone_format</span></td><td class="col-desc">Phone uses +1 prefix (e.g. +15094037302) format (&#x27;+12795022657&#x27;). File contains mixed formats: dashes (e.g. 365-959-8239), digits-only (e.g. 7174079792), dots (e.g. 494.648.8941), parentheses (e.g. (841) 444-5499), +1 prefix (e.g. +15094037302) — downstream normalizers may fail to canonicalize consistently.</td></tr>
+<tr><td class="col-row">135</td><td class="col-field"><code>phone</code></td><td class="col-raw"><span class="raw-value">(225) 959-5506</span></td><td class="col-type"><span class="badge">phone_format</span></td><td class="col-desc">Phone uses parentheses (e.g. (841) 444-5499) format (&#x27;(225) 959-5506&#x27;). File contains mixed formats: dashes (e.g. 365-959-8239), digits-only (e.g. 7174079792), dots (e.g. 494.648.8941), parentheses (e.g. (841) 444-5499), +1 prefix (e.g. +15094037302) — downstream normalizers may fail to canonicalize consistently.</td></tr>
+<tr><td class="col-row">136</td><td class="col-field"><code>phone</code></td><td class="col-raw"><span class="raw-value">527-477-2276</span></td><td class="col-type"><span class="badge">phone_format</span></td><td class="col-desc">Phone uses dashes (e.g. 365-959-8239) format (&#x27;527-477-2276&#x27;). File contains mixed formats: dashes (e.g. 365-959-8239), digits-only (e.g. 7174079792), dots (e.g. 494.648.8941), parentheses (e.g. (841) 444-5499), +1 prefix (e.g. +15094037302) — downstream normalizers may fail to canonicalize consistently.</td></tr>
+<tr><td class="col-row">137</td><td class="col-field"><code>phone</code></td><td class="col-raw"><span class="raw-value">(581) 902-2376</span></td><td class="col-type"><span class="badge">phone_format</span></td><td class="col-desc">Phone uses parentheses (e.g. (841) 444-5499) format (&#x27;(581) 902-2376&#x27;). File contains mixed formats: dashes (e.g. 365-959-8239), digits-only (e.g. 7174079792), dots (e.g. 494.648.8941), parentheses (e.g. (841) 444-5499), +1 prefix (e.g. +15094037302) — downstream normalizers may fail to canonicalize consistently.</td></tr>
+<tr><td class="col-row">138</td><td class="col-field"><code>phone</code></td><td class="col-raw"><span class="raw-value">669.346.5339</span></td><td class="col-type"><span class="badge">phone_format</span></td><td class="col-desc">Phone uses dots (e.g. 494.648.8941) format (&#x27;669.346.5339&#x27;). File contains mixed formats: dashes (e.g. 365-959-8239), digits-only (e.g. 7174079792), dots (e.g. 494.648.8941), parentheses (e.g. (841) 444-5499), +1 prefix (e.g. +15094037302) — downstream normalizers may fail to canonicalize consistently.</td></tr>
+<tr><td class="col-row">139</td><td class="col-field"><code>phone</code></td><td class="col-raw"><span class="raw-value">+14117338912</span></td><td class="col-type"><span class="badge">phone_format</span></td><td class="col-desc">Phone uses +1 prefix (e.g. +15094037302) format (&#x27;+14117338912&#x27;). File contains mixed formats: dashes (e.g. 365-959-8239), digits-only (e.g. 7174079792), dots (e.g. 494.648.8941), parentheses (e.g. (841) 444-5499), +1 prefix (e.g. +15094037302) — downstream normalizers may fail to canonicalize consistently.</td></tr>
+<tr><td class="col-row">140</td><td class="col-field"><code>phone</code></td><td class="col-raw"><span class="raw-value">(756) 575-9880</span></td><td class="col-type"><span class="badge">phone_format</span></td><td class="col-desc">Phone uses parentheses (e.g. (841) 444-5499) format (&#x27;(756) 575-9880&#x27;). File contains mixed formats: dashes (e.g. 365-959-8239), digits-only (e.g. 7174079792), dots (e.g. 494.648.8941), parentheses (e.g. (841) 444-5499), +1 prefix (e.g. +15094037302) — downstream normalizers may fail to canonicalize consistently.</td></tr>
+<tr><td class="col-row">141</td><td class="col-field"><code>phone</code></td><td class="col-raw"><span class="raw-value">863.311.3692</span></td><td class="col-type"><span class="badge">phone_format</span></td><td class="col-desc">Phone uses dots (e.g. 494.648.8941) format (&#x27;863.311.3692&#x27;). File contains mixed formats: dashes (e.g. 365-959-8239), digits-only (e.g. 7174079792), dots (e.g. 494.648.8941), parentheses (e.g. (841) 444-5499), +1 prefix (e.g. +15094037302) — downstream normalizers may fail to canonicalize consistently.</td></tr>
+<tr><td class="col-row">142</td><td class="col-field"><code>phone</code></td><td class="col-raw"><span class="raw-value">820.723.2894</span></td><td class="col-type"><span class="badge">phone_format</span></td><td class="col-desc">Phone uses dots (e.g. 494.648.8941) format (&#x27;820.723.2894&#x27;). File contains mixed formats: dashes (e.g. 365-959-8239), digits-only (e.g. 7174079792), dots (e.g. 494.648.8941), parentheses (e.g. (841) 444-5499), +1 prefix (e.g. +15094037302) — downstream normalizers may fail to canonicalize consistently.</td></tr>
+<tr><td class="col-row">143</td><td class="col-field"><code>phone</code></td><td class="col-raw"><span class="raw-value">270.978.9727</span></td><td class="col-type"><span class="badge">phone_format</span></td><td class="col-desc">Phone uses dots (e.g. 494.648.8941) format (&#x27;270.978.9727&#x27;). File contains mixed formats: dashes (e.g. 365-959-8239), digits-only (e.g. 7174079792), dots (e.g. 494.648.8941), parentheses (e.g. (841) 444-5499), +1 prefix (e.g. +15094037302) — downstream normalizers may fail to canonicalize consistently.</td></tr>
+<tr><td class="col-row">144</td><td class="col-field"><code>phone</code></td><td class="col-raw"><span class="raw-value">3796273880</span></td><td class="col-type"><span class="badge">phone_format</span></td><td class="col-desc">Phone uses digits-only (e.g. 7174079792) format (&#x27;3796273880&#x27;). File contains mixed formats: dashes (e.g. 365-959-8239), digits-only (e.g. 7174079792), dots (e.g. 494.648.8941), parentheses (e.g. (841) 444-5499), +1 prefix (e.g. +15094037302) — downstream normalizers may fail to canonicalize consistently.</td></tr>
+<tr><td class="col-row">145</td><td class="col-field"><code>phone</code></td><td class="col-raw"><span class="raw-value">+15119211660</span></td><td class="col-type"><span class="badge">phone_format</span></td><td class="col-desc">Phone uses +1 prefix (e.g. +15094037302) format (&#x27;+15119211660&#x27;). File contains mixed formats: dashes (e.g. 365-959-8239), digits-only (e.g. 7174079792), dots (e.g. 494.648.8941), parentheses (e.g. (841) 444-5499), +1 prefix (e.g. +15094037302) — downstream normalizers may fail to canonicalize consistently.</td></tr>
+<tr><td class="col-row">146</td><td class="col-field"><code>phone</code></td><td class="col-raw"><span class="raw-value">(652) 846-5961</span></td><td class="col-type"><span class="badge">phone_format</span></td><td class="col-desc">Phone uses parentheses (e.g. (841) 444-5499) format (&#x27;(652) 846-5961&#x27;). File contains mixed formats: dashes (e.g. 365-959-8239), digits-only (e.g. 7174079792), dots (e.g. 494.648.8941), parentheses (e.g. (841) 444-5499), +1 prefix (e.g. +15094037302) — downstream normalizers may fail to canonicalize consistently.</td></tr>
+<tr><td class="col-row">147</td><td class="col-field"><code>phone</code></td><td class="col-raw"><span class="raw-value">+12456118191</span></td><td class="col-type"><span class="badge">phone_format</span></td><td class="col-desc">Phone uses +1 prefix (e.g. +15094037302) format (&#x27;+12456118191&#x27;). File contains mixed formats: dashes (e.g. 365-959-8239), digits-only (e.g. 7174079792), dots (e.g. 494.648.8941), parentheses (e.g. (841) 444-5499), +1 prefix (e.g. +15094037302) — downstream normalizers may fail to canonicalize consistently.</td></tr>
+<tr><td class="col-row">148</td><td class="col-field"><code>phone</code></td><td class="col-raw"><span class="raw-value">543-491-8444</span></td><td class="col-type"><span class="badge">phone_format</span></td><td class="col-desc">Phone uses dashes (e.g. 365-959-8239) format (&#x27;543-491-8444&#x27;). File contains mixed formats: dashes (e.g. 365-959-8239), digits-only (e.g. 7174079792), dots (e.g. 494.648.8941), parentheses (e.g. (841) 444-5499), +1 prefix (e.g. +15094037302) — downstream normalizers may fail to canonicalize consistently.</td></tr>
+<tr><td class="col-row">149</td><td class="col-field"><code>phone</code></td><td class="col-raw"><span class="raw-value">613.726.1018</span></td><td class="col-type"><span class="badge">phone_format</span></td><td class="col-desc">Phone uses dots (e.g. 494.648.8941) format (&#x27;613.726.1018&#x27;). File contains mixed formats: dashes (e.g. 365-959-8239), digits-only (e.g. 7174079792), dots (e.g. 494.648.8941), parentheses (e.g. (841) 444-5499), +1 prefix (e.g. +15094037302) — downstream normalizers may fail to canonicalize consistently.</td></tr>
+<tr><td class="col-row">150</td><td class="col-field"><code>phone</code></td><td class="col-raw"><span class="raw-value">293-205-6050</span></td><td class="col-type"><span class="badge">phone_format</span></td><td class="col-desc">Phone uses dashes (e.g. 365-959-8239) format (&#x27;293-205-6050&#x27;). File contains mixed formats: dashes (e.g. 365-959-8239), digits-only (e.g. 7174079792), dots (e.g. 494.648.8941), parentheses (e.g. (841) 444-5499), +1 prefix (e.g. +15094037302) — downstream normalizers may fail to canonicalize consistently.</td></tr>
+<tr><td class="col-row">151</td><td class="col-field"><code>phone</code></td><td class="col-raw"><span class="raw-value">+17013088102</span></td><td class="col-type"><span class="badge">phone_format</span></td><td class="col-desc">Phone uses +1 prefix (e.g. +15094037302) format (&#x27;+17013088102&#x27;). File contains mixed formats: dashes (e.g. 365-959-8239), digits-only (e.g. 7174079792), dots (e.g. 494.648.8941), parentheses (e.g. (841) 444-5499), +1 prefix (e.g. +15094037302) — downstream normalizers may fail to canonicalize consistently.</td></tr>
+<tr><td class="col-row">152</td><td class="col-field"><code>phone</code></td><td class="col-raw"><span class="raw-value">644-318-8428</span></td><td class="col-type"><span class="badge">phone_format</span></td><td class="col-desc">Phone uses dashes (e.g. 365-959-8239) format (&#x27;644-318-8428&#x27;). File contains mixed formats: dashes (e.g. 365-959-8239), digits-only (e.g. 7174079792), dots (e.g. 494.648.8941), parentheses (e.g. (841) 444-5499), +1 prefix (e.g. +15094037302) — downstream normalizers may fail to canonicalize consistently.</td></tr>
+<tr><td class="col-row">153</td><td class="col-field"><code>phone</code></td><td class="col-raw"><span class="raw-value">700.940.9037</span></td><td class="col-type"><span class="badge">phone_format</span></td><td class="col-desc">Phone uses dots (e.g. 494.648.8941) format (&#x27;700.940.9037&#x27;). File contains mixed formats: dashes (e.g. 365-959-8239), digits-only (e.g. 7174079792), dots (e.g. 494.648.8941), parentheses (e.g. (841) 444-5499), +1 prefix (e.g. +15094037302) — downstream normalizers may fail to canonicalize consistently.</td></tr>
+<tr><td class="col-row">154</td><td class="col-field"><code>phone</code></td><td class="col-raw"><span class="raw-value">796.610.9755</span></td><td class="col-type"><span class="badge">phone_format</span></td><td class="col-desc">Phone uses dots (e.g. 494.648.8941) format (&#x27;796.610.9755&#x27;). File contains mixed formats: dashes (e.g. 365-959-8239), digits-only (e.g. 7174079792), dots (e.g. 494.648.8941), parentheses (e.g. (841) 444-5499), +1 prefix (e.g. +15094037302) — downstream normalizers may fail to canonicalize consistently.</td></tr>
+<tr><td class="col-row">155</td><td class="col-field"><code>phone</code></td><td class="col-raw"><span class="raw-value">+13616518479</span></td><td class="col-type"><span class="badge">phone_format</span></td><td class="col-desc">Phone uses +1 prefix (e.g. +15094037302) format (&#x27;+13616518479&#x27;). File contains mixed formats: dashes (e.g. 365-959-8239), digits-only (e.g. 7174079792), dots (e.g. 494.648.8941), parentheses (e.g. (841) 444-5499), +1 prefix (e.g. +15094037302) — downstream normalizers may fail to canonicalize consistently.</td></tr>
+<tr><td class="col-row">156</td><td class="col-field"><code>phone</code></td><td class="col-raw"><span class="raw-value">(938) 840-9123</span></td><td class="col-type"><span class="badge">phone_format</span></td><td class="col-desc">Phone uses parentheses (e.g. (841) 444-5499) format (&#x27;(938) 840-9123&#x27;). File contains mixed formats: dashes (e.g. 365-959-8239), digits-only (e.g. 7174079792), dots (e.g. 494.648.8941), parentheses (e.g. (841) 444-5499), +1 prefix (e.g. +15094037302) — downstream normalizers may fail to canonicalize consistently.</td></tr>
+<tr><td class="col-row">157</td><td class="col-field"><code>phone</code></td><td class="col-raw"><span class="raw-value">+14112606747</span></td><td class="col-type"><span class="badge">phone_format</span></td><td class="col-desc">Phone uses +1 prefix (e.g. +15094037302) format (&#x27;+14112606747&#x27;). File contains mixed formats: dashes (e.g. 365-959-8239), digits-only (e.g. 7174079792), dots (e.g. 494.648.8941), parentheses (e.g. (841) 444-5499), +1 prefix (e.g. +15094037302) — downstream normalizers may fail to canonicalize consistently.</td></tr>
+<tr><td class="col-row">158</td><td class="col-field"><code>phone</code></td><td class="col-raw"><span class="raw-value">592-291-2678</span></td><td class="col-type"><span class="badge">phone_format</span></td><td class="col-desc">Phone uses dashes (e.g. 365-959-8239) format (&#x27;592-291-2678&#x27;). File contains mixed formats: dashes (e.g. 365-959-8239), digits-only (e.g. 7174079792), dots (e.g. 494.648.8941), parentheses (e.g. (841) 444-5499), +1 prefix (e.g. +15094037302) — downstream normalizers may fail to canonicalize consistently.</td></tr>
+<tr><td class="col-row">159</td><td class="col-field"><code>phone</code></td><td class="col-raw"><span class="raw-value">487-756-1539</span></td><td class="col-type"><span class="badge">phone_format</span></td><td class="col-desc">Phone uses dashes (e.g. 365-959-8239) format (&#x27;487-756-1539&#x27;). File contains mixed formats: dashes (e.g. 365-959-8239), digits-only (e.g. 7174079792), dots (e.g. 494.648.8941), parentheses (e.g. (841) 444-5499), +1 prefix (e.g. +15094037302) — downstream normalizers may fail to canonicalize consistently.</td></tr>
+<tr><td class="col-row">160</td><td class="col-field"><code>phone</code></td><td class="col-raw"><span class="raw-value">546.317.8673</span></td><td class="col-type"><span class="badge">phone_format</span></td><td class="col-desc">Phone uses dots (e.g. 494.648.8941) format (&#x27;546.317.8673&#x27;). File contains mixed formats: dashes (e.g. 365-959-8239), digits-only (e.g. 7174079792), dots (e.g. 494.648.8941), parentheses (e.g. (841) 444-5499), +1 prefix (e.g. +15094037302) — downstream normalizers may fail to canonicalize consistently.</td></tr>
+<tr><td class="col-row">161</td><td class="col-field"><code>phone</code></td><td class="col-raw"><span class="raw-value">4723452169</span></td><td class="col-type"><span class="badge">phone_format</span></td><td class="col-desc">Phone uses digits-only (e.g. 7174079792) format (&#x27;4723452169&#x27;). File contains mixed formats: dashes (e.g. 365-959-8239), digits-only (e.g. 7174079792), dots (e.g. 494.648.8941), parentheses (e.g. (841) 444-5499), +1 prefix (e.g. +15094037302) — downstream normalizers may fail to canonicalize consistently.</td></tr>
+<tr><td class="col-row">162</td><td class="col-field"><code>phone</code></td><td class="col-raw"><span class="raw-value">+12763601043</span></td><td class="col-type"><span class="badge">phone_format</span></td><td class="col-desc">Phone uses +1 prefix (e.g. +15094037302) format (&#x27;+12763601043&#x27;). File contains mixed formats: dashes (e.g. 365-959-8239), digits-only (e.g. 7174079792), dots (e.g. 494.648.8941), parentheses (e.g. (841) 444-5499), +1 prefix (e.g. +15094037302) — downstream normalizers may fail to canonicalize consistently.</td></tr>
+<tr><td class="col-row">163</td><td class="col-field"><code>phone</code></td><td class="col-raw"><span class="raw-value">324.248.4906</span></td><td class="col-type"><span class="badge">phone_format</span></td><td class="col-desc">Phone uses dots (e.g. 494.648.8941) format (&#x27;324.248.4906&#x27;). File contains mixed formats: dashes (e.g. 365-959-8239), digits-only (e.g. 7174079792), dots (e.g. 494.648.8941), parentheses (e.g. (841) 444-5499), +1 prefix (e.g. +15094037302) — downstream normalizers may fail to canonicalize consistently.</td></tr>
+<tr><td class="col-row">164</td><td class="col-field"><code>phone</code></td><td class="col-raw"><span class="raw-value">808.272.9655</span></td><td class="col-type"><span class="badge">phone_format</span></td><td class="col-desc">Phone uses dots (e.g. 494.648.8941) format (&#x27;808.272.9655&#x27;). File contains mixed formats: dashes (e.g. 365-959-8239), digits-only (e.g. 7174079792), dots (e.g. 494.648.8941), parentheses (e.g. (841) 444-5499), +1 prefix (e.g. +15094037302) — downstream normalizers may fail to canonicalize consistently.</td></tr>
+<tr><td class="col-row">165</td><td class="col-field"><code>phone</code></td><td class="col-raw"><span class="raw-value">(261) 832-8916</span></td><td class="col-type"><span class="badge">phone_format</span></td><td class="col-desc">Phone uses parentheses (e.g. (841) 444-5499) format (&#x27;(261) 832-8916&#x27;). File contains mixed formats: dashes (e.g. 365-959-8239), digits-only (e.g. 7174079792), dots (e.g. 494.648.8941), parentheses (e.g. (841) 444-5499), +1 prefix (e.g. +15094037302) — downstream normalizers may fail to canonicalize consistently.</td></tr>
+<tr><td class="col-row">166</td><td class="col-field"><code>phone</code></td><td class="col-raw"><span class="raw-value">(451) 354-1104</span></td><td class="col-type"><span class="badge">phone_format</span></td><td class="col-desc">Phone uses parentheses (e.g. (841) 444-5499) format (&#x27;(451) 354-1104&#x27;). File contains mixed formats: dashes (e.g. 365-959-8239), digits-only (e.g. 7174079792), dots (e.g. 494.648.8941), parentheses (e.g. (841) 444-5499), +1 prefix (e.g. +15094037302) — downstream normalizers may fail to canonicalize consistently.</td></tr>
+<tr><td class="col-row">167</td><td class="col-field"><code>phone</code></td><td class="col-raw"><span class="raw-value">795.202.2526</span></td><td class="col-type"><span class="badge">phone_format</span></td><td class="col-desc">Phone uses dots (e.g. 494.648.8941) format (&#x27;795.202.2526&#x27;). File contains mixed formats: dashes (e.g. 365-959-8239), digits-only (e.g. 7174079792), dots (e.g. 494.648.8941), parentheses (e.g. (841) 444-5499), +1 prefix (e.g. +15094037302) — downstream normalizers may fail to canonicalize consistently.</td></tr>
+<tr><td class="col-row">168</td><td class="col-field"><code>phone</code></td><td class="col-raw"><span class="raw-value">(203) 974-1372</span></td><td class="col-type"><span class="badge">phone_format</span></td><td class="col-desc">Phone uses parentheses (e.g. (841) 444-5499) format (&#x27;(203) 974-1372&#x27;). File contains mixed formats: dashes (e.g. 365-959-8239), digits-only (e.g. 7174079792), dots (e.g. 494.648.8941), parentheses (e.g. (841) 444-5499), +1 prefix (e.g. +15094037302) — downstream normalizers may fail to canonicalize consistently.</td></tr>
+<tr><td class="col-row">169</td><td class="col-field"><code>phone</code></td><td class="col-raw"><span class="raw-value">(761) 929-6327</span></td><td class="col-type"><span class="badge">phone_format</span></td><td class="col-desc">Phone uses parentheses (e.g. (841) 444-5499) format (&#x27;(761) 929-6327&#x27;). File contains mixed formats: dashes (e.g. 365-959-8239), digits-only (e.g. 7174079792), dots (e.g. 494.648.8941), parentheses (e.g. (841) 444-5499), +1 prefix (e.g. +15094037302) — downstream normalizers may fail to canonicalize consistently.</td></tr>
+<tr><td class="col-row">170</td><td class="col-field"><code>phone</code></td><td class="col-raw"><span class="raw-value">+17985907086</span></td><td class="col-type"><span class="badge">phone_format</span></td><td class="col-desc">Phone uses +1 prefix (e.g. +15094037302) format (&#x27;+17985907086&#x27;). File contains mixed formats: dashes (e.g. 365-959-8239), digits-only (e.g. 7174079792), dots (e.g. 494.648.8941), parentheses (e.g. (841) 444-5499), +1 prefix (e.g. +15094037302) — downstream normalizers may fail to canonicalize consistently.</td></tr>
+<tr><td class="col-row">171</td><td class="col-field"><code>phone</code></td><td class="col-raw"><span class="raw-value">+12647912667</span></td><td class="col-type"><span class="badge">phone_format</span></td><td class="col-desc">Phone uses +1 prefix (e.g. +15094037302) format (&#x27;+12647912667&#x27;). File contains mixed formats: dashes (e.g. 365-959-8239), digits-only (e.g. 7174079792), dots (e.g. 494.648.8941), parentheses (e.g. (841) 444-5499), +1 prefix (e.g. +15094037302) — downstream normalizers may fail to canonicalize consistently.</td></tr>
+<tr><td class="col-row">172</td><td class="col-field"><code>phone</code></td><td class="col-raw"><span class="raw-value">(614) 663-5093</span></td><td class="col-type"><span class="badge">phone_format</span></td><td class="col-desc">Phone uses parentheses (e.g. (841) 444-5499) format (&#x27;(614) 663-5093&#x27;). File contains mixed formats: dashes (e.g. 365-959-8239), digits-only (e.g. 7174079792), dots (e.g. 494.648.8941), parentheses (e.g. (841) 444-5499), +1 prefix (e.g. +15094037302) — downstream normalizers may fail to canonicalize consistently.</td></tr>
+<tr><td class="col-row">173</td><td class="col-field"><code>phone</code></td><td class="col-raw"><span class="raw-value">2005115700</span></td><td class="col-type"><span class="badge">phone_format</span></td><td class="col-desc">Phone uses digits-only (e.g. 7174079792) format (&#x27;2005115700&#x27;). File contains mixed formats: dashes (e.g. 365-959-8239), digits-only (e.g. 7174079792), dots (e.g. 494.648.8941), parentheses (e.g. (841) 444-5499), +1 prefix (e.g. +15094037302) — downstream normalizers may fail to canonicalize consistently.</td></tr>
+<tr><td class="col-row">174</td><td class="col-field"><code>phone</code></td><td class="col-raw"><span class="raw-value">9383976169</span></td><td class="col-type"><span class="badge">phone_format</span></td><td class="col-desc">Phone uses digits-only (e.g. 7174079792) format (&#x27;9383976169&#x27;). File contains mixed formats: dashes (e.g. 365-959-8239), digits-only (e.g. 7174079792), dots (e.g. 494.648.8941), parentheses (e.g. (841) 444-5499), +1 prefix (e.g. +15094037302) — downstream normalizers may fail to canonicalize consistently.</td></tr>
+<tr><td class="col-row">175</td><td class="col-field"><code>phone</code></td><td class="col-raw"><span class="raw-value">334.292.5835</span></td><td class="col-type"><span class="badge">phone_format</span></td><td class="col-desc">Phone uses dots (e.g. 494.648.8941) format (&#x27;334.292.5835&#x27;). File contains mixed formats: dashes (e.g. 365-959-8239), digits-only (e.g. 7174079792), dots (e.g. 494.648.8941), parentheses (e.g. (841) 444-5499), +1 prefix (e.g. +15094037302) — downstream normalizers may fail to canonicalize consistently.</td></tr>
+<tr><td class="col-row">176</td><td class="col-field"><code>phone</code></td><td class="col-raw"><span class="raw-value">(431) 507-2320</span></td><td class="col-type"><span class="badge">phone_format</span></td><td class="col-desc">Phone uses parentheses (e.g. (841) 444-5499) format (&#x27;(431) 507-2320&#x27;). File contains mixed formats: dashes (e.g. 365-959-8239), digits-only (e.g. 7174079792), dots (e.g. 494.648.8941), parentheses (e.g. (841) 444-5499), +1 prefix (e.g. +15094037302) — downstream normalizers may fail to canonicalize consistently.</td></tr>
+<tr><td class="col-row">177</td><td class="col-field"><code>phone</code></td><td class="col-raw"><span class="raw-value">288.766.8483</span></td><td class="col-type"><span class="badge">phone_format</span></td><td class="col-desc">Phone uses dots (e.g. 494.648.8941) format (&#x27;288.766.8483&#x27;). File contains mixed formats: dashes (e.g. 365-959-8239), digits-only (e.g. 7174079792), dots (e.g. 494.648.8941), parentheses (e.g. (841) 444-5499), +1 prefix (e.g. +15094037302) — downstream normalizers may fail to canonicalize consistently.</td></tr>
+<tr><td class="col-row">178</td><td class="col-field"><code>phone</code></td><td class="col-raw"><span class="raw-value">203-974-1372</span></td><td class="col-type"><span class="badge">phone_format</span></td><td class="col-desc">Phone uses dashes (e.g. 365-959-8239) format (&#x27;203-974-1372&#x27;). File contains mixed formats: dashes (e.g. 365-959-8239), digits-only (e.g. 7174079792), dots (e.g. 494.648.8941), parentheses (e.g. (841) 444-5499), +1 prefix (e.g. +15094037302) — downstream normalizers may fail to canonicalize consistently.</td></tr>
+<tr><td class="col-row">179</td><td class="col-field"><code>phone</code></td><td class="col-raw"><span class="raw-value">5054305876</span></td><td class="col-type"><span class="badge">phone_format</span></td><td class="col-desc">Phone uses digits-only (e.g. 7174079792) format (&#x27;5054305876&#x27;). File contains mixed formats: dashes (e.g. 365-959-8239), digits-only (e.g. 7174079792), dots (e.g. 494.648.8941), parentheses (e.g. (841) 444-5499), +1 prefix (e.g. +15094037302) — downstream normalizers may fail to canonicalize consistently.</td></tr>
+<tr><td class="col-row">180</td><td class="col-field"><code>phone</code></td><td class="col-raw"><span class="raw-value">(877) 935-8973</span></td><td class="col-type"><span class="badge">phone_format</span></td><td class="col-desc">Phone uses parentheses (e.g. (841) 444-5499) format (&#x27;(877) 935-8973&#x27;). File contains mixed formats: dashes (e.g. 365-959-8239), digits-only (e.g. 7174079792), dots (e.g. 494.648.8941), parentheses (e.g. (841) 444-5499), +1 prefix (e.g. +15094037302) — downstream normalizers may fail to canonicalize consistently.</td></tr>
+<tr><td class="col-row">181</td><td class="col-field"><code>phone</code></td><td class="col-raw"><span class="raw-value">+16397741430</span></td><td class="col-type"><span class="badge">phone_format</span></td><td class="col-desc">Phone uses +1 prefix (e.g. +15094037302) format (&#x27;+16397741430&#x27;). File contains mixed formats: dashes (e.g. 365-959-8239), digits-only (e.g. 7174079792), dots (e.g. 494.648.8941), parentheses (e.g. (841) 444-5499), +1 prefix (e.g. +15094037302) — downstream normalizers may fail to canonicalize consistently.</td></tr>
+<tr><td class="col-row">182</td><td class="col-field"><code>phone</code></td><td class="col-raw"><span class="raw-value">548.314.5808</span></td><td class="col-type"><span class="badge">phone_format</span></td><td class="col-desc">Phone uses dots (e.g. 494.648.8941) format (&#x27;548.314.5808&#x27;). File contains mixed formats: dashes (e.g. 365-959-8239), digits-only (e.g. 7174079792), dots (e.g. 494.648.8941), parentheses (e.g. (841) 444-5499), +1 prefix (e.g. +15094037302) — downstream normalizers may fail to canonicalize consistently.</td></tr>
+<tr><td class="col-row">183</td><td class="col-field"><code>phone</code></td><td class="col-raw"><span class="raw-value">437.672.5161</span></td><td class="col-type"><span class="badge">phone_format</span></td><td class="col-desc">Phone uses dots (e.g. 494.648.8941) format (&#x27;437.672.5161&#x27;). File contains mixed formats: dashes (e.g. 365-959-8239), digits-only (e.g. 7174079792), dots (e.g. 494.648.8941), parentheses (e.g. (841) 444-5499), +1 prefix (e.g. +15094037302) — downstream normalizers may fail to canonicalize consistently.</td></tr>
+<tr><td class="col-row">184</td><td class="col-field"><code>phone</code></td><td class="col-raw"><span class="raw-value">+17535397288</span></td><td class="col-type"><span class="badge">phone_format</span></td><td class="col-desc">Phone uses +1 prefix (e.g. +15094037302) format (&#x27;+17535397288&#x27;). File contains mixed formats: dashes (e.g. 365-959-8239), digits-only (e.g. 7174079792), dots (e.g. 494.648.8941), parentheses (e.g. (841) 444-5499), +1 prefix (e.g. +15094037302) — downstream normalizers may fail to canonicalize consistently.</td></tr>
+<tr><td class="col-row">185</td><td class="col-field"><code>phone</code></td><td class="col-raw"><span class="raw-value">+18243626962</span></td><td class="col-type"><span class="badge">phone_format</span></td><td class="col-desc">Phone uses +1 prefix (e.g. +15094037302) format (&#x27;+18243626962&#x27;). File contains mixed formats: dashes (e.g. 365-959-8239), digits-only (e.g. 7174079792), dots (e.g. 494.648.8941), parentheses (e.g. (841) 444-5499), +1 prefix (e.g. +15094037302) — downstream normalizers may fail to canonicalize consistently.</td></tr>
+<tr><td class="col-row">186</td><td class="col-field"><code>phone</code></td><td class="col-raw"><span class="raw-value">356.842.3621</span></td><td class="col-type"><span class="badge">phone_format</span></td><td class="col-desc">Phone uses dots (e.g. 494.648.8941) format (&#x27;356.842.3621&#x27;). File contains mixed formats: dashes (e.g. 365-959-8239), digits-only (e.g. 7174079792), dots (e.g. 494.648.8941), parentheses (e.g. (841) 444-5499), +1 prefix (e.g. +15094037302) — downstream normalizers may fail to canonicalize consistently.</td></tr>
+<tr><td class="col-row">187</td><td class="col-field"><code>phone</code></td><td class="col-raw"><span class="raw-value">642.952.6280</span></td><td class="col-type"><span class="badge">phone_format</span></td><td class="col-desc">Phone uses dots (e.g. 494.648.8941) format (&#x27;642.952.6280&#x27;). File contains mixed formats: dashes (e.g. 365-959-8239), digits-only (e.g. 7174079792), dots (e.g. 494.648.8941), parentheses (e.g. (841) 444-5499), +1 prefix (e.g. +15094037302) — downstream normalizers may fail to canonicalize consistently.</td></tr>
+<tr><td class="col-row">188</td><td class="col-field"><code>phone</code></td><td class="col-raw"><span class="raw-value">(520) 637-6120</span></td><td class="col-type"><span class="badge">phone_format</span></td><td class="col-desc">Phone uses parentheses (e.g. (841) 444-5499) format (&#x27;(520) 637-6120&#x27;). File contains mixed formats: dashes (e.g. 365-959-8239), digits-only (e.g. 7174079792), dots (e.g. 494.648.8941), parentheses (e.g. (841) 444-5499), +1 prefix (e.g. +15094037302) — downstream normalizers may fail to canonicalize consistently.</td></tr>
+<tr><td class="col-row">189</td><td class="col-field"><code>phone</code></td><td class="col-raw"><span class="raw-value">(662) 376-8292</span></td><td class="col-type"><span class="badge">phone_format</span></td><td class="col-desc">Phone uses parentheses (e.g. (841) 444-5499) format (&#x27;(662) 376-8292&#x27;). File contains mixed formats: dashes (e.g. 365-959-8239), digits-only (e.g. 7174079792), dots (e.g. 494.648.8941), parentheses (e.g. (841) 444-5499), +1 prefix (e.g. +15094037302) — downstream normalizers may fail to canonicalize consistently.</td></tr>
+<tr><td class="col-row">190</td><td class="col-field"><code>phone</code></td><td class="col-raw"><span class="raw-value">3535412335</span></td><td class="col-type"><span class="badge">phone_format</span></td><td class="col-desc">Phone uses digits-only (e.g. 7174079792) format (&#x27;3535412335&#x27;). File contains mixed formats: dashes (e.g. 365-959-8239), digits-only (e.g. 7174079792), dots (e.g. 494.648.8941), parentheses (e.g. (841) 444-5499), +1 prefix (e.g. +15094037302) — downstream normalizers may fail to canonicalize consistently.</td></tr>
+<tr><td class="col-row">191</td><td class="col-field"><code>phone</code></td><td class="col-raw"><span class="raw-value">+12064677284</span></td><td class="col-type"><span class="badge">phone_format</span></td><td class="col-desc">Phone uses +1 prefix (e.g. +15094037302) format (&#x27;+12064677284&#x27;). File contains mixed formats: dashes (e.g. 365-959-8239), digits-only (e.g. 7174079792), dots (e.g. 494.648.8941), parentheses (e.g. (841) 444-5499), +1 prefix (e.g. +15094037302) — downstream normalizers may fail to canonicalize consistently.</td></tr>
+<tr><td class="col-row">192</td><td class="col-field"><code>phone</code></td><td class="col-raw"><span class="raw-value">864.567.6053</span></td><td class="col-type"><span class="badge">phone_format</span></td><td class="col-desc">Phone uses dots (e.g. 494.648.8941) format (&#x27;864.567.6053&#x27;). File contains mixed formats: dashes (e.g. 365-959-8239), digits-only (e.g. 7174079792), dots (e.g. 494.648.8941), parentheses (e.g. (841) 444-5499), +1 prefix (e.g. +15094037302) — downstream normalizers may fail to canonicalize consistently.</td></tr>
+<tr><td class="col-row">193</td><td class="col-field"><code>phone</code></td><td class="col-raw"><span class="raw-value">+16615571436</span></td><td class="col-type"><span class="badge">phone_format</span></td><td class="col-desc">Phone uses +1 prefix (e.g. +15094037302) format (&#x27;+16615571436&#x27;). File contains mixed formats: dashes (e.g. 365-959-8239), digits-only (e.g. 7174079792), dots (e.g. 494.648.8941), parentheses (e.g. (841) 444-5499), +1 prefix (e.g. +15094037302) — downstream normalizers may fail to canonicalize consistently.</td></tr>
+<tr><td class="col-row">194</td><td class="col-field"><code>phone</code></td><td class="col-raw"><span class="raw-value">3402053587</span></td><td class="col-type"><span class="badge">phone_format</span></td><td class="col-desc">Phone uses digits-only (e.g. 7174079792) format (&#x27;3402053587&#x27;). File contains mixed formats: dashes (e.g. 365-959-8239), digits-only (e.g. 7174079792), dots (e.g. 494.648.8941), parentheses (e.g. (841) 444-5499), +1 prefix (e.g. +15094037302) — downstream normalizers may fail to canonicalize consistently.</td></tr>
+<tr><td class="col-row">195</td><td class="col-field"><code>phone</code></td><td class="col-raw"><span class="raw-value">9887982785</span></td><td class="col-type"><span class="badge">phone_format</span></td><td class="col-desc">Phone uses digits-only (e.g. 7174079792) format (&#x27;9887982785&#x27;). File contains mixed formats: dashes (e.g. 365-959-8239), digits-only (e.g. 7174079792), dots (e.g. 494.648.8941), parentheses (e.g. (841) 444-5499), +1 prefix (e.g. +15094037302) — downstream normalizers may fail to canonicalize consistently.</td></tr>
+<tr><td class="col-row">196</td><td class="col-field"><code>phone</code></td><td class="col-raw"><span class="raw-value">280-554-8247</span></td><td class="col-type"><span class="badge">phone_format</span></td><td class="col-desc">Phone uses dashes (e.g. 365-959-8239) format (&#x27;280-554-8247&#x27;). File contains mixed formats: dashes (e.g. 365-959-8239), digits-only (e.g. 7174079792), dots (e.g. 494.648.8941), parentheses (e.g. (841) 444-5499), +1 prefix (e.g. +15094037302) — downstream normalizers may fail to canonicalize consistently.</td></tr>
+<tr><td class="col-row">197</td><td class="col-field"><code>phone</code></td><td class="col-raw"><span class="raw-value">626.391.2402</span></td><td class="col-type"><span class="badge">phone_format</span></td><td class="col-desc">Phone uses dots (e.g. 494.648.8941) format (&#x27;626.391.2402&#x27;). File contains mixed formats: dashes (e.g. 365-959-8239), digits-only (e.g. 7174079792), dots (e.g. 494.648.8941), parentheses (e.g. (841) 444-5499), +1 prefix (e.g. +15094037302) — downstream normalizers may fail to canonicalize consistently.</td></tr>
+<tr><td class="col-row">198</td><td class="col-field"><code>phone</code></td><td class="col-raw"><span class="raw-value">580-880-3711</span></td><td class="col-type"><span class="badge">phone_format</span></td><td class="col-desc">Phone uses dashes (e.g. 365-959-8239) format (&#x27;580-880-3711&#x27;). File contains mixed formats: dashes (e.g. 365-959-8239), digits-only (e.g. 7174079792), dots (e.g. 494.648.8941), parentheses (e.g. (841) 444-5499), +1 prefix (e.g. +15094037302) — downstream normalizers may fail to canonicalize consistently.</td></tr>
+<tr><td class="col-row">199</td><td class="col-field"><code>phone</code></td><td class="col-raw"><span class="raw-value">(570) 592-1530</span></td><td class="col-type"><span class="badge">phone_format</span></td><td class="col-desc">Phone uses parentheses (e.g. (841) 444-5499) format (&#x27;(570) 592-1530&#x27;). File contains mixed formats: dashes (e.g. 365-959-8239), digits-only (e.g. 7174079792), dots (e.g. 494.648.8941), parentheses (e.g. (841) 444-5499), +1 prefix (e.g. +15094037302) — downstream normalizers may fail to canonicalize consistently.</td></tr>
+<tr><td class="col-row">200</td><td class="col-field"><code>phone</code></td><td class="col-raw"><span class="raw-value">8559044598</span></td><td class="col-type"><span class="badge">phone_format</span></td><td class="col-desc">Phone uses digits-only (e.g. 7174079792) format (&#x27;8559044598&#x27;). File contains mixed formats: dashes (e.g. 365-959-8239), digits-only (e.g. 7174079792), dots (e.g. 494.648.8941), parentheses (e.g. (841) 444-5499), +1 prefix (e.g. +15094037302) — downstream normalizers may fail to canonicalize consistently.</td></tr>
+<tr><td class="col-row">201</td><td class="col-field"><code>phone</code></td><td class="col-raw"><span class="raw-value">858-887-7244</span></td><td class="col-type"><span class="badge">phone_format</span></td><td class="col-desc">Phone uses dashes (e.g. 365-959-8239) format (&#x27;858-887-7244&#x27;). File contains mixed formats: dashes (e.g. 365-959-8239), digits-only (e.g. 7174079792), dots (e.g. 494.648.8941), parentheses (e.g. (841) 444-5499), +1 prefix (e.g. +15094037302) — downstream normalizers may fail to canonicalize consistently.</td></tr>
+<tr><td class="col-row">202</td><td class="col-field"><code>phone</code></td><td class="col-raw"><span class="raw-value">+16484982133</span></td><td class="col-type"><span class="badge">phone_format</span></td><td class="col-desc">Phone uses +1 prefix (e.g. +15094037302) format (&#x27;+16484982133&#x27;). File contains mixed formats: dashes (e.g. 365-959-8239), digits-only (e.g. 7174079792), dots (e.g. 494.648.8941), parentheses (e.g. (841) 444-5499), +1 prefix (e.g. +15094037302) — downstream normalizers may fail to canonicalize consistently.</td></tr>
+<tr><td class="col-row">203</td><td class="col-field"><code>phone</code></td><td class="col-raw"><span class="raw-value">+17018307686</span></td><td class="col-type"><span class="badge">phone_format</span></td><td class="col-desc">Phone uses +1 prefix (e.g. +15094037302) format (&#x27;+17018307686&#x27;). File contains mixed formats: dashes (e.g. 365-959-8239), digits-only (e.g. 7174079792), dots (e.g. 494.648.8941), parentheses (e.g. (841) 444-5499), +1 prefix (e.g. +15094037302) — downstream normalizers may fail to canonicalize consistently.</td></tr>
+<tr><td class="col-row">204</td><td class="col-field"><code>phone</code></td><td class="col-raw"><span class="raw-value">2466336644</span></td><td class="col-type"><span class="badge">phone_format</span></td><td class="col-desc">Phone uses digits-only (e.g. 7174079792) format (&#x27;2466336644&#x27;). File contains mixed formats: dashes (e.g. 365-959-8239), digits-only (e.g. 7174079792), dots (e.g. 494.648.8941), parentheses (e.g. (841) 444-5499), +1 prefix (e.g. +15094037302) — downstream normalizers may fail to canonicalize consistently.</td></tr>
+<tr><td class="col-row">205</td><td class="col-field"><code>phone</code></td><td class="col-raw"><span class="raw-value">5393251699</span></td><td class="col-type"><span class="badge">phone_format</span></td><td class="col-desc">Phone uses digits-only (e.g. 7174079792) format (&#x27;5393251699&#x27;). File contains mixed formats: dashes (e.g. 365-959-8239), digits-only (e.g. 7174079792), dots (e.g. 494.648.8941), parentheses (e.g. (841) 444-5499), +1 prefix (e.g. +15094037302) — downstream normalizers may fail to canonicalize consistently.</td></tr>
+<tr><td class="col-row">206</td><td class="col-field"><code>phone</code></td><td class="col-raw"><span class="raw-value">(895) 802-9199</span></td><td class="col-type"><span class="badge">phone_format</span></td><td class="col-desc">Phone uses parentheses (e.g. (841) 444-5499) format (&#x27;(895) 802-9199&#x27;). File contains mixed formats: dashes (e.g. 365-959-8239), digits-only (e.g. 7174079792), dots (e.g. 494.648.8941), parentheses (e.g. (841) 444-5499), +1 prefix (e.g. +15094037302) — downstream normalizers may fail to canonicalize consistently.</td></tr></tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="group-block">
+          <div class="group-header">
+            <span class="group-title">Single-Digit Hour in ‘received_at’</span>
+            <span class="breakdown-pill" style="background:#FEF3C7;color:#92400E">Date Format</span>
+            <span class="group-count">41 rows</span>
+          </div>
+          <div class="table-wrapper">
+            <table>
+              <thead>
+                <tr>
+                  <th class="col-row">Row #</th>
+                  <th class="col-field">Field</th>
+                  <th class="col-raw">Raw Value</th>
+                  <th class="col-type">Issue Type</th>
+                  <th class="col-desc">Description</th>
+                </tr>
+              </thead>
+              <tbody><tr><td class="col-row">6</td><td class="col-field"><code>received_at</code></td><td class="col-raw"><span class="raw-value">2026-05-11 8:40:00</span></td><td class="col-type"><span class="badge">date_format</span></td><td class="col-desc">Datetime field &quot;received_at&quot; has single-digit hour (&#x27;8&#x27;) without a leading zero — inconsistent with ISO 8601 HH:MM:SS format: &#x27;2026-05-11 8:40:00&#x27;</td></tr>
+<tr><td class="col-row">7</td><td class="col-field"><code>received_at</code></td><td class="col-raw"><span class="raw-value">2026-05-14 7:31:00</span></td><td class="col-type"><span class="badge">date_format</span></td><td class="col-desc">Datetime field &quot;received_at&quot; has single-digit hour (&#x27;7&#x27;) without a leading zero — inconsistent with ISO 8601 HH:MM:SS format: &#x27;2026-05-14 7:31:00&#x27;</td></tr>
+<tr><td class="col-row">29</td><td class="col-field"><code>received_at</code></td><td class="col-raw"><span class="raw-value">2026-05-11 9:02:00</span></td><td class="col-type"><span class="badge">date_format</span></td><td class="col-desc">Datetime field &quot;received_at&quot; has single-digit hour (&#x27;9&#x27;) without a leading zero — inconsistent with ISO 8601 HH:MM:SS format: &#x27;2026-05-11 9:02:00&#x27;</td></tr>
+<tr><td class="col-row">30</td><td class="col-field"><code>received_at</code></td><td class="col-raw"><span class="raw-value">2026-05-15 7:32:00</span></td><td class="col-type"><span class="badge">date_format</span></td><td class="col-desc">Datetime field &quot;received_at&quot; has single-digit hour (&#x27;7&#x27;) without a leading zero — inconsistent with ISO 8601 HH:MM:SS format: &#x27;2026-05-15 7:32:00&#x27;</td></tr>
+<tr><td class="col-row">35</td><td class="col-field"><code>received_at</code></td><td class="col-raw"><span class="raw-value">2026-05-12 3:24:00</span></td><td class="col-type"><span class="badge">date_format</span></td><td class="col-desc">Datetime field &quot;received_at&quot; has single-digit hour (&#x27;3&#x27;) without a leading zero — inconsistent with ISO 8601 HH:MM:SS format: &#x27;2026-05-12 3:24:00&#x27;</td></tr>
+<tr><td class="col-row">41</td><td class="col-field"><code>received_at</code></td><td class="col-raw"><span class="raw-value">2026-05-09 7:37:00</span></td><td class="col-type"><span class="badge">date_format</span></td><td class="col-desc">Datetime field &quot;received_at&quot; has single-digit hour (&#x27;7&#x27;) without a leading zero — inconsistent with ISO 8601 HH:MM:SS format: &#x27;2026-05-09 7:37:00&#x27;</td></tr>
+<tr><td class="col-row">51</td><td class="col-field"><code>received_at</code></td><td class="col-raw"><span class="raw-value">2026-05-08 7:08:00</span></td><td class="col-type"><span class="badge">date_format</span></td><td class="col-desc">Datetime field &quot;received_at&quot; has single-digit hour (&#x27;7&#x27;) without a leading zero — inconsistent with ISO 8601 HH:MM:SS format: &#x27;2026-05-08 7:08:00&#x27;</td></tr>
+<tr><td class="col-row">52</td><td class="col-field"><code>received_at</code></td><td class="col-raw"><span class="raw-value">2026-05-09 9:00:00</span></td><td class="col-type"><span class="badge">date_format</span></td><td class="col-desc">Datetime field &quot;received_at&quot; has single-digit hour (&#x27;9&#x27;) without a leading zero — inconsistent with ISO 8601 HH:MM:SS format: &#x27;2026-05-09 9:00:00&#x27;</td></tr>
+<tr><td class="col-row">58</td><td class="col-field"><code>received_at</code></td><td class="col-raw"><span class="raw-value">2026-05-17 1:22:00</span></td><td class="col-type"><span class="badge">date_format</span></td><td class="col-desc">Datetime field &quot;received_at&quot; has single-digit hour (&#x27;1&#x27;) without a leading zero — inconsistent with ISO 8601 HH:MM:SS format: &#x27;2026-05-17 1:22:00&#x27;</td></tr>
+<tr><td class="col-row">66</td><td class="col-field"><code>received_at</code></td><td class="col-raw"><span class="raw-value">2026-05-12 7:53:00</span></td><td class="col-type"><span class="badge">date_format</span></td><td class="col-desc">Datetime field &quot;received_at&quot; has single-digit hour (&#x27;7&#x27;) without a leading zero — inconsistent with ISO 8601 HH:MM:SS format: &#x27;2026-05-12 7:53:00&#x27;</td></tr>
+<tr><td class="col-row">69</td><td class="col-field"><code>received_at</code></td><td class="col-raw"><span class="raw-value">2026-05-13 2:25:00</span></td><td class="col-type"><span class="badge">date_format</span></td><td class="col-desc">Datetime field &quot;received_at&quot; has single-digit hour (&#x27;2&#x27;) without a leading zero — inconsistent with ISO 8601 HH:MM:SS format: &#x27;2026-05-13 2:25:00&#x27;</td></tr>
+<tr><td class="col-row">71</td><td class="col-field"><code>received_at</code></td><td class="col-raw"><span class="raw-value">2026-05-15 2:35:00</span></td><td class="col-type"><span class="badge">date_format</span></td><td class="col-desc">Datetime field &quot;received_at&quot; has single-digit hour (&#x27;2&#x27;) without a leading zero — inconsistent with ISO 8601 HH:MM:SS format: &#x27;2026-05-15 2:35:00&#x27;</td></tr>
+<tr><td class="col-row">75</td><td class="col-field"><code>received_at</code></td><td class="col-raw"><span class="raw-value">2026-05-09 8:05:00</span></td><td class="col-type"><span class="badge">date_format</span></td><td class="col-desc">Datetime field &quot;received_at&quot; has single-digit hour (&#x27;8&#x27;) without a leading zero — inconsistent with ISO 8601 HH:MM:SS format: &#x27;2026-05-09 8:05:00&#x27;</td></tr>
+<tr><td class="col-row">76</td><td class="col-field"><code>received_at</code></td><td class="col-raw"><span class="raw-value">2026-05-05 7:58:00</span></td><td class="col-type"><span class="badge">date_format</span></td><td class="col-desc">Datetime field &quot;received_at&quot; has single-digit hour (&#x27;7&#x27;) without a leading zero — inconsistent with ISO 8601 HH:MM:SS format: &#x27;2026-05-05 7:58:00&#x27;</td></tr>
+<tr><td class="col-row">80</td><td class="col-field"><code>received_at</code></td><td class="col-raw"><span class="raw-value">2026-05-14 4:41:00</span></td><td class="col-type"><span class="badge">date_format</span></td><td class="col-desc">Datetime field &quot;received_at&quot; has single-digit hour (&#x27;4&#x27;) without a leading zero — inconsistent with ISO 8601 HH:MM:SS format: &#x27;2026-05-14 4:41:00&#x27;</td></tr>
+<tr><td class="col-row">87</td><td class="col-field"><code>received_at</code></td><td class="col-raw"><span class="raw-value">2026-05-05 1:34:00</span></td><td class="col-type"><span class="badge">date_format</span></td><td class="col-desc">Datetime field &quot;received_at&quot; has single-digit hour (&#x27;1&#x27;) without a leading zero — inconsistent with ISO 8601 HH:MM:SS format: &#x27;2026-05-05 1:34:00&#x27;</td></tr>
+<tr><td class="col-row">90</td><td class="col-field"><code>received_at</code></td><td class="col-raw"><span class="raw-value">2026-05-11 7:26:00</span></td><td class="col-type"><span class="badge">date_format</span></td><td class="col-desc">Datetime field &quot;received_at&quot; has single-digit hour (&#x27;7&#x27;) without a leading zero — inconsistent with ISO 8601 HH:MM:SS format: &#x27;2026-05-11 7:26:00&#x27;</td></tr>
+<tr><td class="col-row">94</td><td class="col-field"><code>received_at</code></td><td class="col-raw"><span class="raw-value">2026-05-09 9:47:00</span></td><td class="col-type"><span class="badge">date_format</span></td><td class="col-desc">Datetime field &quot;received_at&quot; has single-digit hour (&#x27;9&#x27;) without a leading zero — inconsistent with ISO 8601 HH:MM:SS format: &#x27;2026-05-09 9:47:00&#x27;</td></tr>
+<tr><td class="col-row">95</td><td class="col-field"><code>received_at</code></td><td class="col-raw"><span class="raw-value">2026-05-13 9:36:00</span></td><td class="col-type"><span class="badge">date_format</span></td><td class="col-desc">Datetime field &quot;received_at&quot; has single-digit hour (&#x27;9&#x27;) without a leading zero — inconsistent with ISO 8601 HH:MM:SS format: &#x27;2026-05-13 9:36:00&#x27;</td></tr>
+<tr><td class="col-row">105</td><td class="col-field"><code>received_at</code></td><td class="col-raw"><span class="raw-value">2026-05-08 9:28:00</span></td><td class="col-type"><span class="badge">date_format</span></td><td class="col-desc">Datetime field &quot;received_at&quot; has single-digit hour (&#x27;9&#x27;) without a leading zero — inconsistent with ISO 8601 HH:MM:SS format: &#x27;2026-05-08 9:28:00&#x27;</td></tr>
+<tr><td class="col-row">106</td><td class="col-field"><code>received_at</code></td><td class="col-raw"><span class="raw-value">2026-05-08 7:03:00</span></td><td class="col-type"><span class="badge">date_format</span></td><td class="col-desc">Datetime field &quot;received_at&quot; has single-digit hour (&#x27;7&#x27;) without a leading zero — inconsistent with ISO 8601 HH:MM:SS format: &#x27;2026-05-08 7:03:00&#x27;</td></tr>
+<tr><td class="col-row">107</td><td class="col-field"><code>received_at</code></td><td class="col-raw"><span class="raw-value">2026-05-07 8:15:00</span></td><td class="col-type"><span class="badge">date_format</span></td><td class="col-desc">Datetime field &quot;received_at&quot; has single-digit hour (&#x27;8&#x27;) without a leading zero — inconsistent with ISO 8601 HH:MM:SS format: &#x27;2026-05-07 8:15:00&#x27;</td></tr>
+<tr><td class="col-row">112</td><td class="col-field"><code>received_at</code></td><td class="col-raw"><span class="raw-value">2026-05-12 7:59:00</span></td><td class="col-type"><span class="badge">date_format</span></td><td class="col-desc">Datetime field &quot;received_at&quot; has single-digit hour (&#x27;7&#x27;) without a leading zero — inconsistent with ISO 8601 HH:MM:SS format: &#x27;2026-05-12 7:59:00&#x27;</td></tr>
+<tr><td class="col-row">115</td><td class="col-field"><code>received_at</code></td><td class="col-raw"><span class="raw-value">2026-05-15 8:38:00</span></td><td class="col-type"><span class="badge">date_format</span></td><td class="col-desc">Datetime field &quot;received_at&quot; has single-digit hour (&#x27;8&#x27;) without a leading zero — inconsistent with ISO 8601 HH:MM:SS format: &#x27;2026-05-15 8:38:00&#x27;</td></tr>
+<tr><td class="col-row">117</td><td class="col-field"><code>received_at</code></td><td class="col-raw"><span class="raw-value">2026-05-14 4:46:00</span></td><td class="col-type"><span class="badge">date_format</span></td><td class="col-desc">Datetime field &quot;received_at&quot; has single-digit hour (&#x27;4&#x27;) without a leading zero — inconsistent with ISO 8601 HH:MM:SS format: &#x27;2026-05-14 4:46:00&#x27;</td></tr>
+<tr><td class="col-row">118</td><td class="col-field"><code>received_at</code></td><td class="col-raw"><span class="raw-value">2026-05-14 7:03:00</span></td><td class="col-type"><span class="badge">date_format</span></td><td class="col-desc">Datetime field &quot;received_at&quot; has single-digit hour (&#x27;7&#x27;) without a leading zero — inconsistent with ISO 8601 HH:MM:SS format: &#x27;2026-05-14 7:03:00&#x27;</td></tr>
+<tr><td class="col-row">135</td><td class="col-field"><code>received_at</code></td><td class="col-raw"><span class="raw-value">2026-05-07 9:47:00</span></td><td class="col-type"><span class="badge">date_format</span></td><td class="col-desc">Datetime field &quot;received_at&quot; has single-digit hour (&#x27;9&#x27;) without a leading zero — inconsistent with ISO 8601 HH:MM:SS format: &#x27;2026-05-07 9:47:00&#x27;</td></tr>
+<tr><td class="col-row">139</td><td class="col-field"><code>received_at</code></td><td class="col-raw"><span class="raw-value">2026-05-11 8:28:00</span></td><td class="col-type"><span class="badge">date_format</span></td><td class="col-desc">Datetime field &quot;received_at&quot; has single-digit hour (&#x27;8&#x27;) without a leading zero — inconsistent with ISO 8601 HH:MM:SS format: &#x27;2026-05-11 8:28:00&#x27;</td></tr>
+<tr><td class="col-row">144</td><td class="col-field"><code>received_at</code></td><td class="col-raw"><span class="raw-value">2026-05-09 7:00:00</span></td><td class="col-type"><span class="badge">date_format</span></td><td class="col-desc">Datetime field &quot;received_at&quot; has single-digit hour (&#x27;7&#x27;) without a leading zero — inconsistent with ISO 8601 HH:MM:SS format: &#x27;2026-05-09 7:00:00&#x27;</td></tr>
+<tr><td class="col-row">146</td><td class="col-field"><code>received_at</code></td><td class="col-raw"><span class="raw-value">2026-05-13 7:22:00</span></td><td class="col-type"><span class="badge">date_format</span></td><td class="col-desc">Datetime field &quot;received_at&quot; has single-digit hour (&#x27;7&#x27;) without a leading zero — inconsistent with ISO 8601 HH:MM:SS format: &#x27;2026-05-13 7:22:00&#x27;</td></tr>
+<tr><td class="col-row">165</td><td class="col-field"><code>received_at</code></td><td class="col-raw"><span class="raw-value">2026-05-04 7:34:00</span></td><td class="col-type"><span class="badge">date_format</span></td><td class="col-desc">Datetime field &quot;received_at&quot; has single-digit hour (&#x27;7&#x27;) without a leading zero — inconsistent with ISO 8601 HH:MM:SS format: &#x27;2026-05-04 7:34:00&#x27;</td></tr>
+<tr><td class="col-row">166</td><td class="col-field"><code>received_at</code></td><td class="col-raw"><span class="raw-value">2026-05-10 7:14:00</span></td><td class="col-type"><span class="badge">date_format</span></td><td class="col-desc">Datetime field &quot;received_at&quot; has single-digit hour (&#x27;7&#x27;) without a leading zero — inconsistent with ISO 8601 HH:MM:SS format: &#x27;2026-05-10 7:14:00&#x27;</td></tr>
+<tr><td class="col-row">168</td><td class="col-field"><code>received_at</code></td><td class="col-raw"><span class="raw-value">2026-05-15 6:34:00</span></td><td class="col-type"><span class="badge">date_format</span></td><td class="col-desc">Datetime field &quot;received_at&quot; has single-digit hour (&#x27;6&#x27;) without a leading zero — inconsistent with ISO 8601 HH:MM:SS format: &#x27;2026-05-15 6:34:00&#x27;</td></tr>
+<tr><td class="col-row">187</td><td class="col-field"><code>received_at</code></td><td class="col-raw"><span class="raw-value">2026-05-08 7:05:00</span></td><td class="col-type"><span class="badge">date_format</span></td><td class="col-desc">Datetime field &quot;received_at&quot; has single-digit hour (&#x27;7&#x27;) without a leading zero — inconsistent with ISO 8601 HH:MM:SS format: &#x27;2026-05-08 7:05:00&#x27;</td></tr>
+<tr><td class="col-row">190</td><td class="col-field"><code>received_at</code></td><td class="col-raw"><span class="raw-value">2026-05-14 9:58:00</span></td><td class="col-type"><span class="badge">date_format</span></td><td class="col-desc">Datetime field &quot;received_at&quot; has single-digit hour (&#x27;9&#x27;) without a leading zero — inconsistent with ISO 8601 HH:MM:SS format: &#x27;2026-05-14 9:58:00&#x27;</td></tr>
+<tr><td class="col-row">192</td><td class="col-field"><code>received_at</code></td><td class="col-raw"><span class="raw-value">2026-05-13 2:29:00</span></td><td class="col-type"><span class="badge">date_format</span></td><td class="col-desc">Datetime field &quot;received_at&quot; has single-digit hour (&#x27;2&#x27;) without a leading zero — inconsistent with ISO 8601 HH:MM:SS format: &#x27;2026-05-13 2:29:00&#x27;</td></tr>
+<tr><td class="col-row">194</td><td class="col-field"><code>received_at</code></td><td class="col-raw"><span class="raw-value">2026-05-07 8:00:00</span></td><td class="col-type"><span class="badge">date_format</span></td><td class="col-desc">Datetime field &quot;received_at&quot; has single-digit hour (&#x27;8&#x27;) without a leading zero — inconsistent with ISO 8601 HH:MM:SS format: &#x27;2026-05-07 8:00:00&#x27;</td></tr>
+<tr><td class="col-row">195</td><td class="col-field"><code>received_at</code></td><td class="col-raw"><span class="raw-value">2026-05-06 8:10:00</span></td><td class="col-type"><span class="badge">date_format</span></td><td class="col-desc">Datetime field &quot;received_at&quot; has single-digit hour (&#x27;8&#x27;) without a leading zero — inconsistent with ISO 8601 HH:MM:SS format: &#x27;2026-05-06 8:10:00&#x27;</td></tr>
+<tr><td class="col-row">197</td><td class="col-field"><code>received_at</code></td><td class="col-raw"><span class="raw-value">2026-05-09 8:33:00</span></td><td class="col-type"><span class="badge">date_format</span></td><td class="col-desc">Datetime field &quot;received_at&quot; has single-digit hour (&#x27;8&#x27;) without a leading zero — inconsistent with ISO 8601 HH:MM:SS format: &#x27;2026-05-09 8:33:00&#x27;</td></tr>
+<tr><td class="col-row">205</td><td class="col-field"><code>received_at</code></td><td class="col-raw"><span class="raw-value">2026-05-11 7:10:00</span></td><td class="col-type"><span class="badge">date_format</span></td><td class="col-desc">Datetime field &quot;received_at&quot; has single-digit hour (&#x27;7&#x27;) without a leading zero — inconsistent with ISO 8601 HH:MM:SS format: &#x27;2026-05-11 7:10:00&#x27;</td></tr>
+<tr><td class="col-row">206</td><td class="col-field"><code>received_at</code></td><td class="col-raw"><span class="raw-value">2026-05-09 7:30:00</span></td><td class="col-type"><span class="badge">date_format</span></td><td class="col-desc">Datetime field &quot;received_at&quot; has single-digit hour (&#x27;7&#x27;) without a leading zero — inconsistent with ISO 8601 HH:MM:SS format: &#x27;2026-05-09 7:30:00&#x27;</td></tr></tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="group-block">
+          <div class="group-header">
+            <span class="group-title">Missing Required Field — consent_sms</span>
+            <span class="breakdown-pill" style="background:#FEE2E2;color:#991B1B">Missing Required Field</span>
+            <span class="group-count">17 rows</span>
+          </div>
+          <div class="table-wrapper">
+            <table>
+              <thead>
+                <tr>
+                  <th class="col-row">Row #</th>
+                  <th class="col-field">Field</th>
+                  <th class="col-raw">Raw Value</th>
+                  <th class="col-type">Issue Type</th>
+                  <th class="col-desc">Description</th>
+                </tr>
+              </thead>
+              <tbody><tr><td class="col-row">20</td><td class="col-field"><code>consent_sms</code></td><td class="col-raw"><span class="raw-value"></span></td><td class="col-type"><span class="badge">null_required_field</span></td><td class="col-desc">Required field &quot;consent_sms&quot; is blank or empty.</td></tr>
+<tr><td class="col-row">36</td><td class="col-field"><code>consent_sms</code></td><td class="col-raw"><span class="raw-value"></span></td><td class="col-type"><span class="badge">null_required_field</span></td><td class="col-desc">Required field &quot;consent_sms&quot; is blank or empty.</td></tr>
+<tr><td class="col-row">38</td><td class="col-field"><code>consent_sms</code></td><td class="col-raw"><span class="raw-value"></span></td><td class="col-type"><span class="badge">null_required_field</span></td><td class="col-desc">Required field &quot;consent_sms&quot; is blank or empty.</td></tr>
+<tr><td class="col-row">62</td><td class="col-field"><code>consent_sms</code></td><td class="col-raw"><span class="raw-value"></span></td><td class="col-type"><span class="badge">null_required_field</span></td><td class="col-desc">Required field &quot;consent_sms&quot; is blank or empty.</td></tr>
+<tr><td class="col-row">97</td><td class="col-field"><code>consent_sms</code></td><td class="col-raw"><span class="raw-value"></span></td><td class="col-type"><span class="badge">null_required_field</span></td><td class="col-desc">Required field &quot;consent_sms&quot; is blank or empty.</td></tr>
+<tr><td class="col-row">118</td><td class="col-field"><code>consent_sms</code></td><td class="col-raw"><span class="raw-value"></span></td><td class="col-type"><span class="badge">null_required_field</span></td><td class="col-desc">Required field &quot;consent_sms&quot; is blank or empty.</td></tr>
+<tr><td class="col-row">124</td><td class="col-field"><code>consent_sms</code></td><td class="col-raw"><span class="raw-value"></span></td><td class="col-type"><span class="badge">null_required_field</span></td><td class="col-desc">Required field &quot;consent_sms&quot; is blank or empty.</td></tr>
+<tr><td class="col-row">143</td><td class="col-field"><code>consent_sms</code></td><td class="col-raw"><span class="raw-value"></span></td><td class="col-type"><span class="badge">null_required_field</span></td><td class="col-desc">Required field &quot;consent_sms&quot; is blank or empty.</td></tr>
+<tr><td class="col-row">144</td><td class="col-field"><code>consent_sms</code></td><td class="col-raw"><span class="raw-value"></span></td><td class="col-type"><span class="badge">null_required_field</span></td><td class="col-desc">Required field &quot;consent_sms&quot; is blank or empty.</td></tr>
+<tr><td class="col-row">148</td><td class="col-field"><code>consent_sms</code></td><td class="col-raw"><span class="raw-value"></span></td><td class="col-type"><span class="badge">null_required_field</span></td><td class="col-desc">Required field &quot;consent_sms&quot; is blank or empty.</td></tr>
+<tr><td class="col-row">150</td><td class="col-field"><code>consent_sms</code></td><td class="col-raw"><span class="raw-value"></span></td><td class="col-type"><span class="badge">null_required_field</span></td><td class="col-desc">Required field &quot;consent_sms&quot; is blank or empty.</td></tr>
+<tr><td class="col-row">156</td><td class="col-field"><code>consent_sms</code></td><td class="col-raw"><span class="raw-value"></span></td><td class="col-type"><span class="badge">null_required_field</span></td><td class="col-desc">Required field &quot;consent_sms&quot; is blank or empty.</td></tr>
+<tr><td class="col-row">180</td><td class="col-field"><code>consent_sms</code></td><td class="col-raw"><span class="raw-value"></span></td><td class="col-type"><span class="badge">null_required_field</span></td><td class="col-desc">Required field &quot;consent_sms&quot; is blank or empty.</td></tr>
+<tr><td class="col-row">182</td><td class="col-field"><code>consent_sms</code></td><td class="col-raw"><span class="raw-value"></span></td><td class="col-type"><span class="badge">null_required_field</span></td><td class="col-desc">Required field &quot;consent_sms&quot; is blank or empty.</td></tr>
+<tr><td class="col-row">184</td><td class="col-field"><code>consent_sms</code></td><td class="col-raw"><span class="raw-value"></span></td><td class="col-type"><span class="badge">null_required_field</span></td><td class="col-desc">Required field &quot;consent_sms&quot; is blank or empty.</td></tr>
+<tr><td class="col-row">189</td><td class="col-field"><code>consent_sms</code></td><td class="col-raw"><span class="raw-value"></span></td><td class="col-type"><span class="badge">null_required_field</span></td><td class="col-desc">Required field &quot;consent_sms&quot; is blank or empty.</td></tr>
+<tr><td class="col-row">199</td><td class="col-field"><code>consent_sms</code></td><td class="col-raw"><span class="raw-value"></span></td><td class="col-type"><span class="badge">null_required_field</span></td><td class="col-desc">Required field &quot;consent_sms&quot; is blank or empty.</td></tr></tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="group-block">
+          <div class="group-header">
+            <span class="group-title">Missing Required Field — email</span>
+            <span class="breakdown-pill" style="background:#FEE2E2;color:#991B1B">Missing Required Field</span>
+            <span class="group-count">15 rows</span>
+          </div>
+          <div class="table-wrapper">
+            <table>
+              <thead>
+                <tr>
+                  <th class="col-row">Row #</th>
+                  <th class="col-field">Field</th>
+                  <th class="col-raw">Raw Value</th>
+                  <th class="col-type">Issue Type</th>
+                  <th class="col-desc">Description</th>
+                </tr>
+              </thead>
+              <tbody><tr><td class="col-row">1</td><td class="col-field"><code>email</code></td><td class="col-raw"><span class="raw-value"></span></td><td class="col-type"><span class="badge">null_required_field</span></td><td class="col-desc">Required field &quot;email&quot; is blank or empty.</td></tr>
+<tr><td class="col-row">14</td><td class="col-field"><code>email</code></td><td class="col-raw"><span class="raw-value"></span></td><td class="col-type"><span class="badge">null_required_field</span></td><td class="col-desc">Required field &quot;email&quot; is blank or empty.</td></tr>
+<tr><td class="col-row">22</td><td class="col-field"><code>email</code></td><td class="col-raw"><span class="raw-value"></span></td><td class="col-type"><span class="badge">null_required_field</span></td><td class="col-desc">Required field &quot;email&quot; is blank or empty.</td></tr>
+<tr><td class="col-row">46</td><td class="col-field"><code>email</code></td><td class="col-raw"><span class="raw-value"></span></td><td class="col-type"><span class="badge">null_required_field</span></td><td class="col-desc">Required field &quot;email&quot; is blank or empty.</td></tr>
+<tr><td class="col-row">57</td><td class="col-field"><code>email</code></td><td class="col-raw"><span class="raw-value"></span></td><td class="col-type"><span class="badge">null_required_field</span></td><td class="col-desc">Required field &quot;email&quot; is blank or empty.</td></tr>
+<tr><td class="col-row">63</td><td class="col-field"><code>email</code></td><td class="col-raw"><span class="raw-value"></span></td><td class="col-type"><span class="badge">null_required_field</span></td><td class="col-desc">Required field &quot;email&quot; is blank or empty.</td></tr>
+<tr><td class="col-row">72</td><td class="col-field"><code>email</code></td><td class="col-raw"><span class="raw-value"></span></td><td class="col-type"><span class="badge">null_required_field</span></td><td class="col-desc">Required field &quot;email&quot; is blank or empty.</td></tr>
+<tr><td class="col-row">77</td><td class="col-field"><code>email</code></td><td class="col-raw"><span class="raw-value"></span></td><td class="col-type"><span class="badge">null_required_field</span></td><td class="col-desc">Required field &quot;email&quot; is blank or empty.</td></tr>
+<tr><td class="col-row">89</td><td class="col-field"><code>email</code></td><td class="col-raw"><span class="raw-value"></span></td><td class="col-type"><span class="badge">null_required_field</span></td><td class="col-desc">Required field &quot;email&quot; is blank or empty.</td></tr>
+<tr><td class="col-row">99</td><td class="col-field"><code>email</code></td><td class="col-raw"><span class="raw-value"></span></td><td class="col-type"><span class="badge">null_required_field</span></td><td class="col-desc">Required field &quot;email&quot; is blank or empty.</td></tr>
+<tr><td class="col-row">101</td><td class="col-field"><code>email</code></td><td class="col-raw"><span class="raw-value"></span></td><td class="col-type"><span class="badge">null_required_field</span></td><td class="col-desc">Required field &quot;email&quot; is blank or empty.</td></tr>
+<tr><td class="col-row">121</td><td class="col-field"><code>email</code></td><td class="col-raw"><span class="raw-value"></span></td><td class="col-type"><span class="badge">null_required_field</span></td><td class="col-desc">Required field &quot;email&quot; is blank or empty.</td></tr>
+<tr><td class="col-row">127</td><td class="col-field"><code>email</code></td><td class="col-raw"><span class="raw-value"></span></td><td class="col-type"><span class="badge">null_required_field</span></td><td class="col-desc">Required field &quot;email&quot; is blank or empty.</td></tr>
+<tr><td class="col-row">144</td><td class="col-field"><code>email</code></td><td class="col-raw"><span class="raw-value"></span></td><td class="col-type"><span class="badge">null_required_field</span></td><td class="col-desc">Required field &quot;email&quot; is blank or empty.</td></tr>
+<tr><td class="col-row">162</td><td class="col-field"><code>email</code></td><td class="col-raw"><span class="raw-value"></span></td><td class="col-type"><span class="badge">null_required_field</span></td><td class="col-desc">Required field &quot;email&quot; is blank or empty.</td></tr></tbody>
+            </table>
+          </div>
+        </div>
+    </div>
+    
+    <div class="section " id="outreach-issues">
+      <div class="section-header">
+        <h2 class="section-title">Syntax Issues — outreach_log.csv - outreach_log.csv</h2>
+        <span class="section-count">66 issues</span>
+      </div>
+      
+        <div class="group-block">
+          <div class="group-header">
+            <span class="group-title">Single-Digit Hour in ‘attempted_at’</span>
+            <span class="breakdown-pill" style="background:#FEF3C7;color:#92400E">Date Format</span>
+            <span class="group-count">66 rows</span>
+          </div>
+          <div class="table-wrapper">
+            <table>
+              <thead>
+                <tr>
+                  <th class="col-row">Row #</th>
+                  <th class="col-field">Field</th>
+                  <th class="col-raw">Raw Value</th>
+                  <th class="col-type">Issue Type</th>
+                  <th class="col-desc">Description</th>
+                </tr>
+              </thead>
+              <tbody><tr><td class="col-row">1</td><td class="col-field"><code>attempted_at</code></td><td class="col-raw"><span class="raw-value">2026-05-04 7:37:00</span></td><td class="col-type"><span class="badge">date_format</span></td><td class="col-desc">Datetime field &quot;attempted_at&quot; has single-digit hour (&#x27;7&#x27;) without a leading zero — inconsistent with ISO 8601 HH:MM:SS format: &#x27;2026-05-04 7:37:00&#x27;</td></tr>
+<tr><td class="col-row">2</td><td class="col-field"><code>attempted_at</code></td><td class="col-raw"><span class="raw-value">2026-05-04 7:47:00</span></td><td class="col-type"><span class="badge">date_format</span></td><td class="col-desc">Datetime field &quot;attempted_at&quot; has single-digit hour (&#x27;7&#x27;) without a leading zero — inconsistent with ISO 8601 HH:MM:SS format: &#x27;2026-05-04 7:47:00&#x27;</td></tr>
+<tr><td class="col-row">26</td><td class="col-field"><code>attempted_at</code></td><td class="col-raw"><span class="raw-value">2026-05-05 1:41:00</span></td><td class="col-type"><span class="badge">date_format</span></td><td class="col-desc">Datetime field &quot;attempted_at&quot; has single-digit hour (&#x27;1&#x27;) without a leading zero — inconsistent with ISO 8601 HH:MM:SS format: &#x27;2026-05-05 1:41:00&#x27;</td></tr>
+<tr><td class="col-row">27</td><td class="col-field"><code>attempted_at</code></td><td class="col-raw"><span class="raw-value">2026-05-05 1:46:00</span></td><td class="col-type"><span class="badge">date_format</span></td><td class="col-desc">Datetime field &quot;attempted_at&quot; has single-digit hour (&#x27;1&#x27;) without a leading zero — inconsistent with ISO 8601 HH:MM:SS format: &#x27;2026-05-05 1:46:00&#x27;</td></tr>
+<tr><td class="col-row">28</td><td class="col-field"><code>attempted_at</code></td><td class="col-raw"><span class="raw-value">2026-05-05 6:41:00</span></td><td class="col-type"><span class="badge">date_format</span></td><td class="col-desc">Datetime field &quot;attempted_at&quot; has single-digit hour (&#x27;6&#x27;) without a leading zero — inconsistent with ISO 8601 HH:MM:SS format: &#x27;2026-05-05 6:41:00&#x27;</td></tr>
+<tr><td class="col-row">74</td><td class="col-field"><code>attempted_at</code></td><td class="col-raw"><span class="raw-value">2026-05-07 0:25:00</span></td><td class="col-type"><span class="badge">date_format</span></td><td class="col-desc">Datetime field &quot;attempted_at&quot; has single-digit hour (&#x27;0&#x27;) without a leading zero — inconsistent with ISO 8601 HH:MM:SS format: &#x27;2026-05-07 0:25:00&#x27;</td></tr>
+<tr><td class="col-row">75</td><td class="col-field"><code>attempted_at</code></td><td class="col-raw"><span class="raw-value">2026-05-07 0:40:00</span></td><td class="col-type"><span class="badge">date_format</span></td><td class="col-desc">Datetime field &quot;attempted_at&quot; has single-digit hour (&#x27;0&#x27;) without a leading zero — inconsistent with ISO 8601 HH:MM:SS format: &#x27;2026-05-07 0:40:00&#x27;</td></tr>
+<tr><td class="col-row">76</td><td class="col-field"><code>attempted_at</code></td><td class="col-raw"><span class="raw-value">2026-05-07 2:22:00</span></td><td class="col-type"><span class="badge">date_format</span></td><td class="col-desc">Datetime field &quot;attempted_at&quot; has single-digit hour (&#x27;2&#x27;) without a leading zero — inconsistent with ISO 8601 HH:MM:SS format: &#x27;2026-05-07 2:22:00&#x27;</td></tr>
+<tr><td class="col-row">77</td><td class="col-field"><code>attempted_at</code></td><td class="col-raw"><span class="raw-value">2026-05-07 2:51:00</span></td><td class="col-type"><span class="badge">date_format</span></td><td class="col-desc">Datetime field &quot;attempted_at&quot; has single-digit hour (&#x27;2&#x27;) without a leading zero — inconsistent with ISO 8601 HH:MM:SS format: &#x27;2026-05-07 2:51:00&#x27;</td></tr>
+<tr><td class="col-row">78</td><td class="col-field"><code>attempted_at</code></td><td class="col-raw"><span class="raw-value">2026-05-07 8:07:00</span></td><td class="col-type"><span class="badge">date_format</span></td><td class="col-desc">Datetime field &quot;attempted_at&quot; has single-digit hour (&#x27;8&#x27;) without a leading zero — inconsistent with ISO 8601 HH:MM:SS format: &#x27;2026-05-07 8:07:00&#x27;</td></tr>
+<tr><td class="col-row">79</td><td class="col-field"><code>attempted_at</code></td><td class="col-raw"><span class="raw-value">2026-05-07 8:12:00</span></td><td class="col-type"><span class="badge">date_format</span></td><td class="col-desc">Datetime field &quot;attempted_at&quot; has single-digit hour (&#x27;8&#x27;) without a leading zero — inconsistent with ISO 8601 HH:MM:SS format: &#x27;2026-05-07 8:12:00&#x27;</td></tr>
+<tr><td class="col-row">80</td><td class="col-field"><code>attempted_at</code></td><td class="col-raw"><span class="raw-value">2026-05-07 8:24:00</span></td><td class="col-type"><span class="badge">date_format</span></td><td class="col-desc">Datetime field &quot;attempted_at&quot; has single-digit hour (&#x27;8&#x27;) without a leading zero — inconsistent with ISO 8601 HH:MM:SS format: &#x27;2026-05-07 8:24:00&#x27;</td></tr>
+<tr><td class="col-row">81</td><td class="col-field"><code>attempted_at</code></td><td class="col-raw"><span class="raw-value">2026-05-07 9:49:00</span></td><td class="col-type"><span class="badge">date_format</span></td><td class="col-desc">Datetime field &quot;attempted_at&quot; has single-digit hour (&#x27;9&#x27;) without a leading zero — inconsistent with ISO 8601 HH:MM:SS format: &#x27;2026-05-07 9:49:00&#x27;</td></tr>
+<tr><td class="col-row">109</td><td class="col-field"><code>attempted_at</code></td><td class="col-raw"><span class="raw-value">2026-05-08 0:00:00</span></td><td class="col-type"><span class="badge">date_format</span></td><td class="col-desc">Datetime field &quot;attempted_at&quot; has single-digit hour (&#x27;0&#x27;) without a leading zero — inconsistent with ISO 8601 HH:MM:SS format: &#x27;2026-05-08 0:00:00&#x27;</td></tr>
+<tr><td class="col-row">110</td><td class="col-field"><code>attempted_at</code></td><td class="col-raw"><span class="raw-value">2026-05-08 7:14:00</span></td><td class="col-type"><span class="badge">date_format</span></td><td class="col-desc">Datetime field &quot;attempted_at&quot; has single-digit hour (&#x27;7&#x27;) without a leading zero — inconsistent with ISO 8601 HH:MM:SS format: &#x27;2026-05-08 7:14:00&#x27;</td></tr>
+<tr><td class="col-row">111</td><td class="col-field"><code>attempted_at</code></td><td class="col-raw"><span class="raw-value">2026-05-08 7:15:00</span></td><td class="col-type"><span class="badge">date_format</span></td><td class="col-desc">Datetime field &quot;attempted_at&quot; has single-digit hour (&#x27;7&#x27;) without a leading zero — inconsistent with ISO 8601 HH:MM:SS format: &#x27;2026-05-08 7:15:00&#x27;</td></tr>
+<tr><td class="col-row">112</td><td class="col-field"><code>attempted_at</code></td><td class="col-raw"><span class="raw-value">2026-05-08 7:16:00</span></td><td class="col-type"><span class="badge">date_format</span></td><td class="col-desc">Datetime field &quot;attempted_at&quot; has single-digit hour (&#x27;7&#x27;) without a leading zero — inconsistent with ISO 8601 HH:MM:SS format: &#x27;2026-05-08 7:16:00&#x27;</td></tr>
+<tr><td class="col-row">113</td><td class="col-field"><code>attempted_at</code></td><td class="col-raw"><span class="raw-value">2026-05-08 7:24:00</span></td><td class="col-type"><span class="badge">date_format</span></td><td class="col-desc">Datetime field &quot;attempted_at&quot; has single-digit hour (&#x27;7&#x27;) without a leading zero — inconsistent with ISO 8601 HH:MM:SS format: &#x27;2026-05-08 7:24:00&#x27;</td></tr>
+<tr><td class="col-row">114</td><td class="col-field"><code>attempted_at</code></td><td class="col-raw"><span class="raw-value">2026-05-08 7:31:00</span></td><td class="col-type"><span class="badge">date_format</span></td><td class="col-desc">Datetime field &quot;attempted_at&quot; has single-digit hour (&#x27;7&#x27;) without a leading zero — inconsistent with ISO 8601 HH:MM:SS format: &#x27;2026-05-08 7:31:00&#x27;</td></tr>
+<tr><td class="col-row">115</td><td class="col-field"><code>attempted_at</code></td><td class="col-raw"><span class="raw-value">2026-05-08 7:32:00</span></td><td class="col-type"><span class="badge">date_format</span></td><td class="col-desc">Datetime field &quot;attempted_at&quot; has single-digit hour (&#x27;7&#x27;) without a leading zero — inconsistent with ISO 8601 HH:MM:SS format: &#x27;2026-05-08 7:32:00&#x27;</td></tr>
+<tr><td class="col-row">116</td><td class="col-field"><code>attempted_at</code></td><td class="col-raw"><span class="raw-value">2026-05-08 9:14:00</span></td><td class="col-type"><span class="badge">date_format</span></td><td class="col-desc">Datetime field &quot;attempted_at&quot; has single-digit hour (&#x27;9&#x27;) without a leading zero — inconsistent with ISO 8601 HH:MM:SS format: &#x27;2026-05-08 9:14:00&#x27;</td></tr>
+<tr><td class="col-row">117</td><td class="col-field"><code>attempted_at</code></td><td class="col-raw"><span class="raw-value">2026-05-08 9:40:00</span></td><td class="col-type"><span class="badge">date_format</span></td><td class="col-desc">Datetime field &quot;attempted_at&quot; has single-digit hour (&#x27;9&#x27;) without a leading zero — inconsistent with ISO 8601 HH:MM:SS format: &#x27;2026-05-08 9:40:00&#x27;</td></tr>
+<tr><td class="col-row">149</td><td class="col-field"><code>attempted_at</code></td><td class="col-raw"><span class="raw-value">2026-05-09 1:09:00</span></td><td class="col-type"><span class="badge">date_format</span></td><td class="col-desc">Datetime field &quot;attempted_at&quot; has single-digit hour (&#x27;1&#x27;) without a leading zero — inconsistent with ISO 8601 HH:MM:SS format: &#x27;2026-05-09 1:09:00&#x27;</td></tr>
+<tr><td class="col-row">150</td><td class="col-field"><code>attempted_at</code></td><td class="col-raw"><span class="raw-value">2026-05-09 2:38:00</span></td><td class="col-type"><span class="badge">date_format</span></td><td class="col-desc">Datetime field &quot;attempted_at&quot; has single-digit hour (&#x27;2&#x27;) without a leading zero — inconsistent with ISO 8601 HH:MM:SS format: &#x27;2026-05-09 2:38:00&#x27;</td></tr>
+<tr><td class="col-row">151</td><td class="col-field"><code>attempted_at</code></td><td class="col-raw"><span class="raw-value">2026-05-09 4:05:00</span></td><td class="col-type"><span class="badge">date_format</span></td><td class="col-desc">Datetime field &quot;attempted_at&quot; has single-digit hour (&#x27;4&#x27;) without a leading zero — inconsistent with ISO 8601 HH:MM:SS format: &#x27;2026-05-09 4:05:00&#x27;</td></tr>
+<tr><td class="col-row">152</td><td class="col-field"><code>attempted_at</code></td><td class="col-raw"><span class="raw-value">2026-05-09 7:06:00</span></td><td class="col-type"><span class="badge">date_format</span></td><td class="col-desc">Datetime field &quot;attempted_at&quot; has single-digit hour (&#x27;7&#x27;) without a leading zero — inconsistent with ISO 8601 HH:MM:SS format: &#x27;2026-05-09 7:06:00&#x27;</td></tr>
+<tr><td class="col-row">153</td><td class="col-field"><code>attempted_at</code></td><td class="col-raw"><span class="raw-value">2026-05-09 7:36:00</span></td><td class="col-type"><span class="badge">date_format</span></td><td class="col-desc">Datetime field &quot;attempted_at&quot; has single-digit hour (&#x27;7&#x27;) without a leading zero — inconsistent with ISO 8601 HH:MM:SS format: &#x27;2026-05-09 7:36:00&#x27;</td></tr>
+<tr><td class="col-row">154</td><td class="col-field"><code>attempted_at</code></td><td class="col-raw"><span class="raw-value">2026-05-09 7:40:00</span></td><td class="col-type"><span class="badge">date_format</span></td><td class="col-desc">Datetime field &quot;attempted_at&quot; has single-digit hour (&#x27;7&#x27;) without a leading zero — inconsistent with ISO 8601 HH:MM:SS format: &#x27;2026-05-09 7:40:00&#x27;</td></tr>
+<tr><td class="col-row">155</td><td class="col-field"><code>attempted_at</code></td><td class="col-raw"><span class="raw-value">2026-05-09 7:43:00</span></td><td class="col-type"><span class="badge">date_format</span></td><td class="col-desc">Datetime field &quot;attempted_at&quot; has single-digit hour (&#x27;7&#x27;) without a leading zero — inconsistent with ISO 8601 HH:MM:SS format: &#x27;2026-05-09 7:43:00&#x27;</td></tr>
+<tr><td class="col-row">156</td><td class="col-field"><code>attempted_at</code></td><td class="col-raw"><span class="raw-value">2026-05-09 7:45:00</span></td><td class="col-type"><span class="badge">date_format</span></td><td class="col-desc">Datetime field &quot;attempted_at&quot; has single-digit hour (&#x27;7&#x27;) without a leading zero — inconsistent with ISO 8601 HH:MM:SS format: &#x27;2026-05-09 7:45:00&#x27;</td></tr>
+<tr><td class="col-row">157</td><td class="col-field"><code>attempted_at</code></td><td class="col-raw"><span class="raw-value">2026-05-09 7:50:00</span></td><td class="col-type"><span class="badge">date_format</span></td><td class="col-desc">Datetime field &quot;attempted_at&quot; has single-digit hour (&#x27;7&#x27;) without a leading zero — inconsistent with ISO 8601 HH:MM:SS format: &#x27;2026-05-09 7:50:00&#x27;</td></tr>
+<tr><td class="col-row">158</td><td class="col-field"><code>attempted_at</code></td><td class="col-raw"><span class="raw-value">2026-05-09 8:14:00</span></td><td class="col-type"><span class="badge">date_format</span></td><td class="col-desc">Datetime field &quot;attempted_at&quot; has single-digit hour (&#x27;8&#x27;) without a leading zero — inconsistent with ISO 8601 HH:MM:SS format: &#x27;2026-05-09 8:14:00&#x27;</td></tr>
+<tr><td class="col-row">159</td><td class="col-field"><code>attempted_at</code></td><td class="col-raw"><span class="raw-value">2026-05-09 8:28:00</span></td><td class="col-type"><span class="badge">date_format</span></td><td class="col-desc">Datetime field &quot;attempted_at&quot; has single-digit hour (&#x27;8&#x27;) without a leading zero — inconsistent with ISO 8601 HH:MM:SS format: &#x27;2026-05-09 8:28:00&#x27;</td></tr>
+<tr><td class="col-row">160</td><td class="col-field"><code>attempted_at</code></td><td class="col-raw"><span class="raw-value">2026-05-09 8:42:00</span></td><td class="col-type"><span class="badge">date_format</span></td><td class="col-desc">Datetime field &quot;attempted_at&quot; has single-digit hour (&#x27;8&#x27;) without a leading zero — inconsistent with ISO 8601 HH:MM:SS format: &#x27;2026-05-09 8:42:00&#x27;</td></tr>
+<tr><td class="col-row">161</td><td class="col-field"><code>attempted_at</code></td><td class="col-raw"><span class="raw-value">2026-05-09 8:56:00</span></td><td class="col-type"><span class="badge">date_format</span></td><td class="col-desc">Datetime field &quot;attempted_at&quot; has single-digit hour (&#x27;8&#x27;) without a leading zero — inconsistent with ISO 8601 HH:MM:SS format: &#x27;2026-05-09 8:56:00&#x27;</td></tr>
+<tr><td class="col-row">162</td><td class="col-field"><code>attempted_at</code></td><td class="col-raw"><span class="raw-value">2026-05-09 9:03:00</span></td><td class="col-type"><span class="badge">date_format</span></td><td class="col-desc">Datetime field &quot;attempted_at&quot; has single-digit hour (&#x27;9&#x27;) without a leading zero — inconsistent with ISO 8601 HH:MM:SS format: &#x27;2026-05-09 9:03:00&#x27;</td></tr>
+<tr><td class="col-row">163</td><td class="col-field"><code>attempted_at</code></td><td class="col-raw"><span class="raw-value">2026-05-09 9:11:00</span></td><td class="col-type"><span class="badge">date_format</span></td><td class="col-desc">Datetime field &quot;attempted_at&quot; has single-digit hour (&#x27;9&#x27;) without a leading zero — inconsistent with ISO 8601 HH:MM:SS format: &#x27;2026-05-09 9:11:00&#x27;</td></tr>
+<tr><td class="col-row">186</td><td class="col-field"><code>attempted_at</code></td><td class="col-raw"><span class="raw-value">2026-05-10 0:54:00</span></td><td class="col-type"><span class="badge">date_format</span></td><td class="col-desc">Datetime field &quot;attempted_at&quot; has single-digit hour (&#x27;0&#x27;) without a leading zero — inconsistent with ISO 8601 HH:MM:SS format: &#x27;2026-05-10 0:54:00&#x27;</td></tr>
+<tr><td class="col-row">213</td><td class="col-field"><code>attempted_at</code></td><td class="col-raw"><span class="raw-value">2026-05-11 7:31:00</span></td><td class="col-type"><span class="badge">date_format</span></td><td class="col-desc">Datetime field &quot;attempted_at&quot; has single-digit hour (&#x27;7&#x27;) without a leading zero — inconsistent with ISO 8601 HH:MM:SS format: &#x27;2026-05-11 7:31:00&#x27;</td></tr>
+<tr><td class="col-row">214</td><td class="col-field"><code>attempted_at</code></td><td class="col-raw"><span class="raw-value">2026-05-11 8:31:00</span></td><td class="col-type"><span class="badge">date_format</span></td><td class="col-desc">Datetime field &quot;attempted_at&quot; has single-digit hour (&#x27;8&#x27;) without a leading zero — inconsistent with ISO 8601 HH:MM:SS format: &#x27;2026-05-11 8:31:00&#x27;</td></tr>
+<tr><td class="col-row">215</td><td class="col-field"><code>attempted_at</code></td><td class="col-raw"><span class="raw-value">2026-05-11 8:38:00</span></td><td class="col-type"><span class="badge">date_format</span></td><td class="col-desc">Datetime field &quot;attempted_at&quot; has single-digit hour (&#x27;8&#x27;) without a leading zero — inconsistent with ISO 8601 HH:MM:SS format: &#x27;2026-05-11 8:38:00&#x27;</td></tr>
+<tr><td class="col-row">216</td><td class="col-field"><code>attempted_at</code></td><td class="col-raw"><span class="raw-value">2026-05-11 8:47:00</span></td><td class="col-type"><span class="badge">date_format</span></td><td class="col-desc">Datetime field &quot;attempted_at&quot; has single-digit hour (&#x27;8&#x27;) without a leading zero — inconsistent with ISO 8601 HH:MM:SS format: &#x27;2026-05-11 8:47:00&#x27;</td></tr>
+<tr><td class="col-row">233</td><td class="col-field"><code>attempted_at</code></td><td class="col-raw"><span class="raw-value">2026-05-12 0:41:00</span></td><td class="col-type"><span class="badge">date_format</span></td><td class="col-desc">Datetime field &quot;attempted_at&quot; has single-digit hour (&#x27;0&#x27;) without a leading zero — inconsistent with ISO 8601 HH:MM:SS format: &#x27;2026-05-12 0:41:00&#x27;</td></tr>
+<tr><td class="col-row">234</td><td class="col-field"><code>attempted_at</code></td><td class="col-raw"><span class="raw-value">2026-05-12 8:00:00</span></td><td class="col-type"><span class="badge">date_format</span></td><td class="col-desc">Datetime field &quot;attempted_at&quot; has single-digit hour (&#x27;8&#x27;) without a leading zero — inconsistent with ISO 8601 HH:MM:SS format: &#x27;2026-05-12 8:00:00&#x27;</td></tr>
+<tr><td class="col-row">235</td><td class="col-field"><code>attempted_at</code></td><td class="col-raw"><span class="raw-value">2026-05-12 8:05:00</span></td><td class="col-type"><span class="badge">date_format</span></td><td class="col-desc">Datetime field &quot;attempted_at&quot; has single-digit hour (&#x27;8&#x27;) without a leading zero — inconsistent with ISO 8601 HH:MM:SS format: &#x27;2026-05-12 8:05:00&#x27;</td></tr>
+<tr><td class="col-row">236</td><td class="col-field"><code>attempted_at</code></td><td class="col-raw"><span class="raw-value">2026-05-12 8:08:00</span></td><td class="col-type"><span class="badge">date_format</span></td><td class="col-desc">Datetime field &quot;attempted_at&quot; has single-digit hour (&#x27;8&#x27;) without a leading zero — inconsistent with ISO 8601 HH:MM:SS format: &#x27;2026-05-12 8:08:00&#x27;</td></tr>
+<tr><td class="col-row">237</td><td class="col-field"><code>attempted_at</code></td><td class="col-raw"><span class="raw-value">2026-05-12 8:28:00</span></td><td class="col-type"><span class="badge">date_format</span></td><td class="col-desc">Datetime field &quot;attempted_at&quot; has single-digit hour (&#x27;8&#x27;) without a leading zero — inconsistent with ISO 8601 HH:MM:SS format: &#x27;2026-05-12 8:28:00&#x27;</td></tr>
+<tr><td class="col-row">252</td><td class="col-field"><code>attempted_at</code></td><td class="col-raw"><span class="raw-value">2026-05-13 0:21:00</span></td><td class="col-type"><span class="badge">date_format</span></td><td class="col-desc">Datetime field &quot;attempted_at&quot; has single-digit hour (&#x27;0&#x27;) without a leading zero — inconsistent with ISO 8601 HH:MM:SS format: &#x27;2026-05-13 0:21:00&#x27;</td></tr>
+<tr><td class="col-row">253</td><td class="col-field"><code>attempted_at</code></td><td class="col-raw"><span class="raw-value">2026-05-13 2:37:00</span></td><td class="col-type"><span class="badge">date_format</span></td><td class="col-desc">Datetime field &quot;attempted_at&quot; has single-digit hour (&#x27;2&#x27;) without a leading zero — inconsistent with ISO 8601 HH:MM:SS format: &#x27;2026-05-13 2:37:00&#x27;</td></tr>
+<tr><td class="col-row">254</td><td class="col-field"><code>attempted_at</code></td><td class="col-raw"><span class="raw-value">2026-05-13 2:55:00</span></td><td class="col-type"><span class="badge">date_format</span></td><td class="col-desc">Datetime field &quot;attempted_at&quot; has single-digit hour (&#x27;2&#x27;) without a leading zero — inconsistent with ISO 8601 HH:MM:SS format: &#x27;2026-05-13 2:55:00&#x27;</td></tr>
+<tr><td class="col-row">255</td><td class="col-field"><code>attempted_at</code></td><td class="col-raw"><span class="raw-value">2026-05-13 7:28:00</span></td><td class="col-type"><span class="badge">date_format</span></td><td class="col-desc">Datetime field &quot;attempted_at&quot; has single-digit hour (&#x27;7&#x27;) without a leading zero — inconsistent with ISO 8601 HH:MM:SS format: &#x27;2026-05-13 7:28:00&#x27;</td></tr>
+<tr><td class="col-row">256</td><td class="col-field"><code>attempted_at</code></td><td class="col-raw"><span class="raw-value">2026-05-13 7:33:00</span></td><td class="col-type"><span class="badge">date_format</span></td><td class="col-desc">Datetime field &quot;attempted_at&quot; has single-digit hour (&#x27;7&#x27;) without a leading zero — inconsistent with ISO 8601 HH:MM:SS format: &#x27;2026-05-13 7:33:00&#x27;</td></tr>
+<tr><td class="col-row">257</td><td class="col-field"><code>attempted_at</code></td><td class="col-raw"><span class="raw-value">2026-05-13 9:37:00</span></td><td class="col-type"><span class="badge">date_format</span></td><td class="col-desc">Datetime field &quot;attempted_at&quot; has single-digit hour (&#x27;9&#x27;) without a leading zero — inconsistent with ISO 8601 HH:MM:SS format: &#x27;2026-05-13 9:37:00&#x27;</td></tr>
+<tr><td class="col-row">258</td><td class="col-field"><code>attempted_at</code></td><td class="col-raw"><span class="raw-value">2026-05-13 9:48:00</span></td><td class="col-type"><span class="badge">date_format</span></td><td class="col-desc">Datetime field &quot;attempted_at&quot; has single-digit hour (&#x27;9&#x27;) without a leading zero — inconsistent with ISO 8601 HH:MM:SS format: &#x27;2026-05-13 9:48:00&#x27;</td></tr>
+<tr><td class="col-row">282</td><td class="col-field"><code>attempted_at</code></td><td class="col-raw"><span class="raw-value">2026-05-14 1:14:00</span></td><td class="col-type"><span class="badge">date_format</span></td><td class="col-desc">Datetime field &quot;attempted_at&quot; has single-digit hour (&#x27;1&#x27;) without a leading zero — inconsistent with ISO 8601 HH:MM:SS format: &#x27;2026-05-14 1:14:00&#x27;</td></tr>
+<tr><td class="col-row">283</td><td class="col-field"><code>attempted_at</code></td><td class="col-raw"><span class="raw-value">2026-05-14 7:06:00</span></td><td class="col-type"><span class="badge">date_format</span></td><td class="col-desc">Datetime field &quot;attempted_at&quot; has single-digit hour (&#x27;7&#x27;) without a leading zero — inconsistent with ISO 8601 HH:MM:SS format: &#x27;2026-05-14 7:06:00&#x27;</td></tr>
+<tr><td class="col-row">284</td><td class="col-field"><code>attempted_at</code></td><td class="col-raw"><span class="raw-value">2026-05-14 7:43:00</span></td><td class="col-type"><span class="badge">date_format</span></td><td class="col-desc">Datetime field &quot;attempted_at&quot; has single-digit hour (&#x27;7&#x27;) without a leading zero — inconsistent with ISO 8601 HH:MM:SS format: &#x27;2026-05-14 7:43:00&#x27;</td></tr>
+<tr><td class="col-row">285</td><td class="col-field"><code>attempted_at</code></td><td class="col-raw"><span class="raw-value">2026-05-14 9:43:00</span></td><td class="col-type"><span class="badge">date_format</span></td><td class="col-desc">Datetime field &quot;attempted_at&quot; has single-digit hour (&#x27;9&#x27;) without a leading zero — inconsistent with ISO 8601 HH:MM:SS format: &#x27;2026-05-14 9:43:00&#x27;</td></tr>
+<tr><td class="col-row">318</td><td class="col-field"><code>attempted_at</code></td><td class="col-raw"><span class="raw-value">2026-05-15 1:19:00</span></td><td class="col-type"><span class="badge">date_format</span></td><td class="col-desc">Datetime field &quot;attempted_at&quot; has single-digit hour (&#x27;1&#x27;) without a leading zero — inconsistent with ISO 8601 HH:MM:SS format: &#x27;2026-05-15 1:19:00&#x27;</td></tr>
+<tr><td class="col-row">319</td><td class="col-field"><code>attempted_at</code></td><td class="col-raw"><span class="raw-value">2026-05-15 6:37:00</span></td><td class="col-type"><span class="badge">date_format</span></td><td class="col-desc">Datetime field &quot;attempted_at&quot; has single-digit hour (&#x27;6&#x27;) without a leading zero — inconsistent with ISO 8601 HH:MM:SS format: &#x27;2026-05-15 6:37:00&#x27;</td></tr>
+<tr><td class="col-row">320</td><td class="col-field"><code>attempted_at</code></td><td class="col-raw"><span class="raw-value">2026-05-15 6:54:00</span></td><td class="col-type"><span class="badge">date_format</span></td><td class="col-desc">Datetime field &quot;attempted_at&quot; has single-digit hour (&#x27;6&#x27;) without a leading zero — inconsistent with ISO 8601 HH:MM:SS format: &#x27;2026-05-15 6:54:00&#x27;</td></tr>
+<tr><td class="col-row">321</td><td class="col-field"><code>attempted_at</code></td><td class="col-raw"><span class="raw-value">2026-05-15 8:49:00</span></td><td class="col-type"><span class="badge">date_format</span></td><td class="col-desc">Datetime field &quot;attempted_at&quot; has single-digit hour (&#x27;8&#x27;) without a leading zero — inconsistent with ISO 8601 HH:MM:SS format: &#x27;2026-05-15 8:49:00&#x27;</td></tr>
+<tr><td class="col-row">322</td><td class="col-field"><code>attempted_at</code></td><td class="col-raw"><span class="raw-value">2026-05-15 8:59:00</span></td><td class="col-type"><span class="badge">date_format</span></td><td class="col-desc">Datetime field &quot;attempted_at&quot; has single-digit hour (&#x27;8&#x27;) without a leading zero — inconsistent with ISO 8601 HH:MM:SS format: &#x27;2026-05-15 8:59:00&#x27;</td></tr>
+<tr><td class="col-row">352</td><td class="col-field"><code>attempted_at</code></td><td class="col-raw"><span class="raw-value">2026-05-16 2:25:00</span></td><td class="col-type"><span class="badge">date_format</span></td><td class="col-desc">Datetime field &quot;attempted_at&quot; has single-digit hour (&#x27;2&#x27;) without a leading zero — inconsistent with ISO 8601 HH:MM:SS format: &#x27;2026-05-16 2:25:00&#x27;</td></tr>
+<tr><td class="col-row">353</td><td class="col-field"><code>attempted_at</code></td><td class="col-raw"><span class="raw-value">2026-05-16 2:29:00</span></td><td class="col-type"><span class="badge">date_format</span></td><td class="col-desc">Datetime field &quot;attempted_at&quot; has single-digit hour (&#x27;2&#x27;) without a leading zero — inconsistent with ISO 8601 HH:MM:SS format: &#x27;2026-05-16 2:29:00&#x27;</td></tr>
+<tr><td class="col-row">370</td><td class="col-field"><code>attempted_at</code></td><td class="col-raw"><span class="raw-value">2026-05-17 1:26:00</span></td><td class="col-type"><span class="badge">date_format</span></td><td class="col-desc">Datetime field &quot;attempted_at&quot; has single-digit hour (&#x27;1&#x27;) without a leading zero — inconsistent with ISO 8601 HH:MM:SS format: &#x27;2026-05-17 1:26:00&#x27;</td></tr></tbody>
+            </table>
+          </div>
+        </div>
+    </div>
+    
+    <div class="section" id="suspected-matches">
+      <div class="section-header">
+        <h2 class="section-title">Suspected Matches</h2>
+        <span class="section-count">0 matches</span>
+      </div>
+      
+        <div class="no-issues">
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+            <circle cx="10" cy="10" r="9" stroke="#10B981" stroke-width="1.5"/>
+            <path d="M6 10l3 3 5-5" stroke="#10B981" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          No suspected matches — all outreach records either matched exactly or are orphans.
+        </div>
+    </div>
+    
+    <div class="section" id="orphan-activity">
+      <div class="section-header">
+        <h2 class="section-title">Orphan Activity</h2>
+        <span class="section-count">0 records</span>
+      </div>
+      
+        <div class="no-issues">
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+            <circle cx="10" cy="10" r="9" stroke="#10B981" stroke-width="1.5"/>
+            <path d="M6 10l3 3 5-5" stroke="#10B981" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          No orphan activity — every outreach record is linked to a lead.
+        </div>
+    </div>
+
+  </main>
+
+  <footer class="footer">
+    <div>Generated by Lead Slip Detector — Clever Real Estate Internal Tool</div>
+    <div>June 29, 2026 at 14:52 UTC</div>
+  </footer>
+
+</body>
+</html>

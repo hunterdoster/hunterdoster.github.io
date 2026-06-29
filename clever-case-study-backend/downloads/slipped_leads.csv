@@ -1,0 +1,19 @@
+lead_id,source,received_at,first_name,last_name,phone,email,consent_sms,consent_call,property_zip,lead_type,status,priority,days_since_received,first_detected_at
+L-20116,OfferNest,2026-05-11 13:23:00,Chris,Thompson,(312) 626-6040,chris.thompson89@example.com,FALSE,TRUE,75217,buyer,new,LOW,49.06,2026-06-26T16:51:14.344019+00:00
+L-20110,OfferNest,2026-05-11 21:18:00,Amanda,Lee,(869) 888-8710,,TRUE,TRUE,43215,seller,new,LOW,48.73,2026-06-26T16:51:14.344019+00:00
+L-20114,OfferNest,2026-05-12 20:45:00,Chris,Lewis,+16857318487,chris.lewis18@example.com,TRUE,TRUE,75217,seller,new,LOW,47.76,2026-06-26T16:51:14.344019+00:00
+L-20118,OfferNest,2026-05-12 22:52:00,Megan,Davis,232-786-2800,megan.davis54@example.com,TRUE,TRUE,43215,seller,new,LOW,47.67,2026-06-26T16:51:14.344019+00:00
+L-20112,OfferNest,2026-05-12 3:24:00,Brian,Thomas,(982) 763-5582,brian.thomas79@example.com,FALSE,TRUE,30318,seller,new,LOW,48.48,2026-06-26T16:51:14.344019+00:00
+L-20121,OfferNest,2026-05-13 10:15:00,John,Jackson,5054305876,john.jackson89@example.com,TRUE,TRUE,28269,buyer,new,LOW,47.19,2026-06-26T16:51:14.344019+00:00
+L-20115,OfferNest,2026-05-13 2:25:00,Ashley,Harris,506.807.6511,ashley.harris63@example.com,TRUE,TRUE,37211,buyer,new,LOW,47.52,2026-06-26T16:51:14.344019+00:00
+L-20123,OfferNest,2026-05-14 11:02:00,Lisa,White,280-554-8247,lisa.white28@example.com,TRUE,TRUE,32801,seller,new,LOW,46.16,2026-06-26T16:51:14.344019+00:00
+L-20120,OfferNest,2026-05-14 17:11:00,Matt,Young,+17455509950,matt.young93@example.com,TRUE,TRUE,75217,buyer,new,LOW,45.9,2026-06-26T16:51:14.344019+00:00
+L-20117,OfferNest,2026-05-14 4:41:00,Laura,Clark,792.791.4728,laura.clark22@example.com,TRUE,TRUE,75217,buyer,new,LOW,46.42,2026-06-26T16:51:14.344019+00:00
+L-20111,OfferNest,2026-05-14 4:46:00,Nancy,Clark,+16125741741,nancy.clark25@example.com,TRUE,TRUE,32801,seller,new,LOW,46.42,2026-06-26T16:51:14.344019+00:00
+L-20108,OfferNest,2026-05-15 11:55:00,Ashley,Anderson,454-363-6364,ashley.anderson25@example.com,,TRUE,89108,buyer,new,LOW,45.12,2026-06-26T16:51:14.344019+00:00
+L-20113,OfferNest,2026-05-15 13:23:00,Laura,Hernandez,(771) 574-3363,laura.hernandez65@example.com,TRUE,TRUE,63101,seller,new,LOW,45.06,2026-06-26T16:51:14.344019+00:00
+L-20119,OfferNest,2026-05-15 18:32:00,Greg,Lee,+16829532020,greg.lee72@example.com,TRUE,TRUE,89108,buyer,new,LOW,44.85,2026-06-26T16:51:14.344019+00:00
+L-20106,OfferNest,2026-05-15 19:30:00,Matt,Miller,+15488213353,matt.miller94@example.com,TRUE,TRUE,43215,seller,new,LOW,44.81,2026-06-26T16:51:14.344019+00:00
+L-20122,OfferNest,2026-05-15 2:35:00,Heather,Young,9384805715,heather.young49@example.com,TRUE,TRUE,28269,seller,new,LOW,45.51,2026-06-26T16:51:14.344019+00:00
+L-20107,OfferNest,2026-05-15 7:32:00,Jessica,Brown,(526) 447-8642,jessica.brown19@example.com,TRUE,TRUE,63101,seller,new,LOW,45.31,2026-06-26T16:51:14.344019+00:00
+L-20109,OfferNest,2026-05-16 16:56:00,Lisa,Taylor,223.292.7442,lisa.taylor28@example.com,TRUE,TRUE,28269,seller,new,LOW,43.91,2026-06-26T16:51:14.344019+00:00
