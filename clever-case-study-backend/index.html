@@ -16,13 +16,23 @@
     .toggle-switch input:checked + .toggle-track { background:#0B91DF; }
     .toggle-track::after { content:''; position:absolute; top:3px; left:3px; width:18px; height:18px; background:#fff; border-radius:50%; transition:transform 0.2s; box-shadow:0 1px 3px rgba(0,0,0,0.2); }
     .toggle-switch input:checked + .toggle-track::after { transform:translateX(20px); }
-    /* Obvious "try the demo" callout at the top of the card */
-    .demo-callout { background:#EAF4FB; border:1px solid #0B91DF; border-left:4px solid #0B91DF; border-radius:10px; padding:14px 16px; margin-bottom:22px; text-align:left; }
-    .demo-callout-title { font-size:14px; font-weight:700; color:#0B6FB0; margin-bottom:10px; }
-    .demo-callout-steps { display:flex; align-items:center; flex-wrap:wrap; gap:8px 10px; font-size:13px; color:#22293B; }
-    .demo-step { display:inline-flex; align-items:center; gap:7px; }
-    .demo-step-num { display:inline-flex; align-items:center; justify-content:center; width:20px; height:20px; background:#0B91DF; color:#fff; border-radius:50%; font-size:12px; font-weight:700; flex-shrink:0; }
-    .demo-step-arrow { color:#0B91DF; font-weight:700; }
+    /* Demo guide */
+    .demo-guide { background:#EAF4FB; border:1.5px solid #0B91DF; border-radius:12px; padding:18px 20px 16px; margin-bottom:24px; }
+    .demo-guide-title { font-size:12px; font-weight:700; color:#0B6FB0; letter-spacing:0.08em; text-transform:uppercase; margin-bottom:14px; }
+    .demo-guide-steps { display:flex; align-items:stretch; gap:0; }
+    .demo-guide-step { flex:1; background:#fff; border:1.5px solid #BFCBDE; border-radius:10px; padding:14px 14px 12px; text-align:center; position:relative; }
+    .demo-guide-step.active-step { border-color:#0B91DF; box-shadow:0 0 0 3px rgba(11,145,223,0.15); }
+    .demo-guide-step.done-step { border-color:#0EC18F; background:#F0FBF8; }
+    .step-num { display:inline-flex; align-items:center; justify-content:center; width:28px; height:28px; background:#0B91DF; color:#fff; border-radius:50%; font-size:14px; font-weight:700; margin-bottom:8px; }
+    .done-step .step-num { background:#0EC18F; }
+    .step-label { font-size:13px; font-weight:700; color:#22293B; margin-bottom:3px; }
+    .step-desc { font-size:11px; color:#86A5C6; line-height:1.4; }
+    .done-step .step-desc { color:#0EC18F; font-weight:600; }
+    .demo-guide-arrow { display:flex; align-items:center; padding:0 10px; font-size:22px; color:#0B91DF; font-weight:700; flex-shrink:0; align-self:center; }
+    @keyframes pulse-ring { 0% { box-shadow:0 0 0 0 rgba(11,145,223,0.55); } 70% { box-shadow:0 0 0 8px rgba(11,145,223,0); } 100% { box-shadow:0 0 0 0 rgba(11,145,223,0); } }
+    @keyframes pulse-ring-green { 0% { box-shadow:0 0 0 0 rgba(14,193,143,0.55); } 70% { box-shadow:0 0 0 8px rgba(14,193,143,0); } 100% { box-shadow:0 0 0 0 rgba(14,193,143,0); } }
+    .btn-pulse { animation:pulse-ring 1.5s ease-out infinite; }
+    .btn-pulse-green { animation:pulse-ring-green 1.5s ease-out infinite; }
     .demo-ribbon { background:#16314E; color:#fff; text-align:center; font-size:12.5px; padding:7px 16px; letter-spacing:0.02em; }
     .demo-ribbon a { color:#3EB2EF; text-decoration:none; font-weight:600; }
   </style>
@@ -57,13 +67,21 @@
       <h1 class="upload-title">Lead Slip Detector</h1>
       <p class="upload-subtitle">Upload your leads and outreach files to identify contacts that slipped through without being reached and duplicate leads that may have been contacted twice.</p>
 
-      <!-- Obvious demo instructions for first-time visitors -->
-      <div class="demo-callout" id="demo-callout">
-        <div class="demo-callout-title">👋 Just want a demo? No files needed.</div>
-        <div class="demo-callout-steps">
-          <span class="demo-step"><span class="demo-step-num">1</span> Click <strong>“Load Demo Data”</strong></span>
-          <span class="demo-step-arrow">→</span>
-          <span class="demo-step"><span class="demo-step-num">2</span> Click <strong>“Analyze Pipeline”</strong></span>
+      <!-- Step-by-step demo guide -->
+      <div class=”demo-guide”>
+        <div class=”demo-guide-title”>How to run the demo</div>
+        <div class=”demo-guide-steps”>
+          <div class=”demo-guide-step active-step” id=”guide-step-1”>
+            <div class=”step-num”>1</div>
+            <div class=”step-label”>Load Demo Data</div>
+            <div class=”step-desc”>Click the button below &mdash; no files needed</div>
+          </div>
+          <div class=”demo-guide-arrow”>&rarr;</div>
+          <div class=”demo-guide-step” id=”guide-step-2” style=”opacity:0.45;”>
+            <div class=”step-num” style=”background:#BFCBDE;”>2</div>
+            <div class=”step-label”>Analyze Pipeline</div>
+            <div class=”step-desc”>Click the green &quot;Analyze Pipeline&quot; button at the bottom</div>
+          </div>
         </div>
       </div>
 
@@ -82,7 +100,7 @@
         </div>
 
         <div style="text-align:center; margin-bottom:16px;">
-          <button type="button" id="demo-btn" style="background:#16314E; border:none; border-radius:6px; padding:8px 18px; font-size:13px; font-weight:600; color:#FFFFFF; cursor:pointer; font-family:inherit;">
+          <button type="button" id="demo-btn" class="btn-pulse" style="background:#0B91DF; border:none; border-radius:6px; padding:10px 22px; font-size:14px; font-weight:700; color:#FFFFFF; cursor:pointer; font-family:inherit; letter-spacing:0.01em;">
             Load Demo Data
           </button>
         </div>
@@ -165,7 +183,7 @@
         
           <div class="pipeline-status pipeline-status--issues">
             <span class="pipeline-status-dot"></span>
-            <span class="pipeline-status-text">Issues Detected — 30 not contacted &middot; 10 duplicate groups
+            <span class="pipeline-status-text">Issues Detected — 30 not contacted &middot; 10 duplicate pairs
             </span>
           </div>
         
@@ -176,41 +194,49 @@
         <div class="stat-card">
           <div class="stat-number">206</div>
           <div class="stat-label">Total Leads Reviewed</div>
+          <div class="stat-desc">All rows processed from the uploaded leads CSV</div>
         </div>
 
         <div class="stat-card">
           <div class="stat-number">379</div>
           <div class="stat-label">Total Outreach Attempts</div>
+          <div class="stat-desc">All SMS and call touches logged across every lead</div>
         </div>
 
         <div class="stat-card stat-red">
           <div class="stat-number">30</div>
           <div class="stat-label">Leads Never Contacted</div>
+          <div class="stat-desc">Leads with no successful outreach of any kind — slipped or SMS-failed</div>
         </div>
 
         <div class="stat-card stat-red">
           <div class="stat-number">14.6%</div>
           <div class="stat-label">No-Contact Rate</div>
+          <div class="stat-desc">Share of all leads never reached</div>
         </div>
 
         <div class="stat-card stat-red">
           <div class="stat-number">345</div>
           <div class="stat-label">Total Syntax Issues</div>
+          <div class="stat-desc">Malformed values in CSV fields (bad phone formats, blank required fields, inconsistent timestamps) that can corrupt lead routing or matching</div>
         </div>
 
         <div class="stat-card stat-red">
           <div class="stat-number">10</div>
-          <div class="stat-label">Duplicate Lead Groups</div>
+          <div class="stat-label">Duplicate Lead Pairs</div>
+          <div class="stat-desc">Same person submitted more than once — risks double-contacting or splitting lead history across agents</div>
         </div>
 
         <div class="stat-card stat-red">
           <div class="stat-number">12</div>
           <div class="stat-label">SMS Failed, Never Called</div>
+          <div class="stat-desc">Leads texted at a landline number — SMS failed to deliver and no follow-up call was ever placed</div>
         </div>
 
         <div class="stat-card stat-red">
           <div class="stat-number">18</div>
           <div class="stat-label">Detected Slips</div>
+          <div class="stat-desc">Leads with zero outreach attempts of any kind — no SMS, no call, completely missed</div>
         </div>
 
       </div>
@@ -225,6 +251,7 @@
         <div style="display:flex; align-items:center; gap:12px;">
           <h2 class="section-title">AI Pipeline Analysis</h2>
           <span style="background:#0072CE; color:#fff; font-size:11px; font-weight:700; padding:3px 10px; border-radius:4px; letter-spacing:0.06em; text-transform:uppercase;">Claude</span>
+          <span style="font-size:12px; color:var(--color-muted); font-weight:400;">Uses Claude's API to analyze lead slips, detect root causes, and propose solutions</span>
         </div>
       </div>
 
@@ -294,19 +321,19 @@
           <span class="priority-pill high">
             <strong>0</strong> HIGH
           </span>
-          <span style="font-size:11px; color:var(--color-muted);">&lt; 24 hours</span>
+          <span style="font-size:11px; color:var(--color-muted);">&lt; 24 hours since slip</span>
         </div>
         <div style="display:flex; flex-direction:column; align-items:center; gap:4px;">
           <span class="priority-pill medium">
             <strong>0</strong> MEDIUM
           </span>
-          <span style="font-size:11px; color:var(--color-muted);">24 – 72 hours</span>
+          <span style="font-size:11px; color:var(--color-muted);">24 – 72 hours since slip</span>
         </div>
         <div style="display:flex; flex-direction:column; align-items:center; gap:4px;">
           <span class="priority-pill low">
             <strong>30</strong> LOW
           </span>
-          <span style="font-size:11px; color:var(--color-muted);">&gt; 72 hours</span>
+          <span style="font-size:11px; color:var(--color-muted);">&gt; 72 hours since slip</span>
         </div>
       </div>
 
@@ -4502,7 +4529,7 @@
       <div class="section-header">
         <div style="display:flex; align-items:center; gap:12px; flex-wrap:wrap;">
           <h2 class="section-title">Duplicate Leads</h2>
-          <span class="section-count">10 groups</span>
+          <span class="section-count">10 pairs</span>
         </div>
       </div>
 
@@ -5402,8 +5429,29 @@
           var ls = document.getElementById('demo-leads-status'); if (ls) ls.style.display = 'block';
           var os = document.getElementById('demo-outreach-status'); if (os) os.style.display = 'block';
           this.textContent = 'Demo Data Loaded \u2713';
-          this.style.background = '#0B91DF';
+          this.style.background = '#0EC18F';
+          this.classList.remove('btn-pulse');
           this.disabled = true;
+
+          // Step 1 -> done
+          var s1 = document.getElementById('guide-step-1');
+          if (s1) {
+            s1.classList.remove('active-step');
+            s1.classList.add('done-step');
+            var d1 = s1.querySelector('.step-desc'); if (d1) d1.textContent = 'Done \u2713';
+          }
+
+          // Step 2 -> active
+          var s2 = document.getElementById('guide-step-2');
+          if (s2) {
+            s2.style.opacity = '1';
+            s2.classList.add('active-step');
+            var sn2 = s2.querySelector('.step-num'); if (sn2) sn2.style.background = '#0B91DF';
+          }
+
+          // Pulse the submit button
+          var sb = document.getElementById('submit-btn');
+          if (sb) sb.classList.add('btn-pulse-green');
         });
       }
 
@@ -5418,7 +5466,7 @@
           e.preventDefault();
           var btn = document.getElementById('submit-btn');
           var loading = document.getElementById('loading');
-          if (btn) btn.style.display = 'none';
+          if (btn) { btn.classList.remove('btn-pulse-green'); btn.style.display = 'none'; }
           if (loading) loading.style.display = 'flex';
           setTimeout(showDashboard, 450); // brief faux-processing for realism
         });
